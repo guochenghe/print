@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/index.css">
+    <title>答题卡制作</title>
+</head>
+
+<body>
+    <div class="hgc_print" id="hgc_print">
+        <div class="contentWrap" id="contentWrap">
+            <div id="printcontent" class="printcontent hasBindingLine">
+                <div class="pageContent">
+                    <div class="scan-dot">
+                        <span data-option="tl" class="fl tl"></span>
+                        <span data-option="tr" class="fr tr"></span>
+                    </div>
+                    <div class="dtk-content">
+                        <div class="dtkName">
+                            <textarea></textarea>
+                        </div>
+                        <div class="examineeInfo">
+                            <div class="item">
+                                <em>班级:</em>
+                                <span></span>
+                            </div>
+                            <div class="item">
+                                <em>姓名:</em>
+                                <span></span>
+                            </div>
+                        </div>
+                        <div class="examInfo">
+                            <span>时间：90分钟</span>
+                            <span>满分：100分</span>
+                            <span>命卷人：王老师</span>
+                            <span>审核人：王老师</span>
+                        </div>
+                        <div class="noticeInfo">
+                            <div class="title">
+                                <strong>注</strong>
+                                <strong>意</strong>
+                                <strong>事</strong>
+                                <strong>项</strong>
+                            </div>
+                            <div class="noticeDetail">
+                                <textarea>1、考生务必正确书写班级、姓名，请填涂系统准考证号。&#10;2、考生务必用2B铅笔填涂。&#10;3、考生务必在答题卡指定位置作答，并保持卷面整洁。&#10;4、如需要条形码，则考生务必要在指定位置正确贴好条形码。&#10;5、教师务必使用红笔阅卷。</textarea>
+                            </div>
+                            <div class="ewm">
+                                <img src="" alt="">
+                            </div>
+                            <div class="warning">
+                                <div class="mark">
+                                    缺考标记 <i></i>
+                                </div>
+                                <div class="warningInfo">
+                                    考生禁止填涂缺考标记！只能由监考老师负责填涂。
+                                </div>
+                            </div>
+                        </div>
+                        <div class="examNumber" id="hgc_examNumber">
+                            <ul class="ticketNumber">
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+                                <li class="numberCol">
+                                    <span class="first"></span>
+                                    <span>[0]</span>
+                                    <span>[1]</span>
+                                    <span>[2]</span>
+                                    <span>[3]</span>
+                                    <span>[4]</span>
+                                    <span>[5]</span>
+                                    <span>[6]</span>
+                                    <span>[7]</span>
+                                    <span>[8]</span>
+                                    <span>[9]</span>
+                                </li>
+
+                            </ul>
+                            <div class="barCode"></div>
+                        </div>
+                        <div class="single-select answerModule" data-type="singleSelect">
+                            <h3>单选题</h3>
+                            <ul class="single-option module">
+                                <li title-number="1">
+                                    <em>1</em>
+                                    <span data-option="A">[A]</span>
+                                    <span data-option="B">[B]</span>
+                                    <span data-option="C">[C]</span>
+                                    <span data-option="D">[D]</span>
+                                </li>
+                                <li title-number="2">
+                                    <em>2</em>
+                                    <span data-option="A">[A]</span>
+                                    <span data-option="B">[B]</span>
+                                    <span data-option="C">[C]</span>
+                                    <span data-option="D">[D]</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="completion-topic answerModule" data-type="fillInBlank">
+                            <h3>一、填空题（本大题共5小题，每小题5分，共25分。在每小题给出的四个选项中，只有一项是符合题目要求的。把答案填涂在答题卡上。）</h3>
+                            <div class="module">
+                                <div class="settingBtn" data-type="fillInBlank"></div>
+                                <div class="subjectCol col-1">
+                                    <div class="subjectItem" title-number="3">
+                                        <span>3、</span>
+                                        <em></em>
+                                        <strong>
+                                            <i></i>
+                                        </strong>
+                                    </div>
+                                    <div class="subjectItem" title-number="4">
+                                        <span>4、</span>
+                                        <em></em>
+                                        <strong>
+                                            <i></i>
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="short-answer answerModule" data-type="answer">
+                            <h3>简单题</h3>
+                            <div class="module" data-editorIndex="2" title-number="5">
+                                <div class="dragBtn"></div>
+                                <div class="settingBtn" data-type="shortANswer"></div>
+                                <div class="scortColumn">
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                    <span>1</span>
+                                </div>
+                                <div id="toolbar2" class="toolbar"></div>
+                                <div id="editorContent2" class="editorContent">
+                                    <div>1、</div>
+                                </div>
+                            </div>
+                            <div class="module" data-editorIndex="3" title-number="6">
+                                <div class="dragBtn"></div>
+                                <div class="settingBtn" data-type="shortANswer"></div>
+                                <div class="scortColumn">
+                                    <span>1</span>
+                                    <span>1</span>
+                                </div>
+                                <div id="toolbar3" class="toolbar"></div>
+                                <div id="editorContent3" class="editorContent">
+                                    <div>2、</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="short-answer answerModule" data-type="chooseAnswer">
+                            <h3>选做题目</h3>
+                            <div class="module" data-editorIndex="4" title-number="7">
+                                <div class="dragBtn"></div>
+                                <div class="settingBtn" data-type="shortANswer"></div>
+                                <div class="scortColumn">
+                                    <span>1</span>
+                                    <span>1</span>
+                                </div>
+                                <div id="toolbar4" class="toolbar"></div>
+                                <div id="editorContent4" class="editorContent">
+                                    <div class="selTopic"><span data-option="[A]">[A]</span><span
+                                            data-option="[B]">[B]</span></div>
+                                    <div>3、</div>
+                                </div>
+                            </div>
+                            <div class="module" data-editorIndex="5" title-number="8">
+                                <div class="dragBtn"></div>
+                                <div class="settingBtn" data-type="shortANswer"></div>
+                                <div class="scortColumn">
+                                    <span>1</span>
+                                    <span>1</span>
+                                </div>
+                                <div id="toolbar5" class="toolbar"></div>
+                                <div id="editorContent5" class="editorContent">
+                                    <div class="selTopic"><span data-option="[A]">[A]</span><span
+                                            data-option="[B]">[B]</span></div>
+                                    <div>4、</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pageLabel">
+                        <div class="number item">第1页 共 <b class="totalPage">2</b> 页</div>
+                        <div class="size item">
+                            <div class="itemContent">
+                                第1纸张页面<b class="currentPaperPage">1</b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scan-dot bot">
+                        <span data-option="bl" class="fl bl"></span>
+                        <span data-option="br" class="fr br"></span>
+                    </div>
+                    <div class="bindingLine">
+                        <div class="examineeInfo">
+                            <div class="item">
+                                <span></span>
+                                <em>. . 级班</em>
+                            </div>
+                            <div class="item">
+                                <span></span>
+                                <em>. . 名姓</em>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <span>线</span>
+                            <span>订</span>
+                            <span>装</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="hgc_modalBox">
+            <div class="hgc_modal">
+                <h2><em>这是标题</em><i class="close">X</i></h2>
+                <div class="modalContent">
+                    <div class="formItem">
+                        <em>分值上限：</em>
+                        <input type="text">
+                    </div>
+                    <div class="formItem">
+                        <em>分值上限：</em>
+                        <select name="" id="">
+                            <option value="">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modalBtns">
+                    <span class="sure">确定</span>
+                    <span class="cancel">取消</span>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="opratorArea">
+            <div class="module layout">
+                <h3>选择答题卡布局</h3>
+                <div class="paper selOptions">
+                    <span>纸张</span>
+                    <span>
+                        <input type="radio" name="paper" data-type="paper" data-value="A3" id="A3">
+                        <label for="A3">A3</label>
+                    </span>
+                    <span>
+                        <input type="radio" data-type="paper" checked name="paper" data-value="A4" id="A4">
+                        <label for="A4">A4</label>
+                    </span>
+                </div>
+                <div class="layoutList">
+                    <div class="layoutItem current" data-column="1">
+                        <span><i></i></span>
+                        <em>一栏</em>
+                        <b class="icon_current"></b>
+                    </div>
+                    <div class="layoutItem" data-column="2">
+                        <span><i></i><i></i></span>
+                        <em>两栏</em>
+                        <b class="icon_current"></b>
+                    </div>
+                    <div class="layoutItem" data-column="3">
+                        <span><i></i><i></i><i></i></span>
+                        <em>三栏</em>
+                        <b class="icon_current"></b>
+                    </div>
+                </div>
+            </div>
+            <div class="module">
+                <h3>是否有装订线</h3>
+                <div class="selOptions">
+                    <span>
+                        <input type="radio" checked name="hasBinding" data-type="binding" data-value="yes" id="yes">
+                        <label for="yes">是</label>
+                    </span>
+                    <span>
+                        <input type="radio" data-type="binding" name="hasBinding" data-value="no" id="no">
+                        <label for="no">否</label>
+                    </span>
+                </div>
+            </div>
+            <div class="module">
+                <h3>选择考号版式</h3>
+                <div class="selOptions">
+                    <span>
+                        <input type="checkbox" data-type="style" data-value="examNumber" id="txm">
+                        <label for="txm">条形码</label>
+                    </span>
+                    <span>
+                        <input type="checkbox" data-type="style" data-value="barCode" checked id="zkz">
+                        <label for="zkz">准考证号</label>
+                    </span>
+                </div>
+            </div>
+            <div class="module subject">
+                <h3>题目列表</h3>
+                <ul class="subjectList">
+                    <li>
+                        <span>单选题</span><span>1～20</span>
+                    </li>
+                    <li>
+                        <span>单选题</span><span>1～20</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="opratorBtns">
+                <div class="previewBtn" id="previewBtn">预览</div>
+                <div class="previewBtn" id="printBtn">保存</div>
+
+                <div class="previewBtn">下载</div>
+            </div>
+        </div>
+    </div>
+    <div id="formatContent" class="formatContent"></div>
+    <script src="./js/jq.1.11.js"></script>
+    <script src="./js/wangEditor.js"></script>
+    <script src="./js/util.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
+
+<!-- 非解答题不可拖拽
+ui样式 -->
