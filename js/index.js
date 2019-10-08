@@ -1030,6 +1030,7 @@ var Print = {
       answerTop = 30;
     } else if (moduleType === "selTopic") {
       answerLeft = 10;
+      
     }
     //考虑分栏的定位点
     if (self.columns > 1 && !curPageIndex % 2) {
