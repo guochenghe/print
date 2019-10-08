@@ -1035,6 +1035,9 @@ var Print = {
     if (self.columns > 1 && !curPageIndex % 2) {
       columnLeft = self.pageWidth;
     }
+    if(self.columns === 1){
+      positionY -= curPageIndex*self.pageHeight;
+    }
 
     return {
       x:
