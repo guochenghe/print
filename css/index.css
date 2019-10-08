@@ -131,8 +131,21 @@ body{
     padding: 50px  20px ;
 }
 .dtk-content .dtkName{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height:60px;
     margin-bottom: 10px;
+
+}
+.dtk-content .dtkName textarea{
+    display: block;
+    width: 100%;
+    height: 60px;
+    text-align: center;
+    resize: none;
+    outline: none;
+    font-size: 16px;
     border:1px solid #333
 }
 .dtk-content .examineeInfo{
@@ -218,6 +231,7 @@ body{
 
 .dtk-content .examNumber{
     display: flex;
+    padding: 10px 0;
     justify-content: space-between;
 }
 .dtk-content .examNumber .ticketNumber{
@@ -249,15 +263,7 @@ body{
     height: 200px;
     border:1px dashed #333;
 }
-.dtk-content .dtkName textarea{
-    display: block;
-    width: 100%;
-    height: 60px;
-    text-align: center;
-    resize: none;
-    outline: none;
-    font-size: 16px;
-}
+
 .dtk-content h3{
     font-size: 14px ;
     color: #333;

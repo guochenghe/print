@@ -105,6 +105,8 @@ var Print = {
     this.initDom();
 
     this.bindEvent();
+
+    this.initEvent();
   },
   tpls: {
     printPageStyle:
@@ -127,7 +129,7 @@ var Print = {
                       <div class="number item">第{currentPage}页 共<b class="totalPage">{totalPage}</b>页</div>\
                       <div class="size item">\
                         <div class="itemContent">\
-                          第{currentPaper}纸张{}面<b class="currentPaperPage">{currentPaperPage}</b>\
+                          第{currentPaper}纸张页面<b class="currentPaperPage">{currentPaperPage}</b>\
                       </div>\
                       </div>\
                   </div>\
@@ -205,6 +207,14 @@ var Print = {
   initDom: function() {
     var self = this;
     self.$layoutItem = $("#hgc_print .layoutItem");
+  },
+  initEvent:function(){
+    var self = this;
+    //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
+    $('.selOptions input[name="paper"]').eq(0).prop('checked',true);
+    $('.selOptions input[name="hasBinding"]').eq(0).prop('checked',true);
+    $('.selOptions input:gt(3)').prop('checked',true);
+
   },
   bindEvent: function() {
     var self = this;
@@ -780,14 +790,19 @@ var Print = {
    * 返回处理之后直接可以打印的html
    */
   formatPrintHtml: function(elId) {
+    //format-需要打印的iframe里面的内容
+    //origin-原网页的内容
     var self = this;
     var $formatContent = $("#formatContent").html($("#" + elId).html());
     var $formatPageContent = $formatContent.children(".pageContent");
+    var $formatDtkTitle = $formatPageContent.eq(0).find('.dtkName');
     var $formatShortAnswer = $formatContent.find(".short-answer");
     var $originShortAnswer = $("#" + elId + " .short-answer");
-
+    var $originDtkTitle = $('#'+elId+' .pageContent').eq(0).find('.dtkName');
+    //设置每个分页的高度
     $formatPageContent.height(self.config.height + "mm");
-
+    //设置答题卡title
+    $formatDtkTitle.html($originDtkTitle.children('textarea').val());
     $originShortAnswer.each(function(index, el) {
       $(el)
         .children(".module")
