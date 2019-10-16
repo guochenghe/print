@@ -7,9 +7,6 @@ body{
 .printcontent{
     background: #fff;
 }
-.printcontent.hasBindingLine .pageContent:nth-child(1) .dtk-content{
-    padding-left: 18.52mm;
-}
 .printcontent.column2 .pageContent{
     width: 50%;
 }
@@ -37,9 +34,6 @@ body{
     margin: 0 auto;
     position: relative;
 }
-.printIframeContent.hasBindingLine .pageContent:nth-child(1) .dtk-content{
-    padding-left: 18.52mm;
-}
 .printIframeContent.column1 .pageContent{
     width: 100%;
 }
@@ -54,7 +48,7 @@ body{
     display: flex;
     height: 11.64mm;
     flex-direction: column;
-    bottom: 0.53mm;
+    bottom: 3.97mm;
     left: 50%;
     transform: translateX(-50%);
     color: #999;
@@ -74,7 +68,6 @@ body{
     border-bottom: 2.91mm solid #999;
     border-left: 11.11mm solid #999;
     border-right: 11.11mm solid #999;
-    color: #fff;
 }
 .pageContent .pageLabel .size .itemContent{
     position: absolute;
@@ -82,16 +75,17 @@ body{
     height: 5.82mm;
     left: -11.11mm;
     top: -2.91mm;
+    color: #fff;
 }
 .pageContent .bindingLine{
     position: absolute;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     top:0;
     left: 0;
     height: 100%;
     width: 13.23mm;
-    border-right: 0.26mm dashed #ddd;
+    border-right: 0.26mm dashed #666;
 }
 .pageContent .bindingLine .line{
     display: flex;
@@ -120,6 +114,7 @@ body{
 }
 .pageContent .bindingLine .examineeInfo .item em{
     width: 3.70mm;
+    font-size: 3.70mm;
     font-style: normal;
 }
 .pageContent .bindingLine .examineeInfo .item span{
@@ -128,7 +123,7 @@ body{
     border-right: 0.26mm solid #333;
 }
 .dtk-content{
-    padding: 13.23mm  5.29mm ;
+    padding: 13.23mm  15.88mm ;
 }
 .dtk-content .dtkName{
     display: flex;
@@ -183,13 +178,13 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    border-right: 0.26mm solid #333;
 }
 .dtk-content .noticeInfo .title strong{
     width: 9.26mm;
     line-height: 5.29mm;
     text-align: right;
     font-size: 3.17mm;
-    border-right: 0.26mm solid #333;
     
 }
 .dtk-content .noticeInfo .noticeDetail{
@@ -253,6 +248,17 @@ body{
 }
 .dtk-content .examNumber .numberCol span{
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dtk-content .examNumber .numberCol span i{
+    width: 3.97mm;
+    height: 3.97mm;
+    font-style: normal;
+    line-height: 3.97mm;
+    text-align: center;
+    font-size:3.17mm;
 }
 .dtk-content .examNumber .numberCol .first{
     height: 6.61mm;
@@ -461,6 +467,7 @@ body{
 }
 .scan-dot{
     position: absolute;
+    height: 5.29mm;
     top: 5.29mm;
     left: 5.29mm;
     width: calc(100% - 10.58mm);
@@ -470,9 +477,16 @@ body{
     bottom: 5.29mm ;
 }
 .scan-dot span{
+    position: absolute;
     width: 5.29mm ;
-    height: 0.00mm ;
-    border-top: 1.32mm solid #000;
+    height: 5.29mm;
+    left:0;
+    top:0;
+    background: #000;
+}
+.scan-dot span.right{
+    left: auto;
+    right:0;
 }
 /* 打印需要的样式 结束 */
 

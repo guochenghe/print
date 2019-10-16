@@ -1,4 +1,4 @@
-{
+var json = {
     "totalPage": 1,
     "pages": [
         {
@@ -36,15 +36,8 @@
                     "x": 71,
                     "y": 587,
                     "width": 120,
-                    "height": 80,
+                    "height": 40,
                     "type": 2
-                },
-                {
-                    "x": 81,
-                    "y": 227.9959399606298,
-                    "width": 72,
-                    "height": 15,
-                    "type": 4
                 }
             ],
             "studentcode": {
@@ -651,7 +644,7 @@
             "questions": [
                 {
                     "type": 0,
-                    "answer": "D",
+                    "answer": "C",
                     "score": {
                         "full": 5
                     },
@@ -726,87 +719,28 @@
                     ]
                 },
                 {
-                    "type": 0,
-                    "answer": "D",
+                    "type": 3,
                     "score": {
                         "full": 5
                     },
                     "id": "3",
-                    "opt": [
-                        {
-                            "x": 96,
-                            "y": 627,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "A"
-                        },
-                        {
-                            "x": 121,
-                            "y": 627,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "B"
-                        },
-                        {
-                            "x": 146,
-                            "y": 627,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "C"
-                        },
-                        {
-                            "x": 171,
-                            "y": 627,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "D"
-                        }
-                    ]
-                },
-                {
-                    "type": 0,
-                    "answer": "D",
-                    "score": {
-                        "full": 5
-                    },
-                    "id": "4",
-                    "opt": [
-                        {
-                            "x": 96,
-                            "y": 647,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "A"
-                        },
-                        {
-                            "x": 121,
-                            "y": 647,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "B"
-                        },
-                        {
-                            "x": 146,
-                            "y": 647,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "C"
-                        },
-                        {
-                            "x": 171,
-                            "y": 647,
-                            "width": 20,
-                            "height": 20,
-                            "optName": "D"
-                        }
-                    ]
+                    "cut": {
+                        "x": 71,
+                        "y": 679,
+                        "width": 642,
+                        "height": 40
+                    }
                 },
                 {
                     "type": 3,
                     "score": {
                         "full": 5
                     },
-                    "id": "5",
+                    "id": "4",
+                    //每行列数
+                    rowColumns:1,
+                    //分值格式  2/3/5 2/3/4/6 2/4
+                    scoreFormat:'2/3/5',
                     "cut": {
                         "x": 71,
                         "y": 719,
@@ -819,7 +753,7 @@
                     "score": {
                         "full": 5
                     },
-                    "id": "6",
+                    "id": "5",
                     "cut": {
                         "x": 71,
                         "y": 759,
@@ -832,7 +766,7 @@
                     "score": {
                         "full": 5
                     },
-                    "id": "7",
+                    "id": "6",
                     "cut": {
                         "x": 71,
                         "y": 799,
@@ -841,23 +775,39 @@
                     }
                 },
                 {
-                    "type": 1,
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "id": "7",
+                    "cut": {
+                        "x": 71,
+                        "y": 839,
+                        "width": 642,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
                     "id": "8",
                     "cut": {
-                        "x": 60,
-                        "y": 880,
-                        "width": 672,
-                        "height": 107,
-                        "cutid": "8",
-                        "linkparm": 0
+                        "x": 71,
+                        "y": 879,
+                        "width": 642,
+                        "height": 40
                     }
                 },
                 {
                     "type": 1,
                     "id": "9",
+                    //分值上限 16 29 49
+                    scoreLimit:16,
                     "cut": {
                         "x": 60,
-                        "y": 49.99593996062981,
+                        "y": 1202.515625,
                         "width": 672,
                         "height": 107,
                         "cutid": "9",
@@ -865,38 +815,16 @@
                     }
                 },
                 {
-                    "type": 2,
-                    "id": "10,11",
-                    "select": 1,
-                    "total": 2,
-                    "selectqts": [
-                        {
-                            "cut": {
-                                "x": 60,
-                                "y": 186.9959399606298,
-                                "width": 672,
-                                "height": 124,
-                                "cutid": "10",
-                                "linkparm": 0
-                            },
-                            "opt": [
-                                {
-                                    "optName": "10",
-                                    "width": 16,
-                                    "height": 17,
-                                    "x": 81,
-                                    "y": 227.9959399606298
-                                },
-                                {
-                                    "optName": "11",
-                                    "width": 16,
-                                    "height": 17,
-                                    "x": 116.875,
-                                    "y": 227.9959399606298
-                                }
-                            ]
-                        }
-                    ]
+                    "type": 1,
+                    "id": "10",
+                    "cut": {
+                        "x": 60,
+                        "y": 1309.515625,
+                        "width": 672,
+                        "height": 107,
+                        "cutid": "10",
+                        "linkparm": 0
+                    }
                 }
             ]
         }

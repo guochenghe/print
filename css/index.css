@@ -7,9 +7,6 @@ body{
 .printcontent{
     background: #fff;
 }
-.printcontent.hasBindingLine .pageContent:nth-child(1) .dtk-content{
-    padding-left: 70px;
-}
 .printcontent.column2 .pageContent{
     width: 50%;
 }
@@ -37,9 +34,6 @@ body{
     margin: 0 auto;
     position: relative;
 }
-.printIframeContent.hasBindingLine .pageContent:nth-child(1) .dtk-content{
-    padding-left: 70px;
-}
 .printIframeContent.column1 .pageContent{
     width: 100%;
 }
@@ -54,7 +48,7 @@ body{
     display: flex;
     height: 44px;
     flex-direction: column;
-    bottom: 2px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     color: #999;
@@ -74,7 +68,6 @@ body{
     border-bottom: 11px solid #999;
     border-left: 42px solid #999;
     border-right: 42px solid #999;
-    color: #fff;
 }
 .pageContent .pageLabel .size .itemContent{
     position: absolute;
@@ -82,16 +75,17 @@ body{
     height: 22px;
     left: -42px;
     top: -11px;
+    color: #fff;
 }
 .pageContent .bindingLine{
     position: absolute;
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     top:0;
     left: 0;
     height: 100%;
     width: 50px;
-    border-right: 1px dashed #ddd;
+    border-right: 1px dashed #666;
 }
 .pageContent .bindingLine .line{
     display: flex;
@@ -120,6 +114,7 @@ body{
 }
 .pageContent .bindingLine .examineeInfo .item em{
     width: 14px;
+    font-size: 14px;
     font-style: normal;
 }
 .pageContent .bindingLine .examineeInfo .item span{
@@ -128,7 +123,7 @@ body{
     border-right: 1px solid #333;
 }
 .dtk-content{
-    padding: 50px  20px ;
+    padding: 50px  60px ;
 }
 .dtk-content .dtkName{
     display: flex;
@@ -183,13 +178,13 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    border-right: 1px solid #333;
 }
 .dtk-content .noticeInfo .title strong{
     width: 35px;
     line-height: 20px;
     text-align: right;
     font-size: 12px;
-    border-right: 1px solid #333;
     
 }
 .dtk-content .noticeInfo .noticeDetail{
@@ -253,6 +248,17 @@ body{
 }
 .dtk-content .examNumber .numberCol span{
     flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dtk-content .examNumber .numberCol span i{
+    width: 15px;
+    height: 15px;
+    font-style: normal;
+    line-height: 15px;
+    text-align: center;
+    font-size:12px;
 }
 .dtk-content .examNumber .numberCol .first{
     height: 25px;
@@ -283,8 +289,7 @@ body{
 }
 .dtk-content .short-answer .module .selTopic{
     height: 15px;
-    display: flex;
-    justify-content: flex-start;
+    display: inline-block;
 }
 .dtk-content .short-answer .module .selTopic span{
     width: 40px;
@@ -461,6 +466,7 @@ body{
 }
 .scan-dot{
     position: absolute;
+    height: 20px;
     top: 20px;
     left: 20px;
     width: calc(100% - 40px);
@@ -470,9 +476,16 @@ body{
     bottom: 20px ;
 }
 .scan-dot span{
+    position: absolute;
     width: 20px ;
-    height: 0px ;
-    border-top: 5px solid #000;
+    height: 20px;
+    left:0;
+    top:0;
+    background: #000;
+}
+.scan-dot span.right{
+    left: auto;
+    right:0;
 }
 /* 打印需要的样式 结束 */
 

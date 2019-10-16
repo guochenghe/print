@@ -1,187 +1,90 @@
+
+//类型 1 单选 2多选 11不定项选择 5 填空 7 解答 17 选做
 {
-    "pageNo":1,
-    "location": [
+    "object": [
         {
-            "x": 5292,
-            "y": 5292,
-            "width": 5291.666666666667,
-            "height": 1322.9166666666667
-        },
-        {
-            "x": 198438,
-            "y": 5292,
-            "width": 5291.666666666667,
-            "height": 1322.9166666666667
-        }
-    ],
-    "imge": {
-        "width": 420000,
-        "height": 297000
-    },
-    "questions": [
-        {
-            "type": 0,
-            "id": "1",
-            "score":{
-                "full":5,
-                "halffull":3,
-                "marktype":1
-            },
-            "opt": [
+            "wpCode": "500194036006526976",
+            //总分
+            "fullScore": 73,
+            //试卷名称
+            "paperName": "20191012_6锟斤拷元锟斤拷锟斤拷",
+            //命卷人
+            "wpAuthor": "锟斤拷学锟斤拷师",
+            //时间
+            "wpTimes": 120,
+            "questions": [
                 {
-                    "x": 14817,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "A"
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "1",
+                    "answer": "D"
                 },
                 {
-                    "x": 21431,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "B"
+                    //类型 1 单选 5填空 7解答 17选做
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "2",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "3",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "4",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "5"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "6"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "7"
+                },
+                {
+                    "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "8"
+                },
+                {
+                    "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "7"
+                },
+                {
+                    "questionTypeId": 17,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "8"
+                },
+                {
+                    "questionTypeId": 17,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "9"
                 }
             ]
-        },
-       {
-            "type": 1,
-            "id": "1",
-            "score":{
-                "full":5,
-                "halffull":3,
-                "marktype":1
-            },
-            "opt": [
-                {
-                    "x": 14817,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "A"
-                },
-                {
-                    "x": 21431,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "B"
-                }
-            ]
-        },
-        {
-            "type": 2,
-            "id": "5",
-            "score":{
-                "region":{
-                     "x": 5292,
-                     "y": 110596,
-                     "width": 198966.66666666663,
-                     "height": 19843.75
-                },
-                "full":10,
-                "mark":
-                 [
-                   {"scoremark":1},
-                   {"scoremark":2},
-                   {"scoremark":3}
-                ]
-            },
-            "cut": {
-                "x": 5292,
-                "y": 110596,
-                "width": 198966.66666666663,
-                "height": 19843.75,
-                "linkparm":0
-            }
-        },
-        {
-            "type": 3,
-            "id": "6",
-             "score":{
-                "region":{
-                     "x": 5292,
-                     "y": 110596,
-                     "width": 198966.66666666663,
-                     "height": 19843.75
-                },
-                "full":10,
-                "mark":
-                 [
-                   {"scoremark":1},
-                   {"scoremark":2},
-                   {"scoremark":3}]
-            },
-            "cut": {
-                "x": 5292,
-                "y": 138906,
-                "width": 198966.66666666663,
-                "height": 128852.08333333333,
-                "linkparm":0
-            }
-        },
-        {
-            "type": 4,
-            "id": "6,7,8,9",
-            "select":2,
-            "total":4, 
-            "opt": [
-                {
-                    "x": 14817,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "6"
-                },
-                {
-                    "x": 21431,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "7"
-                },
-                {
-                    "x": 21431,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "8"
-                },
-                {
-                    "x": 21431,
-                    "y": 54240,
-                    "width": 5291.666666666667,
-                    "height": 5291.666666666667,
-                    "optName": "9"
-                }
-            ],
-             "score":{
-                "region":{
-                     "x": 5292,
-                     "y": 110596,
-                     "width": 198966.66666666663,
-                     "height": 19843.75
-                },
-                "full":10,
-                "mark":
-                 [
-                   {"scoremark":1},
-                   {"scoremark":2},
-                   {"scoremark":3}]
-            },
-            "cut":[{
-                "x": 5292,
-                "y": 138906,
-                "width": 198966.66666666663,
-                "height": 128852.08333333333,
-                "linkparm":0},
-                 {
-                "x": 5292,
-                "y": 138906,
-                "width": 198966.66666666663,
-                "height": 128852.08333333333,
-                "linkparm":0}
-             ]
         }
     ]
 }

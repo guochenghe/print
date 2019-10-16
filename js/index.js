@@ -10,9 +10,10 @@ var sizeConfig = {
     width: 210,
     height: 297
   }
-};
+}
 
 var hgc_modal = {
+  
   tpl:
     '<div class="hgc_modalBox">\
 			<div class="hgc_modal">\
@@ -57,23 +58,167 @@ var hgc_modal = {
       self.$modalBox.remove();
     });
   }
-};
+}
+var renderHGCJSON = 
+//类型 1 单选 2多选 11不定项选择 5 填空 7 解答 17 选做
+{
+    "object": [
+        {
+            "wpCode": "500194036006526976",
+            //总分
+            "fullScore": 73,
+            //试卷名称
+            "paperName": "20191012_6锟斤拷元锟斤拷锟斤拷",
+            //命卷人
+            "wpAuthor": "锟斤拷学锟斤拷师",
+            //时间
+            "wpTimes": 120,
+            "questions": [
+                {
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "1",
+                    "answer": "D"
+                },
+                {
+                    //类型 1 单选 5填空 7解答 17选做
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "2",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "3",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 1,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "4",
+                    "answer": "D"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "5"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "6"
+                },
+                {
+                    "questionTypeId": 5,
+                    "fullScore": 5,
+                    "optionCount": 4,
+                    "questionNum": "7"
+                },
+                {
+                  "questionTypeId": 5,
+                  "fullScore": 5,
+                  "optionCount": 4,
+                  "questionNum": "8"
+              },
+              {
+                "questionTypeId": 5,
+                "fullScore": 5,
+                "optionCount": 4,
+                "questionNum": "9"
+            },
+            {
+              "questionTypeId": 5,
+              "fullScore": 5,
+              "optionCount": 4,
+              "questionNum": "10"
+          },
+          {
+            "questionTypeId": 5,
+            "fullScore": 5,
+            "optionCount": 4,
+            "questionNum": "11"
+        },
+        {
+          "questionTypeId": 5,
+          "fullScore": 5,
+          "optionCount": 4,
+          "questionNum": "12"
+      },
+      {
+        "questionTypeId": 5,
+        "fullScore": 5,
+        "optionCount": 4,
+        "questionNum": "13"
+    },
+                {
+                    "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "14"
+                },
+                {
+                    "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "15"
+                },
+                {
+                    "questionTypeId": 17,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "16"
+                },
+                {
+                    "questionTypeId": 17,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "17"
+                }
+            ]
+        }
+    ]
+}
 /**
  * 定位点的设置
  * top定位点都是基于当前page来定位的
  * left
- *
  */
 /**
  * 打印功能主体
  */
+//保存额外数据
+var json = {
+  //注意事项
+  notice:'',
+  //填空题的分值格式 每行列数
+  scoreFormat:'',
+  //每行列数
+  rowColumns:2,
+  //解答题分值格式
+}
+var loginStatus = '/username/3852001/time/1548051379/sig/ce68cbe3faa0d617ba101729f102a093/sessionid/session_39243c50e98678c0266e2a442766e47f';
+var domain = 'http://zsyas2.testing.xueping.com';
+var localDomain = 'http://192.168.1.51/index.php';
 var Print = {
+  apis:{
+    //获取答题卡信息
+    getTopicsDetailAPi:'/print/getPaperWithTopicsDetails',
+    //保存答题卡信息
+    saveTopicsDetailsApi:'/print/saveCardOnline'
+  },
   init: function(config) {
+    
     this.modal = hgc_modal;
     this.config = config.A4;
     //分栏
     this.columns = 1;
-
     //页面页码计算
     //当前分页
     this.currentPage = 1;
@@ -87,100 +232,30 @@ var Print = {
     this.hasBindingLine = true;
     //初始化页面数据
     //核心功能模块盒模型设计
-    this.modulePaddingTop = 51;
+    this.modulePaddingSide = 20;
+    this.modulePaddingTop = 41;
     this.modulePaddingBottom = 11;
     this.modulePadding = this.modulePaddingTop + this.modulePaddingBottom;
     this.pagePadding = 50;
+    this.layoutPadding = 20;
     //用于页面 mm 和 px 之间单位转换
+    //96dpi 打印出来300dpi纸张上面的的比例
+    this.dpiRadio = 1;
     this.unitConversion = new UnitConversion();
     this.pageHeight = this.unitConversion.mmConversionPx(this.config.height);
     this.pageWidth = this.unitConversion.mmConversionPx(this.config.width);
+
     //富文本编辑 ==>> 全局富文本编辑构造函数
     this.EDITOR = window.wangEditor;
+
+    //全局groupId 
+    this.examGroupId = GetQueryString('examGroupId');
     //初始化页面渲染
     this.initPage();
     //初始化打印面积
     this.initPrintContentArea();
-
-    this.initDom();
-
-    this.bindEvent();
-
-    this.initEvent();
   },
-  tpls: {
-    printPageStyle:
-      '<style id="pageSizeStyle">\
-			.printcontent{width:{pageWidth}px;}\
-			.pageContent{height:{pageHeight}px;}\
-		</style>',
-    pageModuleTpl:
-      '<div class="pageContent" style="page-break-after:always;">\
-                    <div class="scan-dot">\
-                        <span data-option="tl" class="fl tl"></span>\
-                        <span data-option="tr" class="fr tr"></span>\
-                    </div>\
-                    <div class="dtk-content">{subjectModule}</div>\
-                    <div class="scan-dot bot">\
-                        <span data-option="bl" class="fl bl"></span>\
-                        <span data-option="br" class="fr br"></span>\
-                    </div>\
-                    <div class="pageLabel">\
-                      <div class="number item">第{currentPage}页 共<b class="totalPage">{totalPage}</b>页</div>\
-                      <div class="size item">\
-                        <div class="itemContent">\
-                          第{currentPaper}纸张页面<b class="currentPaperPage">{currentPaperPage}</b>\
-                      </div>\
-                      </div>\
-                  </div>\
-                </div>',
-    //大题
-    answerModuleTpl:
-      '<div class="short-answer answerModule">\
-                            {editModule}\
-                        </div>',
-    moduleTitleTpl: "<h3>{title}</h3>",
-    moduleTpl:
-      '<div class="module" data-editorIndex="{moduleIndex}">{moduleHtml}</div>',
-    //小题
-    overModuleTpl:
-      '<div class="module pdt10" isSurplus data-editorIndex="{overIndex}"><div class="dragBtn"></div><div class="delBtn"></div>\
-        <div id="toolbar{overIndex}" class="toolbar"></div>\
-        <div id="editorContent{overIndex}" class="editorContent">\
-        </div></div>',
-    //打印的模版
-    printIframeContentTpl:
-      '<div class="printIframeContent column{columns} {bindingLine}" style="width:{widthMm}mm;">{printHtml}</div>',
-    //填空题设置选项
-    fillInBlankOptionTpl:
-      '<div class="formItem">\
-				<em>每行列数：</em>\
-				<select id="fillInBlankColumn">\
-					<option value="1">1</option>\
-					<option value="2">2</option>\
-					<option value="3">3</option>\
-				</select>\
-			</div>\
-			<div class="formItem">\
-				<em>分值格式：</em>\
-				<select id="scoreStyle">\
-					<option value="">自定义分值</option>\
-					<option value="2/3/5">2/3/5</option>\
-					<option value="2/3/4/6">2/3/4/6</option>\
-					<option value="2/4">2/4</option>\
-				</select>\
-			</div>',
-    //解答题设置选项
-    shortAnswerOptionTpl:
-      '<div class="formItem">\
-			<em>分值上限：</em>\
-			<select id="scoreLimit">\
-				<option value="16">16分</option>\
-				<option value="29">29分</option>\
-				<option value="49">49分</option>\
-			</select>\
-		</div>'
-  },
+  tpls: PRINT_TPL,
   // 初始化打印区域宽高 mm 转 px
   initPrintContentArea: function() {
     var self = this;
@@ -197,12 +272,190 @@ var Print = {
   },
   //render page
   initPage: function() {
+    var self = this;
     $("#hgc_print").height($(window).height());
-    //新建简答题
-    this.createShortAnswer(2);
-    this.createShortAnswer(3);
-    this.createShortAnswer(4);
-    this.createShortAnswer(5);
+    self.getTopicDetails()
+  },
+  getTopicDetails:function(){
+    var self = this;
+    $.post(domain+self.apis.getTopicsDetailAPi+loginStatus,{examGroupId:self.examGroupId},function(res){
+      res = JSON.parse(res);
+      if(res.success){
+        //如果之前保存过，则需要记忆之前的答题卡排版
+        self.renderPage(renderHGCJSON)
+        if(res.position){
+          self.memoryLayout(JSON.parse(res.position));
+          return;
+        }
+      }else{
+        self.modal.init({
+          content:'获取试卷题目信息失败'
+        })
+      }
+    })
+  },
+  memoryLayout:function(res){
+    var self = this;
+
+
+
+  },
+  renderPage:function(renderJSON){
+    var self = this;
+    self.renderExamBaseInfo(renderJSON.object[0]);
+
+    self.renderSubjectInfo(renderJSON.object[0].questions);
+
+    self.initDom();
+
+    self.bindEvent();
+
+    self.initEvent();
+  },
+  //渲染答题卡基本信息 名称、考试时间、等
+  renderExamBaseInfo:function(examInfo){
+    var self = this;
+    $('#dtkName textarea').val(examInfo.paperName)
+    var examInfoHtml = self.tpls.examInfoTpl.substitute(examInfo);
+    $('#examInfo').html(examInfoHtml);
+  },
+  //渲染答题卡题目题型信息
+  renderSubjectInfo:function(questions){
+    var self = this;
+    //题型
+    /**
+     * "questionTypeId": 1,
+        "fullScore": 5,
+        "optionCount": 4,
+        "questionNum": "1",
+        "answer": "D"
+     */
+    //类型 1 单选 5 填空 7 解答 17 选做
+    // 先做题型分类
+    var questFieldMap = {
+      1:'singleSelect',
+      5:'fillInBlank',
+      7:'shortAnswer',
+      17:'chooseAnswer'
+    }
+    var questionClassify = questions.reduce(function(questionMap,item){
+      var questionMapItem = questionMap[questFieldMap[item.questionTypeId]];
+      if(questionMapItem){
+        questionMapItem.push(item)
+      }else{
+        questionMap[questFieldMap[item.questionTypeId]] = [item]
+      }
+
+      return questionMap;
+    },{
+      singleSelect:[],
+      fillInBlank:[],
+      shortAnswer:[],
+      chooseAnswer:[]
+    })
+
+    console.log(questionClassify)
+
+    //保存题目定位点的时候 获取 题目数量 分数 等信息
+    self.getSaveSubjectInfo(questionClassify);
+    var dtkContentEl = $('.dtk-content');
+    for(var subjectType in questionClassify){
+      if(!questionClassify[subjectType].length)return;
+      self[subjectType+'Render'](questionClassify[subjectType],dtkContentEl);
+    }
+  },
+  singleSelectRender:function(datas,appendEl){
+    var self = this;
+    var singleSelectTpl = self.tpls.singleSelectOptionTpl;
+    var singleSelectHtml = '';
+    datas.forEach(function(singleItem,index){
+      var singleContent = '';
+      for(var i=0;i<singleItem.optionCount;i++){
+        var option = String.fromCharCode(65+i);
+        singleContent+='<span data-option="{option}">[{option}]</span>'.substitute({option:option});
+      }
+      singleSelectHtml+=singleSelectTpl.substitute({
+        _index:++index,
+        singleContent:singleContent,
+        questionNum:singleItem.questionNum,
+        answer:singleItem.answer
+      })
+    })
+
+    var SingleSelectModuleHtml  = self.tpls.singleSelectTpl.substitute({
+      singleSelectContent:singleSelectHtml
+    })
+    appendEl.append(SingleSelectModuleHtml)
+  },
+  fillInBlankRender:function(datas,appendEl){
+    var self = this;
+    var fillInBlankTpl = self.tpls.fillInBlankItemTpl;
+    var fillInBlankHtml = '';
+    datas.forEach(function(fillInBlankItem){
+      fillInBlankHtml+=fillInBlankTpl.substitute(fillInBlankItem);
+    })
+
+    var fillInBlankModuleHtml = self.tpls.fillInBlankTpl.substitute({
+      fillInBlankContent:fillInBlankHtml
+    })
+    appendEl.append(fillInBlankModuleHtml);
+  },
+  shortAnswerRender:function(datas,appendEl){
+    var self = this;
+    var shortAnswerTpl = self.tpls.shortAnswerItemTpl
+    var shortAnswerHtml = '';
+    datas.forEach(function(shortAnswerItem){
+      var scoreColumnHtml = ''
+      for(var i=1;i<=16;i++){
+        scoreColumnHtml+='<span>'+i+'</span>';
+      }
+      shortAnswerItem.scoreColumnHtml = scoreColumnHtml;
+      shortAnswerHtml+=shortAnswerTpl.substitute(shortAnswerItem)
+    })
+
+    var shortAnswerModuleHtml = self.tpls.shortAnswerTpl.substitute({
+      shortAnswerContent:shortAnswerHtml
+    });
+    appendEl.append(shortAnswerModuleHtml)
+    //初始化解答题富文本插件
+    datas.forEach(function(item){
+      self.createShortAnswer(item.questionNum);
+    })
+  },
+  chooseAnswerRender:function(datas,appendEl){
+    var self = this;
+    var chooseAnswerTpl = self.tpls.chooseAnswerItemTpl;
+    var startChooseNumber = 0;
+    var titleNumber = '';
+    var selOptionHtml = '';
+    datas.forEach(function(item,index){
+      if(!startChooseNumber)startChooseNumber = item.questionNum;
+      titleNumber+=item.questionNum+',';
+      selOptionHtml+='<span data-titleNumber="{titleNumber}" data-option="[{char}]">[{char}]</span>'.substitute({
+        char:String.fromCharCode(65+index),
+        titleNumber:item.questionNum
+      })
+    })
+    var scoreColumnHtml = ''
+    for(var i=1;i<=16;i++){
+      scoreColumnHtml+='<span>'+i+'</span>';
+    }
+
+    chooseAnswerHtml = chooseAnswerTpl.substitute({
+      questionNum:startChooseNumber,
+      //4,5,6,
+      titleNumber:titleNumber.substring(0,titleNumber.length-1),
+      selOptionHtml:selOptionHtml,
+      scoreColumnHtml:scoreColumnHtml
+    })
+
+    var chooseAnswerModuleHtml = self.tpls.chooseAnswerTpl.substitute({
+      chooseAnswerContent:chooseAnswerHtml
+    })
+    appendEl.append(chooseAnswerModuleHtml)
+
+    self.createShortAnswer(startChooseNumber);
+   
   },
   initDom: function() {
     var self = this;
@@ -210,11 +463,12 @@ var Print = {
   },
   initEvent:function(){
     var self = this;
-    //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
-    $('.selOptions input[name="paper"]').eq(0).prop('checked',true);
-    $('.selOptions input[name="hasBinding"]').eq(0).prop('checked',true);
-    $('.selOptions input:gt(3)').prop('checked',true);
-
+    var paperA3Option = $('.selOptions input[name="paper"]').eq(0);
+    var paperHasBindingOption = $('.selOptions input[name="hasBinding"]').eq(0);
+    var examStyleOption = $('.selOptions input[name="studentCode"]').eq(1); //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
+    paperA3Option.prop('checked',true).change();
+    paperHasBindingOption.prop('checked',true).change();
+    examStyleOption.prop('checked',true).change();
   },
   bindEvent: function() {
     var self = this;
@@ -234,7 +488,6 @@ var Print = {
       var curDtkModelEl = null;
       var curDtkModelOffsetTop = 0;
       self.curDtkModelEl = curDtkModelEl = curPageEl.find(".module").eq(0);
-
       self.changePrintArea(curPageEl);
 
       $("#printcontent").on("mousedown", ".short-answer .dragBtn", function(e) {
@@ -290,13 +543,18 @@ var Print = {
       var $this = $(this);
       self.delPageOverPart($this);
     });
-
+    //预览
     $("#previewBtn").click(function() {
       self.previewPrintDiv("printcontent");
     });
-    $("#printBtn").click(function() {
-      self.printdiv("printcontent");
+    //保存
+    $("#saveBtn").click(function() {
+      self.savePrintPosition('printcontent');
     });
+    //下载pdf
+    $('#downLoadBtn').click(function(){
+      self.downLoadPdf('printcontent');
+    })
     //答题卡布局
     self.$layoutItem.click(function() {
       var column = +$(this).attr("data-column");
@@ -342,19 +600,20 @@ var Print = {
     var fillInBlankCol = $this.siblings(".subjectCol");
     var scorePartEl = fillInBlankCol.find(".subjectItem strong");
 
-    function rendScore(score) {
-      return "<i>" + score + "</i>";
-    }
     self.modal.init({
       title: "填空题设置",
       content: self.tpls.fillInBlankOptionTpl,
       sureCb: function() {
+        function rendScore(score) {
+          return "<i>" + score + "</i>";
+        }
+        //每行列数
         var column = $("#fillInBlankColumn").val();
-        var scoreStyle = $("#scoreStyle")
-          .val()
-          .split("/");
+        //分值格式
+        var scoreStyle = $("#scoreStyle").val();
+
         var scoreHtml = "";
-        scoreStyle.forEach(function(score) {
+        scoreStyle.split("/").forEach(function(score) {
           scoreHtml += rendScore(score);
         });
         scorePartEl.html(scoreHtml);
@@ -443,12 +702,9 @@ var Print = {
     var value = $this.attr("data-value");
     var $ticketNumber = $("#hgc_examNumber .ticketNumber");
     var $barCode = $("#hgc_examNumber .barCode");
-    var isSel = $this.prop("checked");
-    if (value === "examNumber") {
-      $ticketNumber[isSel ? "show" : "hide"]();
-    } else {
-      $barCode[isSel ? "show" : "hide"]();
-    }
+    var isBarCode = value === 'barCode';
+    $ticketNumber[isBarCode ? "show" : "hide"]();
+    $barCode[!isBarCode ? "show" : "hide"]();
   },
   //删除一个分页超出的部分
   delPageOverPart: function($delBtn) {
@@ -469,6 +725,10 @@ var Print = {
     );
     prevPageLastModule.append('<div class="dragBtn"></div>');
     delModel.remove();
+    //判断上一个模块是否是第一个链接模块
+    if(prevPageLastModule.attr('data-linkparm') === '1'){
+      prevPageLastModule.removeAttr('data-linkparm');
+    }
     if (!answerModel.children(".module").length) answerModel.remove();
   },
   /**
@@ -481,13 +741,14 @@ var Print = {
     //当前第几页，用做后面计算的高度距离的倍数
     var times = curPageEl.index() + 1;
     //判断超出当前页面的条件
-    var overHeight = (self.pageHeight - self.pagePadding * 2) * times;
+    var overHeight = self.pageHeight * times + self.layoutPadding - self.pagePadding;
     //判断当前区域是否超出
     function isOver(el) {
-      return (
-        $(el).height() + $(el).offset().top + $("#contentWrap").scrollTop() >=
-        overHeight
-      );
+      var moduleTop = $(el).outerHeight() + $(el).offset().top + $("#contentWrap").scrollTop();
+      return {
+        isOver:moduleTop >= overHeight,
+        overDistance:moduleTop - overHeight
+      };
     }
     /**
      * 1 判断当前页面里面的答题区域内容是否超过了当前页面所能承受的内容的高度
@@ -505,17 +766,22 @@ var Print = {
         var shortAnswerItem = shortAnswerEl.eq(i);
         //找到第一个超过当前页面的元素，把这个以及以后的模块提取出来在下一个版面进行重新排版
         //得到第一个大题的index  第一个大题下面小题的index
-        if (isOver(shortAnswerItem)) {
-          var moduleEl = $(shortAnswerItem).children(".module");
+        if (isOver(shortAnswerItem).isOver) {
+          var moduleEl = $(shortAnswerItem).children('.module');
           for (var m = 0, mlen = moduleEl.length; m < mlen; m++) {
             var moduleItem = moduleEl.eq(m);
-            if (isOver(moduleItem)) {
+            var moduleIsOver = isOver(moduleItem);
+            if (moduleIsOver.isOver) {
               overPart = {
                 curPage: curPageEl,
+                //当前超出的answerModule
                 answerModule: shortAnswerItem,
-                subjectModule: moduleItem
+                //当前超出的module
+                subjectModule: moduleItem,
+                //超出module 模块的具体超出高度
+                subjectModuleOverDistance:moduleIsOver.overDistance
               };
-              break;
+              return overPart;
             }
           }
         }
@@ -542,6 +808,7 @@ var Print = {
   },
   addPrintArea: function(curPageEl, overPart) {
     var self = this;
+    console.log(overPart.subjectModule)
     var curPageIndex = curPageEl.index();
     var times = curPageIndex + 1;
     var part = overPart.subjectModule;
@@ -552,6 +819,7 @@ var Print = {
     var newPage = "";
     //判断是否是当前模块超出
     var isCurModule = part[0] === self.curDtkModelEl[0];
+    
     //通过缩放确定每个页面需要移除的元素
     var removeElements = [];
 
@@ -560,19 +828,35 @@ var Print = {
     if(nextPageEl.length){
       var nextPageFirstModule = nextPageEl.find(".module").eq(0);
       if (typeof nextPageFirstModule.attr("isSurplus") === "string") {
-        nextPageFirstModule.children(".delBtn").trigger("click");
+        nextPageFirstModule.children(".delBtn").trigger("click"); 
       }
     }
 
     while (part.length) {
+      
       /**
        * 如果是当前缩放的模块超出，直接在下一模块新建当前模块的子模块，
        * 如果不是，则直接拷贝超出模块所有内容到下一页
        */
-      //part !== overPart.subjectModule ||
       //当前缩放的模块没有超出规定区域 则超出的所有模块全局复制
+      var moduleIndex = part.attr("data-editorIndex");
+      var titleNumber = part.attr('title-number');
+
+      //如果是填空题超出则不是这样的处理逻辑了
+      //判断是否填空题超出
+      var isFillInBlankOver = part.children('.subjectCol').length;
+      if(isFillInBlankOver){
+        var fillInBlankItemHeight = part.children('.subjectCol').children('.subjectItem').eq(0).height();
+        //新页面需要为填空题空出的高度
+        var newPageFillInBlankAreaHeight = Math.ceil(overPart.subjectModuleOverDistance/fillInBlankItemHeight);
+
+        console.log(overPart.subjectModuleOverDistance)
+      }else{
+        
+      }
+      //overPart.subjectModule 第一个超出当前分页的模块
       if (part !== overPart.subjectModule || !isCurModule) {
-        var moduleIndex = part.attr("data-editorIndex");
+          
         var moduleTitle = "";
         var modulePrev = part.prev();
         var hasTitle = modulePrev.length && modulePrev[0].tagName === "H3";
@@ -585,31 +869,56 @@ var Print = {
           moduleTitle +
           self.tpls.moduleTpl.substitute({
             moduleIndex: moduleIndex,
-            moduleHtml: part.html()
+            moduleHtml: part.html(),
+            titleNumber:titleNumber
           });
         removeElements.push(part);
         //part.remove();
         hasTitle && removeElements.push(modulePrev);
       } else {
+        
+        //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
+        ++self.editorIndex;
+        var linkparm = 1;
+        var cutId = self.editorIndex;
+        //如果该模块是首次超出 则直接从1开始计数，否则从当前位置开始计数
+        if(!part.attr('data-linkparm')){
+          part.attr({
+            'data-cutId':self.editorIndex,
+            'data-linkparm':linkparm
+          })
+          linkparm++;
+        }else{
+          linkparm = +part.attr('data-linkparm');
+          cutId = +part.attr('data-cutId');
+          linkparm++;
+        }
+        
         subjectHtml += self.tpls.overModuleTpl.substitute({
-          overIndex: ++self.editorIndex
+          overIndex:self.editorIndex,
+          cutId:cutId,
+          linkparm:linkparm,
+          titleNumber:titleNumber
         });
 
         removeElements.push(part.children(".dragBtn"));
       }
+      
       part = part.next();
     }
 
     //超出模块
     overAnswerHtml = self.tpls.answerModuleTpl.substitute({
-      editModule: subjectHtml
+      editModule: subjectHtml,
+      moduleType:overPart.answerModule.attr('data-type')
     });
 
     //判断超出简答题区域
     var overAnswerModule = overPart.answerModule.next();
     while (overAnswerModule.length) {
       overAnswerHtml += self.tpls.answerModuleTpl.substitute({
-        editModule: overAnswerModule.html()
+        editModule: overAnswerModule.html(),
+        moduleType:overAnswerModule.attr('data-type')
       });
       if (overAnswerModule !== overPart.answerModule) {
         removeElements.push(overAnswerModule);
@@ -704,23 +1013,25 @@ var Print = {
               var hasTitle =
                 modulePrev.length && modulePrev[0].tagName === "H3";
               var moduleIndex = firstModule.attr("data-editorIndex");
+              var titleNumber = firstModule.attr('title-number')
+              var moduleType = firstAnswer.attr('data-type')
               var cloneHtml = "";
               //如果没有标题 则认为是 上一页最后一大题的一个小题
               var moduleHtml = self.tpls.moduleTpl.substitute({
                 moduleIndex: moduleIndex,
+                titleNumber:titleNumber,
                 moduleHtml: firstModule.html()
               });
               if (hasTitle) {
                 //如果包含title 必须满足上一页面剩余的高度大于 当前页面第一个模块的高度加上模块对应title的高度
-                if (surplusHeight <= firstModuleHeight + modulePrev.height())
-                  return;
-                var editModuleHtml =
-                  self.tpls.moduleTitleTpl.substitute({
+                if (surplusHeight <= firstModuleHeight + modulePrev.height()) return;
+                var editModuleHtml = self.tpls.moduleTitleTpl.substitute({
                     title: modulePrev.html()
                   }) + moduleHtml;
 
                 cloneHtml = self.tpls.answerModuleTpl.substitute({
-                  editModule: editModuleHtml
+                  editModule: editModuleHtml,
+                  moduleType:moduleType
                 });
 
                 curPageEl.children(".dtk-content").append(cloneHtml);
@@ -748,8 +1059,8 @@ var Print = {
   //创建作答区域模块
   createShortAnswer: function(editorIndex) {
     var self = this;
-
     //this.createShortAnswer("#toolbar2", "#editorContent2", 2);
+    console.log(editorIndex)
     var editor = new self.EDITOR(
       "#toolbar" + editorIndex,
       "#editorContent" + editorIndex
@@ -766,10 +1077,117 @@ var Print = {
     localStorage.setItem("previewHtml", priviewHtml);
     window.open("./preview.html");
   },
-  printdiv: function(printPart) {
+  //保存题目坐标信息
+  //保存的时候传点坐标和原图
+    /**
+   * 
+    timu:{"KeGuanTi":5,"TianKongTi":10,"ZhuGuanTi":1,"XuanZuoTi":0}
+    sheet_answer:{"1":"A","2":"A","3":"A","4":"A","5":"A"}
+    sheet_score:{"1":"2","2":"2","3":"2","4":"2","5":"2","6":"2","7":"3","8":"4","9":"5","10":"6","11":"6","12":"7","13":"8","14":"9","15":"10","16":"20"}
+    title:22
+    exam_id:17464269385543527633
+    position
+    imgFiles:[fileobj,fileobj]
+   */
+  //保存题目定位点的时候 获取 题目数量 分数 等信息
+  getSaveSubjectInfo:function(questionClassify){
+    var self = this;
+    var title = $('#dtkName textarea').val()
+    //数量
+    var timu = {
+      KeGuanTi:questionClassify.singleSelect.length,
+      TianKongTi:questionClassify.fillInBlank.length,
+      ZhuGuanTi:questionClassify.shortAnswer.length,
+      XuanZuoTi:questionClassify.chooseAnswer.length
+    };
+    //选择题答案
+    var sheet_answer = {};
+    questionClassify.singleSelect.forEach(function(item){
+      sheet_answer[item.questionNum] = item.answer;
+    })
+    //每题对应分数
+    var sheet_score = {}
+    for(var subjectType in questionClassify){
+      questionClassify[subjectType].forEach(function(subjectItem){
+        sheet_score[subjectItem.questionNum] = subjectItem.fullScore;
+      })
+    }
+
+    self.savePrintInfo = {
+      title:title,
+      timu:timu,
+      sheet_answer:sheet_answer,
+      sheet_score:sheet_score
+    }
+
+  },
+  savePrintPosition:function(printPart){
+    var self = this;
+    var position = self.getPositions();
+    var printHtml = self.formatPrintHtml(printPart);
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("id", "print-iframe");
+    document.body.appendChild(iframe);
+    var doc = iframe.contentWindow.document;
+    doc.write('<link rel="stylesheet" type="text/css" href="./css/print.css">');
+    doc.write(printHtml);
+    doc.close();
+    iframe.contentWindow.focus();
+    iframe.contentWindow.onload = function() {
+      var pages = doc.getElementsByClassName("printIframeContent");
+      var html2canvasPromise = [];
+      //html2canvas 返回的是一个promise
+      [].slice.call(pages).forEach(function(pageItem){
+        html2canvasPromise.push(html2canvas(pageItem));
+      });
+      Promise.all(html2canvasPromise).then(function(res){
+        var imgFiles = []
+        res.forEach(function(canvas,index){
+          var img = Canvas2Image.convertToJPEG(canvas);
+          var dataUrl = img.src;
+          document.body.appendChild(img)
+          imgFiles.push(dataURLtoFile(dataUrl,'pic'+index+'.jpeg'));
+        })
+        
+        self.savePrintInfo.position = position;
+        self.savePrintInfo.examGroupId = self.examGroupId;
+        var formData = new FormData();
+        for(var field in self.savePrintInfo){
+          if(field === 'examGroupId'){
+            formData.append(field,self.savePrintInfo[field]);
+          }else{
+            formData.append(field,JSON.stringify(self.savePrintInfo[field]));
+          }
+        }
+
+        imgFiles.forEach(function(img,index){
+          formData.append('imgFiles'+index,img);
+        })
+
+        $.ajax({
+          url: domain+self.apis.saveTopicsDetailsApi+loginStatus,
+          method: "POST",
+          processData: false,
+          contentType: false,
+          dataType: "json",
+          data: formData,
+          success(data) {
+            console.log(data);
+          }
+        });
+        document.body.removeChild(iframe);
+      })
+      
+    };
+  },
+  //下载pdf功能
+  downLoadPdf:function(printPart) {
     var self = this;
     var printHtml = self.formatPrintHtml(printPart);
     var doc = null;
+    if($('#print-iframe').length){
+      $('#print-iframe').remove();
+    }
     iframe = document.createElement("iframe");
     iframe.setAttribute("id", "print-iframe");
     document.body.appendChild(iframe);
@@ -778,12 +1196,9 @@ var Print = {
     doc.write(printHtml);
     doc.close();
     iframe.contentWindow.focus();
-    iframe.contentWindow.onload = function() {
-      iframe.contentWindow.print();
-      document.body.removeChild(iframe);
-    };
-
-    self.getPositions();
+    iframe.contentWindow.onload = function(){
+      iframe.contentWindow.print()
+    }
   },
   /**
    * 处理需要打印的html
@@ -794,7 +1209,7 @@ var Print = {
     //origin-原网页的内容
     var self = this;
     var $formatContent = $("#formatContent").html($("#" + elId).html());
-    var $formatPageContent = $formatContent.children(".pageContent");
+    var $formatPageContent = $formatContent.children('.pageContent');
     var $formatDtkTitle = $formatPageContent.eq(0).find('.dtkName');
     var $formatShortAnswer = $formatContent.find(".short-answer");
     var $originShortAnswer = $("#" + elId + " .short-answer");
@@ -833,42 +1248,160 @@ var Print = {
             .html(scortAreaContent + textareaContent);
         });
     });
-    return self.tpls.printIframeContentTpl.substitute({
-      bindingLine: self.hasBindingLine ? "hasBindingLine" : "",
-      columns: self.columns,
-      widthMm: self.config.width,
-      printHtml: $("#formatContent").html()
-    });
+    var linkSrc = ''
+    var scriptSrc = '';
+
+    //用几张纸
+    var paperLength = Math.ceil($formatPageContent.length/self.columns);
+    var printHtmlForPaperHtml = '';
+    for(var j=0;j<paperLength;j++){
+      var printHtml = '';
+      for(var k=0;k<2;k++){
+        var pageItem = $formatPageContent.eq(j*2+k);
+        printHtml+= '<div class="pageContent" style="'+pageItem.attr('style')+'">'+(pageItem.length?pageItem.html():'')+'</div>';
+      }
+      var scanDotHtml = self.tpls['scanDotPaper'+(j+1)];
+      printHtmlForPaperHtml+=self.tpls.printIframeContentTpl.substitute({
+        bindingLine: self.hasBindingLine && !j ? "hasBindingLine" : "",
+        columns: self.columns,
+        widthMm: self.config.width,
+        printHtml: printHtml+scanDotHtml,
+        linkSrc:linkSrc,
+        scriptSrc:scriptSrc
+      })
+    }
+    return printHtmlForPaperHtml;
+  },
+  //获取定位的基准点
+  getPositionOriginPoint:function(){
+    var self = this;
+    //每个分页的定位基准点都是当前分页的左上角
+    self.printAreaLeft = $("#printcontent").offset().left;
+    self.printAreaTop = $("#printcontent").offset().top + $("#contentWrap").scrollTop();
+  },
+  //获取扫描点信息
+  getScanPointInfo:function(currentPaper){
+    var self = this;
+    //获取页面的扫描点
+    /**
+     * 1.产品定义的区域
+     * 2.客观题区域
+     * 3.图片考号区域
+     * 4.选做题区域
+     */
+    var location = [
+      {
+        "x": 20*self.dpiRadio,
+        "y": 20*self.dpiRadio,
+        "width": 20*self.dpiRadio,
+        "height": 20*self.dpiRadio,
+        "type": 1
+      },
+      {
+        "x": (self.pageWidth - 20 - 20)*self.dpiRadio,
+        "y": 20*self.dpiRadio,
+        "width": 20*self.dpiRadio,
+        "height": 20*self.dpiRadio,
+        "type": 1
+      }
+    ]
+
+    if(currentPaper === 1){
+      location.push({
+        "x": (self.pageWidth - 20 - 20)*self.dpiRadio,
+        "y": (self.pageHeight - 20 - 20)*self.dpiRadio,
+        "width": 20*self.dpiRadio,
+        "height": 20*self.dpiRadio,
+        "type": 1
+      })
+    }else{
+      location.push({
+        "x": 20*self.dpiRadio,
+        "y": (self.pageHeight - 20 - 20)*self.dpiRadio,
+        "width": 20*self.dpiRadio,
+        "height": 20*self.dpiRadio,
+        "type": 1
+      })
+    }
+    return location;
+  },
+  getPicReferencePointInfo:function(){
+    var self = this;
+    var location = [];
+    //准考证号
+    var examNumberEl = $('#hgc_examNumber .ticketNumber');
+    var examFirstNumberEl = examNumberEl.children('.numberCol').eq(0).children('span').eq(1);
+    var examFirstSpaceEl = examNumberEl.children('.numberCol').eq(0).children('span').eq(0);
+    var examPoint = self.getItemPosition(examFirstNumberEl);
+    var examNumber = {
+      x:examPoint.x,
+      y:examPoint.y,
+      width:self.getElementWidth(examNumberEl),
+      height:self.getElementHeight(examNumberEl) - self.getElementHeight(examFirstSpaceEl),
+      type:3
+    }
+
+    location.push(examNumber)
+
+    //客观题
+    var firstSingleSelectEl = $('#singleOptionModule li').eq(0)
+    .children('em');
+    var lastSingleSelectEl = $('#singleOptionModule li:last()') .children('span:last()');
+    var singleSelectLastPoint = self.getItemPosition(lastSingleSelectEl);
+    var singleSelectFirstPoint = self.getItemPosition(firstSingleSelectEl);
+    var singleSelect = {
+      x:singleSelectFirstPoint.x,
+      y:singleSelectFirstPoint.y,
+      width:singleSelectLastPoint.x-singleSelectFirstPoint.x + self.getElementWidth(lastSingleSelectEl),
+      height:singleSelectLastPoint.y-singleSelectFirstPoint.y + self.getElementHeight(lastSingleSelectEl),
+      type:2
+    }
+    location.push(singleSelect)
+
+    //选做题
+    if($('.selTopic').length){
+      var selTopicPoint = self.getItemPosition($('.selTopic'));
+      var chooseAnswer = {
+        x:selTopicPoint.x,
+        y:selTopicPoint.y,
+        width: self.getElementWidth($('.selTopic')),
+        height: self.getElementHeight($('.selTopic')),
+        type:4
+      }
+      location.push(chooseAnswer)
+    }
+
+    
+    return location;
+  },
+  getElementWidth:function(el,type){
+    var self = this;
+    var width = $(el).width();
+    if(type === 'answer'){
+      width+=self.modulePaddingSide;
+    }
+    return width*self.dpiRadio;
+  },
+  getElementHeight:function(el,type){
+    var self = this;
+    var height = $(el).height();
+    if(type === 'answer'){
+      height+=self.modulePadding;
+    }
+    return height*self.dpiRadio;
   },
   getPositions: function() {
     var self = this;
-    var positions = {
-      //四个定位点信息
-      location: [],
-      //打印区域宽高
-      imge: {
-        width: self.config.width * 1000,
-        height: self.config.height * 1000
-      },
-      //题目坐标信息
-      object: []
-    };
+    var printPositionInfo = {
+      totalPage:Math.ceil(self.totalPage/self.columns),
+      pages:[]
+    }
+    //每张纸的一面
+    var paperPosition = {}
 
-    self.printAreaLeft = 0;
-    self.printAreaTop = 0;
-    //获取页面的扫描点
-    $("#printcontent .scan-dot span").each(function(index, el) {
-      var dotPosition = self.getItemPosition(el);
-      positions.location.push({
-        x: dotPosition.x,
-        y: dotPosition.y,
-        width: self.unitConversion.pxConversionMm(20) * 1000,
-        height: self.unitConversion.pxConversionMm(5) * 1000
-      });
-    });
     //获取所有选项的坐标
     var answerTypeMap = {
-      //单选
+      //0单选 4多选
       singleSelect: 0,
       //填空
       fillInBlank: 3,
@@ -877,52 +1410,143 @@ var Print = {
       //选做
       chooseAnswer: 2
     };
-    //每个分页的定位基准点都是当前分页的左上角
-    self.printAreaLeft = $("#printcontent").offset().left;
-    self.printAreaTop = $("#printcontent").offset().top + $("#contentWrap").scrollTop();
-    $("#printcontent .answerModule").each(function(index, moduleItem) {
-      var type = $(moduleItem).attr("data-type");
-      var moduleInfo = { type: answerTypeMap[type] };
-      var positionInfos = [];
-      switch (type) {
-        case "singleSelect":
-          positionInfos = self.getSingleSelectPositions(moduleItem, moduleInfo);
-          break;
-        case "answer":
-          positionInfos = self.getAswerPositions(moduleItem, moduleInfo);
-          break;
-        case "chooseAnswer":
-          positionInfos = self.getChooseAswerPositions(moduleItem, moduleInfo);
-          break;
+
+    //每次获取每张纸的每一页定位信息，先确定 x轴，y轴的定位基准点
+    self.getPositionOriginPoint()
+    //首先获取每个纸张一页的扫描点信息
+    //self.getScanPointInfo();
+
+    $('#printcontent .pageContent').each(function(pageIndex,pageItem){
+      var $pageItem = $(pageItem);
+      //判断纸张的第一面还是第二面 or 正面还是反面
+      var paperNo = Math.ceil((pageIndex+1)/self.columns);
+      //如果当前分页所在纸张的面之前已经定义过基础信息直接略过定义
+      if(!paperPosition[paperNo]){
+        var location = self.getScanPointInfo(paperNo);
+        var spacialSubjectLocation = self.getPicReferencePointInfo();
+        location = location.concat(spacialSubjectLocation);
+        if(paperNo === 1){
+          var studentcode = self.getExamNumberPosition();
+        }
+        paperPosition[paperNo] = {
+          pageNo:paperNo,
+          //四个定位点信息
+          location:location,
+          //选择条形码还是准考证号码
+          studentcode:studentcode,
+          //打印区域宽高
+          imge: {
+            width: self.pageWidth*self.dpiRadio,//self.config.width,
+            height: self.pageHeight*self.dpiRadio //self.config.height 
+          },
+          //题目坐标信息
+          questions: []
+        }
       }
-      positions.object = positions.object.concat(positionInfos);
-    });
-    console.log(JSON.stringify(positions, null, 4));
+      
+      $pageItem.find('.answerModule').each(function(k,moduleItem){
+        var type = $(moduleItem).attr("data-type");
+        var moduleInfo = { type: answerTypeMap[type] };
+        var positionInfos = [];
+        switch (type) {
+          case "singleSelect":
+            positionInfos = self.getSingleSelectPositions(moduleItem, moduleInfo);
+            break;
+          case "answer":
+            positionInfos = self.getAswerPositions(moduleItem, moduleInfo);
+            break;
+          case "chooseAnswer":
+            positionInfos = self.getChooseAswerPositions(moduleItem, moduleInfo);
+            break;
+          case "fillInBlank":
+            positionInfos = self.getFillInBlankPOsitions(moduleItem,moduleInfo)
+            break;
+        }
+        paperPosition[paperNo].questions = paperPosition[paperNo].questions.concat(positionInfos);
+      })
+
+    })
+
+    for(var paperKey in paperPosition){
+      printPositionInfo.pages.push(paperPosition[paperKey]);
+    }
+    
+    console.log(JSON.stringify(printPositionInfo, null, 4));
+    return printPositionInfo;
+    
+  },
+  //准考证和条形码区域
+  getExamNumberPosition:function(){
+    var self = this;
+    //判断显示的是准考证号还是条形码
+    var isBarCode = $('.selOptions input[name="studentCode"]').eq(0).prop('checked');
+    var studentcodePosition = {}
+    //准考证号
+    if(!isBarCode){
+      var numberWidth = false;
+      var numberHeight = false;
+      studentcodePosition = {
+        type:2,
+        object:[]
+      }
+      $('#hgc_print .ticketNumber').children('.numberCol').each(function(k,numberColItem){
+        var group = []
+        $(numberColItem).find('i').each(function(m,numberItem){
+          var numberPosition = self.getItemPosition(numberItem);
+          numberWidth = numberWidth || self.getElementWidth(numberItem);
+          numberHeight = numberHeight || self.getElementHeight(numberItem);
+          group.push({
+            x:numberPosition.x,
+            y:numberPosition.y,
+            width:numberWidth,
+            height:numberHeight,
+            optName:m
+          })
+        })
+        studentcodePosition.object.push({
+          group:group
+        })
+      })
+    }else{
+      var examMarkEl = $('#hgc_examNumber .barCode');
+      var barCodePosition = self.getItemPosition(examMarkEl);
+      studentcodePosition = {
+        type:1,
+        object:{
+          x:barCodePosition.x,
+          y:barCodePosition.y,
+          width:self.getElementWidth(examMarkEl),
+          height:self.getElementHeight(examMarkEl)
+        }
+      }
+    }
+
+    return studentcodePosition;
   },
   //单选题坐标获取
   getSingleSelectPositions: function(moduleItem, moduleInfo) {
     var self = this;
     var optionInfos = [];
-    $(moduleItem)
-      .find("li")
-      .each(function(i, optionItems) {
+    $(moduleItem).find("li").each(function(i, optionItems) {
         var optionInfo = {
           type: moduleInfo.type,
+          answer:$(optionItems).attr('data-answer'),
+          score:{
+            full:5
+          },
           id: $(optionItems).attr("title-number"),
           opt: []
         };
-        $(optionItems)
-          .children("span")
-          .each(function(k, option) {
+        $(optionItems).children("span").each(function(k, option) {
             var optionPosition = self.getItemPosition(option);
-            var width = self.unitConversion.pxConversionMm($(option).width());
-            var height = self.unitConversion.pxConversionMm($(option).height());
+            var width = self.getElementWidth(option)//self.unitConversion.pxConversionMm($(option).width());
+            var height = self.getElementHeight(option)//self.unitConversion.pxConversionMm($(option).height());
             var optName = $(option).attr("data-option");
             optionInfo.opt.push({
               x: optionPosition.x,
               y: optionPosition.y,
-              width: width * 1000,
-              height: height * 1000,
+              width: width ,
+              height: height ,
               optName: optName
             });
           });
@@ -930,29 +1554,59 @@ var Print = {
       });
     return optionInfos;
   },
+  //填空题
+  getFillInBlankPOsitions:function(moduleItem, moduleInfo){
+    var self = this;
+    var optionInfos = [];
+    $(moduleItem).find(".subjectItem").each(function(i, optionItems) {
+      var optionInfo = {
+        type: moduleInfo.type,
+        score:{
+          full:5
+        },
+        id: $(optionItems).attr("title-number"),
+        cut: {}
+      }
+      var optionPosition = self.getItemPosition(optionItems);
+      var width = self.getElementWidth(optionItems)//self.unitConversion.pxConversionMm($(option).width());
+      var height = self.getElementHeight(optionItems)//self.unitConversion.pxConversionMm($(option).height());
+      var optName = $(optionItems).attr("data-option");
+      optionInfo.cut = {
+        x: optionPosition.x,
+        y: optionPosition.y,
+        width: width ,
+        height: height ,
+        optName: optName
+      };
+      optionInfos.push(optionInfo);
+    });
+    return optionInfos;
+  },
   //解答题坐标获取
   getAswerPositions: function(moduleItem, moduleInfo) {
     var self = this;
     var answerInfos = [];
-    $(moduleItem)
-      .find(".module")
-      .each(function(m, moduleEl) {
+    $(moduleItem).find(".module").each(function(m, moduleEl) {
         var modulePositon = self.getItemPosition(moduleEl, "answer");
-        var width = self.unitConversion.pxConversionMm(
-          $(moduleEl).width() + 20
-        );
-        var height = self.unitConversion.pxConversionMm(
-          $(moduleEl).height() + 20
-        );
+        //self.unitConversion.pxConversionMm($(moduleEl).width() + 20);
+        var width = self.getElementWidth(moduleEl,'answer');
+        //self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
+        var height = self.getElementHeight(moduleEl,'answer'); 
         var titleNumber = $(moduleEl).attr("title-number");
+        
+        //判断当前区域是否有超出的链接模块
+        var linkParm = $(moduleEl).attr('data-linkparm') || 0;
+        var cutId = $(moduleEl).attr('data-cutId');
         var answerInfo = {
           type: moduleInfo.type,
           id: titleNumber,
           cut: {
             x: modulePositon.x,
             y: modulePositon.y,
-            width: width * 1000,
-            height: height * 1000
+            width: width ,
+            height: height,
+            cutid: cutId,
+            linkparm: linkParm
           }
         }
         answerInfos.push(answerInfo);
@@ -964,46 +1618,49 @@ var Print = {
   getChooseAswerPositions: function(moduleItem, moduleInfo) {
     var self = this;
     var chooseAnswerInfos = [];
-    $(moduleItem)
-      .find(".module")
-      .each(function(n, moduleEl) {
-        var modulePositon = self.getItemPosition(moduleEl, "chooseAnswer");
-        var width = self.unitConversion.pxConversionMm(
-          $(moduleEl).width() + 20
-        );
-        var height = self.unitConversion.pxConversionMm(
-          $(moduleEl).height() + 20
-        );
+    $(moduleItem).find(".module").each(function(n, moduleEl) {
+        var modulePositon = self.getItemPosition(moduleEl, 'chooseAnswer');
+        var width = self.getElementWidth(moduleEl,'answer');// self.unitConversion.pxConversionMm($(moduleEl).width() + 20);
+        var height = self.getElementHeight(moduleEl,'answer');//self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
         var titleNumber = $(moduleEl).attr("title-number");
+        //是否是上一题的补充区域
+        //判断当前区域是否有超出的链接模块
+        var linkParm = $(moduleEl).attr('data-linkparm') || 0;
+        var cutId = $(moduleEl).attr('data-cutId');
+
         var chooseAnswerInfo = {
           type: moduleInfo.type,
           id: titleNumber,
-          cut: {
-            x: modulePositon.x,
-            y: modulePositon.y,
-            width: width * 1000,
-            height: height * 1000
-          },
-          opt: []
+          select:1,
+          total:titleNumber.split(',').length,
+          selectqts: [
+            {
+              cut: {
+                x: modulePositon.x,
+                y: modulePositon.y,
+                width: width ,
+                height: height,
+                cutid: cutId,
+                linkparm: linkParm
+              },
+              opt:[]
+            }
+          ]
         };
 
-        $(moduleItem)
-          .find(".selTopic span")
-          .each(function(l, selItem) {
-            var optName = $(selItem).attr("data-option");
-            var selItemPosition = self.getItemPosition(selItem, "selTopic");
-            var width = self.unitConversion.pxConversionMm($(selItem).width());
-            var height = self.unitConversion.pxConversionMm(
-              $(selItem).height()
-            );
-            chooseAnswerInfo.opt.push({
-              optName: optName,
-              width: width * 1000,
-              height: height * 1000,
-              x: selItemPosition.x,
-              y: selItemPosition.y
-            });
+        $(moduleEl).find(".selTopic span").each(function(l, selItem) {
+          var optName = $(selItem).attr("data-titleNumber");
+          var selItemPosition = self.getItemPosition(selItem, "selTopic");
+          var width = self.getElementWidth(selItem)//self.unitConversion.pxConversionMm($(selItem).width());
+          var height = self.getElementHeight(selItem)//self.unitConversion.pxConversionMm($(selItem).height());
+          chooseAnswerInfo.selectqts[0].opt.push({
+            optName: optName,
+            width: width ,
+            height: height ,
+            x: selItemPosition.x,
+            y: selItemPosition.y
           });
+        });
         chooseAnswerInfos.push(chooseAnswerInfo);
       });
 
@@ -1019,35 +1676,27 @@ var Print = {
    */
   getItemPosition: function(el, moduleType) {
     var self = this;
-    var curPageIndex = $(el).closest(".pageContent").index();
-    var positionY = $(el).offset().top + $("#contentWrap").scrollTop() - self.printAreaTop;
-    var positonX = $(el).offset().left - self.printAreaLeft;
-    var answerTop = 0;
-    var answerLeft = 0;
+    var curPageIndex = $(el).closest(".pageContent").index()+1;
+    var positionY = $(el).offset().top + $('#contentWrap').scrollTop() - self.printAreaTop;
+    var positionX = $(el).offset().left - self.printAreaLeft;
     var columnLeft = 0;
-    //考虑特殊模块的的截取区域 简答题需要
-    if (moduleType === "answer" || moduleType === "chooseAnswer") {
-      answerTop = 30;
-    } else if (moduleType === "selTopic") {
-      answerLeft = 10;
-      
-    }
+    // //考虑特殊模块的的截取区域 简答题需要
+    // if (moduleType === "answer" || moduleType === "chooseAnswer") {
+    //   answerTop = 30;
+    // }
     //考虑分栏的定位点
     if (self.columns > 1 && !curPageIndex % 2) {
       columnLeft = self.pageWidth;
     }
-    if(self.columns === 1){
-      positionY -= curPageIndex*self.pageHeight;
-    }
 
+    if(curPageIndex > 1){
+      positionY -= (curPageIndex - 1)*self.pageHeight;
+    }
     return {
-      x:
-        self.unitConversion
-          .pxConversionMm(positonX + answerLeft + columnLeft)
-          .toFixed(3) * 1000,
-      y:
-        self.unitConversion.pxConversionMm(positionY + answerTop).toFixed(3) *
-        1000
+      x:(positionX + columnLeft)*self.dpiRadio,
+      //self.unitConversion.pxConversionMm(positionX + answerLeft + columnLeft).toFixed(3),
+      y:positionY*self.dpiRadio
+      //self.unitConversion.pxConversionMm(positionY + answerTop).toFixed(3)
     };
   }
 };
