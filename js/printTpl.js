@@ -25,12 +25,12 @@ var PRINT_TPL = {
         </div>\
     </div>',
     fillInBlankItemTpl:'<div class="subjectItem" title-number="{questionNum}">\
-    <span>{questionNum}、</span>\
-    <em></em>\
-    <strong>\
-        <i></i>\
-    </strong>\
-</div>',
+        <span>{questionNum}、</span>\
+        <em></em>\
+        <strong>\
+            <i></i>\
+        </strong>\
+    </div>',
     //解答题模块
     shortAnswerTpl:'<div class="short-answer answerModule" data-type="answer" id="shortAnswerModule">\
         <h3>解答题</h3>\
@@ -92,21 +92,25 @@ var PRINT_TPL = {
     overModuleTpl:
       '<div class="module pdt10" isSurplus title-number="{titleNumber}" data-linkparm="{linkparm}" data-cutId="{cutId}" data-editorIndex="{overIndex}"><div class="dragBtn"></div><div class="delBtn"></div>\
         <div id="toolbar{overIndex}" class="toolbar"></div>\
-        <div id="editorContent{overIndex}" class="editorContent">\
+        <div id="editorContent{overIndex}" class="editorContent" style="height:{editorContentHeight}px;">\
         </div></div>',
     scanDotPaper1:'<div class="scan-dot">\
               <span data-option="bl" class=""></span>\
+              <span data-option="bl" class="center1"></span>\
               <span data-option="br" class="right"></span>\
           </div>\
           <div class="scan-dot bot">\
               <span data-option="bl" class="left"></span>\
+              <span data-option="br" class="right"></span>\
           </div>',
     scanDotPaper2:'<div class="scan-dot">\
               <span data-option="bl" class=""></span>\
+              <span data-option="bl" class="center2"></span>\
               <span data-option="br" class="right"></span>\
           </div>\
           <div class="scan-dot bot">\
-              <span data-option="bl" class="right"></span>\
+              <span data-option="bl" class="left"></span>\
+              <span data-option="br" class="right"></span>\
           </div>',
     //打印的模版
     printIframeContentTpl:

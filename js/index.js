@@ -13,7 +13,6 @@ var sizeConfig = {
 }
 
 var hgc_modal = {
-  
   tpl:
     '<div class="hgc_modalBox">\
 			<div class="hgc_modal">\
@@ -59,6 +58,7 @@ var hgc_modal = {
     });
   }
 }
+
 var renderHGCJSON = 
 //类型 1 单选 2多选 11不定项选择 5 填空 7 解答 17 选做
 {
@@ -139,47 +139,29 @@ var renderHGCJSON =
               "optionCount": 4,
               "questionNum": "10"
           },
-          {
-            "questionTypeId": 5,
-            "fullScore": 5,
-            "optionCount": 4,
-            "questionNum": "11"
-        },
-        {
-          "questionTypeId": 5,
-          "fullScore": 5,
-          "optionCount": 4,
-          "questionNum": "12"
-      },
-      {
-        "questionTypeId": 5,
-        "fullScore": 5,
-        "optionCount": 4,
-        "questionNum": "13"
-    },
                 {
                     "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "11"
+                },
+                {
+                    "questionTypeId": 7,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "12"
+                },
+                {
+                    "questionTypeId": 17,
+                    "fullScore": 12,
+                    "optionCount": 1,
+                    "questionNum": "13"
+                },
+                {
+                    "questionTypeId": 17,
                     "fullScore": 12,
                     "optionCount": 1,
                     "questionNum": "14"
-                },
-                {
-                    "questionTypeId": 7,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "15"
-                },
-                {
-                    "questionTypeId": 17,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "16"
-                },
-                {
-                    "questionTypeId": 17,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "17"
                 }
             ]
         }
@@ -193,16 +175,6 @@ var renderHGCJSON =
 /**
  * 打印功能主体
  */
-//保存额外数据
-var json = {
-  //注意事项
-  notice:'',
-  //填空题的分值格式 每行列数
-  scoreFormat:'',
-  //每行列数
-  rowColumns:2,
-  //解答题分值格式
-}
 var loginStatus = '/username/3852001/time/1548051379/sig/ce68cbe3faa0d617ba101729f102a093/sessionid/session_39243c50e98678c0266e2a442766e47f';
 var domain = 'http://zsyas2.testing.xueping.com';
 var localDomain = 'http://192.168.1.51/index.php';
@@ -285,7 +257,6 @@ var Print = {
         self.renderPage(renderHGCJSON)
         if(res.position){
           self.memoryLayout(JSON.parse(res.position));
-          return;
         }
       }else{
         self.modal.init({
@@ -296,9 +267,103 @@ var Print = {
   },
   memoryLayout:function(res){
     var self = this;
+    var formatData = self.memoryDataFormat(res);
+    var fillInBlankData = formatData.fillInBlankData;
+    var shortAnswerData = formatData.shortAnswerData;
+    self.memoryFillInBlank(fillInBlankData); 
+    self.memoryShortAnswer(shortAnswerData);
+    console.log('memory data',res)
+  },
+  //把每一题的数据整合到一起
+  memoryDataFormat:function(res){
+    var self = this;
+    //选择题不能做任何设置
+    //填空题可以设置每行列数、分值格式等
+    var fillInBlankData = [];
+    //过滤处所有解答题的定位信息===>>>只有解答题可以自定义跨高
+    var shortAnswerData = [];
+    var linkQuestionData = {};
+    res.pages.forEach(function(pageData){
+      for(var i=0,questionItem;questionItem=pageData.questions[i++];){
+        var questionType = questionItem.type;
+        //填空题
+        switch(questionType){
+          case 3:
+              fillInBlankData.push(questionItem);        
+              break;
+          //解答题
+          case 1:
+          //选做题
+          case 2:
+              var isShortAnswer = questionType === 1;
+              var linkParm = isShortAnswer?
+                  questionItem.cut.linkparm:
+                  questionItem.selectqts[0].cut.linkparm;
+              //如果存在补充模块 ， 则先合并
+              if(+linkParm){
+                if(linkParm === '1'){
+                  linkQuestionData = questionItem;
+                }else{
+                  if(isShortAnswer){
+                    linkQuestionData.cut.height+=questionItem.cut.height;
+                  }else{
+                    linkQuestionData.selectqts[0].cut.height+=questionItem.selectqts[0].cut.height;
+                  }
+                  
+                }
+              }else{
+                if(JSON.stringify(linkQuestionData) !== '{}'){
+                  shortAnswerData.push(linkQuestionData);
+                  linkQuestionData = {};
+                }
+                shortAnswerData.push(questionItem);
+              }
+              break;
+        }
+      }
+    })
 
+    return {
+      shortAnswerData:shortAnswerData,
+      fillInBlankData:fillInBlankData
+    }
 
-
+  },
+  memoryFillInBlank:function(fillInBlankData){
+    var self = this;
+    var questionItem = fillInBlankData[0];
+    //当前答题卡只有一大填空题大题的情况下
+    var $this = $('#fillInBlank').siblings('.settingBtn');
+    var column = questionItem.column;
+    var scoreStyle = questionItem.scoreStyle;
+    self.fillInBlankStyleChange($this,column,scoreStyle);
+  },
+  memoryShortAnswer:function(shortAnswerData){
+    var self = this;
+    //1 分值上限修改=>>打分区域
+    //self.shortAnswerStyleChange();
+    //2 解答题区域高度修改
+    console.log(shortAnswerData)
+    var curPageEl = $("#printcontent .pageContent").eq(0);
+    var shortAnswerModules = $('.short-answer .module');
+    for(var i=0,questionItem;questionItem=shortAnswerData[i++];){
+      var moduleHeight = questionItem.cut?questionItem.cut.height:questionItem.selectqts[0].cut.height;
+      var scoreLimitKey = questionItem.scoreLimit;
+      shortAnswerModules.each(function(index,shortAnswerModule){
+        if($(shortAnswerModule).attr('title-number') === questionItem.id){
+          self.curDtkModelEl = $(shortAnswerModule);
+          $(shortAnswerModule).children('.editorContent').height(moduleHeight);
+          var $this = $(shortAnswerModule).children('.settingBtn');
+          self.shortAnswerStyleChange($this,scoreLimitKey);
+          
+          curPageEl = $(shortAnswerModule).closest('.pageContent');
+          self.changePrintArea(curPageEl)
+        }
+      })
+    }
+    
+    
+    
   },
   renderPage:function(renderJSON){
     var self = this;
@@ -596,75 +661,103 @@ var Print = {
   //填空题设置
   fillInBlankSet: function($this) {
     var self = this;
-    var curPageEl = $this.closest(".pageContent");
-    var fillInBlankCol = $this.siblings(".subjectCol");
-    var scorePartEl = fillInBlankCol.find(".subjectItem strong");
 
     self.modal.init({
       title: "填空题设置",
       content: self.tpls.fillInBlankOptionTpl,
       sureCb: function() {
-        function rendScore(score) {
-          return "<i>" + score + "</i>";
-        }
         //每行列数
         var column = $("#fillInBlankColumn").val();
         //分值格式
         var scoreStyle = $("#scoreStyle").val();
-
-        var scoreHtml = "";
-        scoreStyle.split("/").forEach(function(score) {
-          scoreHtml += rendScore(score);
-        });
-        scorePartEl.html(scoreHtml);
-        fillInBlankCol[0].classList = "subjectCol col-" + column;
-        //如果填空题由原来的一行变成多行，就有可能影响所有的布局样式，重新布局整个答题卡
-        self.changePrintArea(curPageEl);
+        //修改填空题样式
+        self.fillInBlankStyleChange($this,column,scoreStyle)
       }
     });
+  },
+  /**
+   * 
+   * @param {column} 没行列数 
+   * @param {scoreStyle} 分值格式 
+   * @param {$this} 当前要修改的填空题区域里面的标示符 
+   */
+  fillInBlankStyleChange:function($this,column,scoreStyle){
+    var self = this;
+    function rendScore(score) {
+      return "<i>" + score + "</i>";
+    }
+    var curPageEl = $this.closest(".pageContent");
+    var fillInBlankCol = $this.siblings(".subjectCol");
+    var scorePartEl = fillInBlankCol.find(".subjectItem strong");
+    //设置的数据同步到标签上，供后取值
+    fillInBlankCol.attr({
+      'data-column':column,
+      'data-scoreStyle':scoreStyle
+    })
+
+    var scoreHtml = "";
+    scoreStyle.split("/").forEach(function(score) {
+      scoreHtml += rendScore(score);
+    });
+    scorePartEl.html(scoreHtml);
+    fillInBlankCol[0].classList = "subjectCol col-" + column;
+    //如果填空题由原来的一行变成多行，就有可能影响所有的布局样式，重新布局整个答题卡
+    self.changePrintArea(curPageEl);
   },
   //解答题设置
   shortAnswerSet: function($this) {
     var self = this;
-    var scorePartEl = $this.siblings(".scortColumn");
-    function rendScore(score) {
-      return "<span>" + score + "</span>";
-    }
     self.modal.init({
       title: "解答题设置",
       content: self.tpls.shortAnswerOptionTpl,
       sureCb: function() {
-        var bit = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-        //各个分值对应的分值 布局格式
-        var scoreLimitMap = {
-          "16": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-          "29": {
-            tenPlace: [1, 2],
-            bit: bit
-          },
-          "49": {
-            tenPlace: [1, 2, 3, 4],
-            bit: bit
-          }
-        };
         var scoreLimitKey = $("#scoreLimit").val();
-        var scoreLimit = scoreLimitMap[scoreLimitKey];
-        var scoreModuleHtml = "";
-        var scoreLimitArr = [];
-        if (scoreLimitKey === "16") {
-          scoreLimitArr = scoreLimit;
-        } else {
-          scoreLimitArr.push("十位");
-          scoreLimitArr = scoreLimitArr.concat(scoreLimit.tenPlace);
-          scoreLimitArr.push("个位");
-          scoreLimitArr = scoreLimitArr.concat(scoreLimit.bit);
-        }
-        scoreLimitArr.forEach(function(score) {
-          scoreModuleHtml += rendScore(score);
-        });
-        scorePartEl.html(scoreModuleHtml);
+
+        self.shortAnswerStyleChange($this,scoreLimitKey);
+        
       }
     });
+  },
+  /**
+   * 
+   * @param {当前要修改的解答题区域内的标示符} $this 
+   * @param {分值上限} scoreLimitKey 
+   */
+  shortAnswerStyleChange:function($this,scoreLimitKey){
+    var self = this;
+    function rendScore(score) {
+      return "<span>" + score + "</span>";
+    }
+    var bit = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    //各个分值对应的分值 布局格式
+    var scoreLimitMap = {
+      "16": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      "29": {
+        tenPlace: [1, 2],
+        bit: bit
+      },
+      "49": {
+        tenPlace: [1, 2, 3, 4],
+        bit: bit
+      }
+    };
+    var scorePartEl = $this.siblings(".scortColumn");
+    var scoreLimit = scoreLimitMap[scoreLimitKey];
+    var scoreModuleHtml = "";
+    var scoreLimitArr = [];
+    if (scoreLimitKey === "16") {
+      scoreLimitArr = scoreLimit;
+    } else {
+      scoreLimitArr.push("十位");
+      scoreLimitArr = scoreLimitArr.concat(scoreLimit.tenPlace);
+      scoreLimitArr.push("个位");
+      scoreLimitArr = scoreLimitArr.concat(scoreLimit.bit);
+    }
+    scoreLimitArr.forEach(function(score) {
+      scoreModuleHtml += rendScore(score);
+    });
+    //解答题分值上限配置
+    scorePartEl.html(scoreModuleHtml).parent('.module').attr('scoreLimit',scoreLimitKey);
   },
   //修改纸张尺寸
   changePaperSize: function($this) {
@@ -745,10 +838,7 @@ var Print = {
     //判断当前区域是否超出
     function isOver(el) {
       var moduleTop = $(el).outerHeight() + $(el).offset().top + $("#contentWrap").scrollTop();
-      return {
-        isOver:moduleTop >= overHeight,
-        overDistance:moduleTop - overHeight
-      };
+      return moduleTop >= overHeight;
     }
     /**
      * 1 判断当前页面里面的答题区域内容是否超过了当前页面所能承受的内容的高度
@@ -766,20 +856,17 @@ var Print = {
         var shortAnswerItem = shortAnswerEl.eq(i);
         //找到第一个超过当前页面的元素，把这个以及以后的模块提取出来在下一个版面进行重新排版
         //得到第一个大题的index  第一个大题下面小题的index
-        if (isOver(shortAnswerItem).isOver) {
+        if (isOver(shortAnswerItem)) {
           var moduleEl = $(shortAnswerItem).children('.module');
           for (var m = 0, mlen = moduleEl.length; m < mlen; m++) {
             var moduleItem = moduleEl.eq(m);
-            var moduleIsOver = isOver(moduleItem);
-            if (moduleIsOver.isOver) {
+            if (isOver(moduleItem)) {
               overPart = {
                 curPage: curPageEl,
                 //当前超出的answerModule
                 answerModule: shortAnswerItem,
                 //当前超出的module
-                subjectModule: moduleItem,
-                //超出module 模块的具体超出高度
-                subjectModuleOverDistance:moduleIsOver.overDistance
+                subjectModule: moduleItem
               };
               return overPart;
             }
@@ -806,9 +893,17 @@ var Print = {
       self.reducePrintArea(curPageEl);
     }
   },
+  getOverHeight:function(el){
+    var self = this;
+    var curPageEl = $(el).closest('.pageContent');
+    //当前第几页，用做后面计算的高度距离的倍数
+    var times = curPageEl.index() + 1;
+    var overHeight = self.pageHeight * times + self.layoutPadding - self.pagePadding;
+    var moduleTop = $(el).outerHeight() + $(el).offset().top + $("#contentWrap").scrollTop();
+    return moduleTop - overHeight;
+  },
   addPrintArea: function(curPageEl, overPart) {
     var self = this;
-    console.log(overPart.subjectModule)
     var curPageIndex = curPageEl.index();
     var times = curPageIndex + 1;
     var part = overPart.subjectModule;
@@ -817,9 +912,8 @@ var Print = {
     var overAnswerHtml = "";
     //新建page
     var newPage = "";
-    //判断是否是当前模块超出
-    var isCurModule = part[0] === self.curDtkModelEl[0];
-    
+    //判断是否是当前鼠标操作答题区域的坐标
+    var curOperation = part[0] === self.curDtkModelEl[0];
     //通过缩放确定每个页面需要移除的元素
     var removeElements = [];
 
@@ -833,97 +927,51 @@ var Print = {
     }
 
     while (part.length) {
-      
       /**
        * 如果是当前缩放的模块超出，直接在下一模块新建当前模块的子模块，
        * 如果不是，则直接拷贝超出模块所有内容到下一页
        */
       //当前缩放的模块没有超出规定区域 则超出的所有模块全局复制
-      var moduleIndex = part.attr("data-editorIndex");
-      var titleNumber = part.attr('title-number');
-
-      //如果是填空题超出则不是这样的处理逻辑了
-      //判断是否填空题超出
-      var isFillInBlankOver = part.children('.subjectCol').length;
-      if(isFillInBlankOver){
-        var fillInBlankItemHeight = part.children('.subjectCol').children('.subjectItem').eq(0).height();
-        //新页面需要为填空题空出的高度
-        var newPageFillInBlankAreaHeight = Math.ceil(overPart.subjectModuleOverDistance/fillInBlankItemHeight);
-
-        console.log(overPart.subjectModuleOverDistance)
-      }else{
-        
-      }
+      
       //overPart.subjectModule 第一个超出当前分页的模块
-      if (part !== overPart.subjectModule || !isCurModule) {
-          
-        var moduleTitle = "";
+      if (part !== overPart.subjectModule || !curOperation) {
         var modulePrev = part.prev();
-        var hasTitle = modulePrev.length && modulePrev[0].tagName === "H3";
-        if (hasTitle) {
-          moduleTitle = self.tpls.moduleTitleTpl.substitute({
-            title: modulePrev.html()
-          });
-        }
-        subjectHtml +=
-          moduleTitle +
-          self.tpls.moduleTpl.substitute({
-            moduleIndex: moduleIndex,
-            moduleHtml: part.html(),
-            titleNumber:titleNumber
-          });
+        var hasTitle = modulePrev.length && modulePrev[0].tagName === 'H3';
+        //1 新增新模块
+        subjectHtml += self.addNewModule(part);
+        //2 移除老模块
         removeElements.push(part);
-        //part.remove();
         hasTitle && removeElements.push(modulePrev);
       } else {
-        
-        //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
-        ++self.editorIndex;
-        var linkparm = 1;
-        var cutId = self.editorIndex;
-        //如果该模块是首次超出 则直接从1开始计数，否则从当前位置开始计数
-        if(!part.attr('data-linkparm')){
-          part.attr({
-            'data-cutId':self.editorIndex,
-            'data-linkparm':linkparm
-          })
-          linkparm++;
-        }else{
-          linkparm = +part.attr('data-linkparm');
-          cutId = +part.attr('data-cutId');
-          linkparm++;
-        }
-        
-        subjectHtml += self.tpls.overModuleTpl.substitute({
-          overIndex:self.editorIndex,
-          cutId:cutId,
-          linkparm:linkparm,
-          titleNumber:titleNumber
-        });
-
+        //1 拓展新模块
+        subjectHtml += self.expandModule(part);
+        //2 移除老模块
         removeElements.push(part.children(".dragBtn"));
       }
-      
+
       part = part.next();
     }
 
     //超出模块
-    overAnswerHtml = self.tpls.answerModuleTpl.substitute({
-      editModule: subjectHtml,
-      moduleType:overPart.answerModule.attr('data-type')
-    });
-
     //判断超出简答题区域
-    var overAnswerModule = overPart.answerModule.next();
+    var overAnswerModule = overPart.answerModule;
     while (overAnswerModule.length) {
+      var editModuleHtml = '';
+      //如果是当前超出模块，则直接用上面的多余的moduleHtml来填充
+      //否则，直接用answerModule的内容来填充
+      if(overAnswerModule === overPart.answerModule){
+        editModuleHtml = subjectHtml;
+      }else{
+        editModuleHtml = overAnswerModule.html();
+
+        removeElements.push(overAnswerModule);
+      }
+
       overAnswerHtml += self.tpls.answerModuleTpl.substitute({
-        editModule: overAnswerModule.html(),
+        editModule: editModuleHtml,
         moduleType:overAnswerModule.attr('data-type')
       });
-      if (overAnswerModule !== overPart.answerModule) {
-        removeElements.push(overAnswerModule);
-        //overAnswerModule.remove();
-      }
+
       overAnswerModule = overAnswerModule.next();
     }
 
@@ -932,23 +980,23 @@ var Print = {
      * 当前缩放的模块超出，直接当前模块在当前分页高度设置到限制内最大
      *
      */
-    if (isCurModule) {
+    if (curOperation) {
       //重置上一页第一个超出模块的高度 = pageHeight - subject.offset().top - subjectModullePadding的模块高度
-      //self.unitConversion.pxConversionMm(preFirstOverModuleHeight)+'mm'//转mm高度
-      var preFirstOverModuleHeight =
-        self.pageHeight * times -
-        overPart.subjectModule.offset().top -
-        $("#contentWrap").scrollTop() -
-        self.pagePadding -
-        self.modulePadding;
-      overPart.subjectModule
-        .children(".editorContent")
-        .height(preFirstOverModuleHeight);
-    }
+      //上一个页面其他剩余模块的所占的高度
+      var preOtherModuleHeight = overPart.subjectModule.offset().top + $("#contentWrap").scrollTop() + self.pagePadding + self.modulePadding;
+      //上一个页面第一个超出模块所能占用的高度
+      var preFirstOverModuleHeight = self.pageHeight * times - preOtherModuleHeight;
 
+      overPart.subjectModule.children(".editorContent").height(preFirstOverModuleHeight);
+    }
+    /**
+     * 【优化】
+     * 模块删除关系需要优化
+     */
     removeElements.forEach(function(element) {
       $(element).remove();
     });
+    if(!overPart.answerModule.children('.module').length)overPart.answerModule.remove();
     //是否存在下一个分页
     if (nextPageEl.length) {
       nextPageEl.children(".dtk-content").prepend(overAnswerHtml);
@@ -970,9 +1018,59 @@ var Print = {
       nextPageEl = $("#printcontent").children(".pageContent:last()");
     }
 
-    isCurModule && self.createShortAnswer(self.editorIndex);
+    curOperation && self.createShortAnswer(self.editorIndex);
     //递归轮询判断
     self.changePrintArea(nextPageEl);
+  },
+  //新模块 part
+  addNewModule:function(part){
+    var self = this;
+    var moduleIndex = part.attr("data-editorIndex");
+    var titleNumber = part.attr('title-number');
+    var moduleTitle = "";
+    var modulePrev = part.prev();
+    var hasTitle = modulePrev.length && modulePrev[0].tagName === "H3";
+    if (hasTitle) {
+      moduleTitle = self.tpls.moduleTitleTpl.substitute({
+        title: modulePrev.html()
+      });
+    }
+    return moduleTitle + self.tpls.moduleTpl.substitute({
+        moduleIndex: moduleIndex,
+        moduleHtml: part.html(),
+        titleNumber:titleNumber
+      });
+  },
+  //上一个模块的拓展模块
+  expandModule:function(part){
+    var self = this;
+    var titleNumber = part.attr('title-number');
+    //当前超出的模块height
+    var overHeight = self.getOverHeight(part) || '';
+    //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
+    ++self.editorIndex;
+    var linkparm = 1;
+    var cutId = self.editorIndex;
+    //如果该模块是首次超出 则直接从1开始计数，否则从当前位置开始计数
+    if(!part.attr('data-linkparm')){
+      part.attr({
+        'data-cutId':self.editorIndex,
+        'data-linkparm':linkparm
+      })
+      linkparm++;
+    }else{
+      linkparm = +part.attr('data-linkparm');
+      cutId = +part.attr('data-cutId');
+      linkparm++;
+    }
+    
+    return self.tpls.overModuleTpl.substitute({
+      overIndex:self.editorIndex,
+      cutId:cutId,
+      linkparm:linkparm,
+      titleNumber:titleNumber,
+      editorContentHeight:overHeight
+    });
   },
   reducePrintArea: function(curPageEl) {
     var self = this;
@@ -1064,7 +1162,7 @@ var Print = {
     var editor = new self.EDITOR(
       "#toolbar" + editorIndex,
       "#editorContent" + editorIndex
-    );
+    )
     // 或者 var editor = new E( document.getElementById('editor') )
     editor.create();
     self.editorIndex = editorIndex;
@@ -1216,6 +1314,7 @@ var Print = {
     var $originDtkTitle = $('#'+elId+' .pageContent').eq(0).find('.dtkName');
     //设置每个分页的高度
     $formatPageContent.height(self.config.height + "mm");
+    $formatPageContent.find('.pageLabel .size').remove();
     //设置答题卡title
     $formatDtkTitle.html($originDtkTitle.children('textarea').val());
     $originShortAnswer.each(function(index, el) {
@@ -1282,6 +1381,8 @@ var Print = {
   //获取扫描点信息
   getScanPointInfo:function(currentPaper){
     var self = this;
+    self.dotWidth = 40;
+    self.dotHeight = 20;
     //获取页面的扫描点
     /**
      * 1.产品定义的区域
@@ -1290,36 +1391,56 @@ var Print = {
      * 4.选做题区域
      */
     var location = [
+      //上左
       {
-        "x": 20*self.dpiRadio,
+        "x": 60*self.dpiRadio,
         "y": 20*self.dpiRadio,
-        "width": 20*self.dpiRadio,
-        "height": 20*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
         "type": 1
       },
+      //上右
       {
-        "x": (self.pageWidth - 20 - 20)*self.dpiRadio,
+        "x": (self.pageWidth - 60 - self.dotWidth)*self.dpiRadio,
         "y": 20*self.dpiRadio,
-        "width": 20*self.dpiRadio,
-        "height": 20*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
+        "type": 1
+      },
+      //下右
+      {
+        "x": (self.pageWidth - 60 - self.dotWidth)*self.dpiRadio,
+        "y": (self.pageHeight - 20 - self.dotHeight)*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
+        "type": 1
+      },
+      //下左
+      {
+        "x": 60*self.dpiRadio,
+        "y":(self.pageHeight - 20 - self.dotHeight)*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
         "type": 1
       }
     ]
 
     if(currentPaper === 1){
-      location.push({
-        "x": (self.pageWidth - 20 - 20)*self.dpiRadio,
-        "y": (self.pageHeight - 20 - 20)*self.dpiRadio,
-        "width": 20*self.dpiRadio,
-        "height": 20*self.dpiRadio,
+      //上靠左边
+      location.splice(1,0,{
+        "x": 60*self.dpiRadio,
+        "y":600*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
         "type": 1
       })
     }else{
-      location.push({
-        "x": 20*self.dpiRadio,
-        "y": (self.pageHeight - 20 - 20)*self.dpiRadio,
-        "width": 20*self.dpiRadio,
-        "height": 20*self.dpiRadio,
+      //上靠右边
+      location.splice(1,0,{
+        "x": 60*self.dpiRadio,
+        "y":(self.pageWidth - 600 - self.dotWidth)*self.dpiRadio,
+        "width": self.dotWidth*self.dpiRadio,
+        "height": self.dotHeight*self.dpiRadio,
         "type": 1
       })
     }
@@ -1559,11 +1680,14 @@ var Print = {
     var self = this;
     var optionInfos = [];
     $(moduleItem).find(".subjectItem").each(function(i, optionItems) {
+      var $subjectCol = $(optionItems).parent('.subjectCol');
       var optionInfo = {
         type: moduleInfo.type,
         score:{
           full:5
         },
+        column:$subjectCol.attr('data-column') || 1,
+        scoreStyle:$subjectCol.attr('data-scoreStyle') || '',
         id: $(optionItems).attr("title-number"),
         cut: {}
       }
@@ -1592,7 +1716,8 @@ var Print = {
         var width = self.getElementWidth(moduleEl,'answer');
         //self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
         var height = self.getElementHeight(moduleEl,'answer'); 
-        var titleNumber = $(moduleEl).attr("title-number");
+        var titleNumber = $(moduleEl).attr('title-number');
+        var scoreLimit = $(moduleEl).attr('scorelimit') || '16';
         
         //判断当前区域是否有超出的链接模块
         var linkParm = $(moduleEl).attr('data-linkparm') || 0;
@@ -1600,6 +1725,7 @@ var Print = {
         var answerInfo = {
           type: moduleInfo.type,
           id: titleNumber,
+          scoreLimit:scoreLimit,
           cut: {
             x: modulePositon.x,
             y: modulePositon.y,
@@ -1623,6 +1749,7 @@ var Print = {
         var width = self.getElementWidth(moduleEl,'answer');// self.unitConversion.pxConversionMm($(moduleEl).width() + 20);
         var height = self.getElementHeight(moduleEl,'answer');//self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
         var titleNumber = $(moduleEl).attr("title-number");
+        var scoreLimit = $(moduleEl).attr('scorelimit') || '16';
         //是否是上一题的补充区域
         //判断当前区域是否有超出的链接模块
         var linkParm = $(moduleEl).attr('data-linkparm') || 0;
@@ -1631,6 +1758,7 @@ var Print = {
         var chooseAnswerInfo = {
           type: moduleInfo.type,
           id: titleNumber,
+          scoreLimit:scoreLimit,
           select:1,
           total:titleNumber.split(',').length,
           selectqts: [
@@ -1693,9 +1821,9 @@ var Print = {
       positionY -= (curPageIndex - 1)*self.pageHeight;
     }
     return {
-      x:(positionX + columnLeft)*self.dpiRadio,
+      x:(positionX + columnLeft - 60)*self.dpiRadio,
       //self.unitConversion.pxConversionMm(positionX + answerLeft + columnLeft).toFixed(3),
-      y:positionY*self.dpiRadio
+      y:(positionY - 20)*self.dpiRadio
       //self.unitConversion.pxConversionMm(positionY + answerTop).toFixed(3)
     };
   }

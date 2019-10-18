@@ -18,14 +18,10 @@ body{
     background: #fff;
 }
 
-
-
 /* 打印需要的样式 开始 */
 @page {
-    size: auto;
-    /* auto is the initial value */
+    size:auto;
     margin: 0px ;
-    /* this affects the margin in the printer settings */
 }
 .printIframeContent{
     background: #fff;
@@ -46,7 +42,6 @@ body{
 .pageContent .pageLabel{
     position: absolute;
     display: flex;
-    height: 44px;
     flex-direction: column;
     bottom: 15px;
     left: 50%;
@@ -254,9 +249,9 @@ body{
 }
 .dtk-content .examNumber .numberCol span i{
     width: 15px;
-    height: 15px;
+    height: 10px;
     font-style: normal;
-    line-height: 15px;
+    line-height: 10px;
     text-align: center;
     font-size:12px;
 }
@@ -329,11 +324,11 @@ body{
 }
 .single-option li em,
 .single-option li span{
-    width: 20px ;
-    height: 20px ;
+    width: 15px ;
+    height: 15px ;
     text-align: center;
-    line-height: 20px ;
-    margin-right: 5px ;
+    line-height: 15px ;
+    margin-right: 10px ;
     font-style: normal;
 }
 
@@ -468,8 +463,8 @@ body{
     position: absolute;
     height: 20px;
     top: 20px;
-    left: 20px;
-    width: calc(100% - 40px);
+    left: 60px;
+    width: calc(100% - 120px);
 }
 .scan-dot.bot{
     top: auto;
@@ -477,11 +472,19 @@ body{
 }
 .scan-dot span{
     position: absolute;
-    width: 20px ;
+    width: 40px ;
     height: 20px;
     left:0;
     top:0;
     background: #000;
+}
+.scan-dot span.center1{
+    right: auto;
+    left: 600px;
+}
+.scan-dot span.center2{
+    left: auto;
+    right: 600px;
 }
 .scan-dot span.right{
     left: auto;

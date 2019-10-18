@@ -18,14 +18,10 @@ body{
     background: #fff;
 }
 
-
-
 /* 打印需要的样式 开始 */
 @page {
-    size: auto;
-    /* auto is the initial value */
+    size:auto;
     margin: 0.00mm ;
-    /* this affects the margin in the printer settings */
 }
 .printIframeContent{
     background: #fff;
@@ -46,7 +42,6 @@ body{
 .pageContent .pageLabel{
     position: absolute;
     display: flex;
-    height: 11.64mm;
     flex-direction: column;
     bottom: 3.97mm;
     left: 50%;
@@ -254,9 +249,9 @@ body{
 }
 .dtk-content .examNumber .numberCol span i{
     width: 3.97mm;
-    height: 3.97mm;
+    height: 2.65mm;
     font-style: normal;
-    line-height: 3.97mm;
+    line-height: 2.65mm;
     text-align: center;
     font-size:3.17mm;
 }
@@ -289,8 +284,7 @@ body{
 }
 .dtk-content .short-answer .module .selTopic{
     height: 3.97mm;
-    display: flex;
-    justify-content: flex-start;
+    display: inline-block;
 }
 .dtk-content .short-answer .module .selTopic span{
     width: 10.58mm;
@@ -330,11 +324,11 @@ body{
 }
 .single-option li em,
 .single-option li span{
-    width: 5.29mm ;
-    height: 5.29mm ;
+    width: 3.97mm ;
+    height: 3.97mm ;
     text-align: center;
-    line-height: 5.29mm ;
-    margin-right: 1.32mm ;
+    line-height: 3.97mm ;
+    margin-right: 2.65mm ;
     font-style: normal;
 }
 
@@ -469,8 +463,8 @@ body{
     position: absolute;
     height: 5.29mm;
     top: 5.29mm;
-    left: 5.29mm;
-    width: calc(100% - 10.58mm);
+    left: 15.88mm;
+    width: calc(100% - 31.75mm);
 }
 .scan-dot.bot{
     top: auto;
@@ -478,11 +472,19 @@ body{
 }
 .scan-dot span{
     position: absolute;
-    width: 5.29mm ;
+    width: 10.58mm ;
     height: 5.29mm;
     left:0;
     top:0;
     background: #000;
+}
+.scan-dot span.center1{
+    right: auto;
+    left: 158.75mm;
+}
+.scan-dot span.center2{
+    left: auto;
+    right: 158.75mm;
 }
 .scan-dot span.right{
     left: auto;
