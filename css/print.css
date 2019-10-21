@@ -17,7 +17,28 @@ body{
     position: relative;
     background: #fff;
 }
-
+#preview-iframe{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #fff;
+    z-index: 1000000;
+}
+#closeIframeBtn{
+    position: fixed;
+    width: 15.88mm;
+    height: 7.94mm;
+    z-index: 1000001;
+    right: 5.29mm;
+    top: 5.29mm;
+    background: green;
+    color: #fff;
+    text-align: center;
+    line-height: 7.94mm;
+    cursor: pointer;
+}
 /* 打印需要的样式 开始 */
 @page {
     size:auto;
@@ -325,10 +346,11 @@ body{
 .single-option li em,
 .single-option li span{
     width: 3.97mm ;
-    height: 3.97mm ;
+    height: 3.17mm ;
     text-align: center;
-    line-height: 3.97mm ;
+    line-height: 3.17mm ;
     margin-right: 2.65mm ;
+    margin-bottom: 1.32mm;
     font-style: normal;
 }
 

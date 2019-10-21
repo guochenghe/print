@@ -59,114 +59,6 @@ var hgc_modal = {
   }
 }
 
-var renderHGCJSON = 
-//类型 1 单选 2多选 11不定项选择 5 填空 7 解答 17 选做
-{
-    "object": [
-        {
-            "wpCode": "500194036006526976",
-            //总分
-            "fullScore": 73,
-            //试卷名称
-            "paperName": "20191012_6锟斤拷元锟斤拷锟斤拷",
-            //命卷人
-            "wpAuthor": "锟斤拷学锟斤拷师",
-            //时间
-            "wpTimes": 120,
-            "questions": [
-                {
-                    "questionTypeId": 1,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "1",
-                    "answer": "D"
-                },
-                {
-                    //类型 1 单选 5填空 7解答 17选做
-                    "questionTypeId": 1,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "2",
-                    "answer": "D"
-                },
-                {
-                    "questionTypeId": 1,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "3",
-                    "answer": "D"
-                },
-                {
-                    "questionTypeId": 1,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "4",
-                    "answer": "D"
-                },
-                {
-                    "questionTypeId": 5,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "5"
-                },
-                {
-                    "questionTypeId": 5,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "6"
-                },
-                {
-                    "questionTypeId": 5,
-                    "fullScore": 5,
-                    "optionCount": 4,
-                    "questionNum": "7"
-                },
-                {
-                  "questionTypeId": 5,
-                  "fullScore": 5,
-                  "optionCount": 4,
-                  "questionNum": "8"
-              },
-              {
-                "questionTypeId": 5,
-                "fullScore": 5,
-                "optionCount": 4,
-                "questionNum": "9"
-            },
-            {
-              "questionTypeId": 5,
-              "fullScore": 5,
-              "optionCount": 4,
-              "questionNum": "10"
-          },
-                {
-                    "questionTypeId": 7,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "11"
-                },
-                {
-                    "questionTypeId": 7,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "12"
-                },
-                {
-                    "questionTypeId": 17,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "13"
-                },
-                {
-                    "questionTypeId": 17,
-                    "fullScore": 12,
-                    "optionCount": 1,
-                    "questionNum": "14"
-                }
-            ]
-        }
-    ]
-}
 /**
  * 定位点的设置
  * top定位点都是基于当前page来定位的
@@ -174,10 +66,13 @@ var renderHGCJSON =
  */
 /**
  * 打印功能主体
- */
-var loginStatus = '/username/3852001/time/1548051379/sig/ce68cbe3faa0d617ba101729f102a093/sessionid/session_39243c50e98678c0266e2a442766e47f';
+*/
+//http://zsyas2.testing.xueping.com
+//
+var loginStatus = '/username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1';
 var domain = 'http://zsyas2.testing.xueping.com';
-var localDomain = 'http://192.168.1.51/index.php';
+//打印样式文件 这里的css 路径帮忙改下
+var printCssPath = '../css/print.css';
 var Print = {
   apis:{
     //获取答题卡信息
@@ -221,7 +116,7 @@ var Print = {
     this.EDITOR = window.wangEditor;
 
     //全局groupId 
-    this.examGroupId = GetQueryString('examGroupId');
+    this.examGroupId = exam_group_id;
     //初始化页面渲染
     this.initPage();
     //初始化打印面积
@@ -250,11 +145,11 @@ var Print = {
   },
   getTopicDetails:function(){
     var self = this;
+    //如果之前保存过，则需要记忆之前的答题卡排版
     $.post(domain+self.apis.getTopicsDetailAPi+loginStatus,{examGroupId:self.examGroupId},function(res){
       res = JSON.parse(res);
       if(res.success){
-        //如果之前保存过，则需要记忆之前的答题卡排版
-        self.renderPage(renderHGCJSON)
+        self.renderPage(res)
         if(res.position){
           self.memoryLayout(JSON.parse(res.position));
         }
@@ -300,8 +195,8 @@ var Print = {
                   questionItem.cut.linkparm:
                   questionItem.selectqts[0].cut.linkparm;
               //如果存在补充模块 ， 则先合并
-              if(+linkParm){
-                if(linkParm === '1'){
+              if(linkParm){
+                if(linkParm === 1){
                   linkQuestionData = questionItem;
                 }else{
                   if(isShortAnswer){
@@ -367,9 +262,9 @@ var Print = {
   },
   renderPage:function(renderJSON){
     var self = this;
-    self.renderExamBaseInfo(renderJSON.object[0]);
+    self.renderExamBaseInfo(renderJSON.object);
 
-    self.renderSubjectInfo(renderJSON.object[0].questions);
+    self.renderSubjectInfo(renderJSON.object.questions);
 
     self.initDom();
 
@@ -1172,8 +1067,17 @@ var Print = {
   previewPrintDiv: function(printPart) {
     var self = this;
     var priviewHtml = self.formatPrintHtml(printPart);
-    localStorage.setItem("previewHtml", priviewHtml);
-    window.open("./preview.html");
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("id", "preview-iframe");
+    document.body.appendChild(iframe);
+    var doc = iframe.contentWindow.document;
+    doc.write('<link rel="stylesheet" type="text/css" href="'+printCssPath+'">');
+    doc.write(priviewHtml);
+    $('body').append('<div id="closeIframeBtn">关闭</div>')
+    $('#closeIframeBtn').click(function(){
+      $('#preview-iframe').remove();
+      $(this).remove();
+    })
   },
   //保存题目坐标信息
   //保存的时候传点坐标和原图
@@ -1227,7 +1131,7 @@ var Print = {
     iframe.setAttribute("id", "print-iframe");
     document.body.appendChild(iframe);
     var doc = iframe.contentWindow.document;
-    doc.write('<link rel="stylesheet" type="text/css" href="./css/print.css">');
+    doc.write('<link rel="stylesheet" type="text/css" href="'+printCssPath+'">');
     doc.write(printHtml);
     doc.close();
     iframe.contentWindow.focus();
@@ -1251,7 +1155,7 @@ var Print = {
         self.savePrintInfo.examGroupId = self.examGroupId;
         var formData = new FormData();
         for(var field in self.savePrintInfo){
-          if(field === 'examGroupId'){
+          if(~'examGroupId|title'.indexOf(field)){
             formData.append(field,self.savePrintInfo[field]);
           }else{
             formData.append(field,JSON.stringify(self.savePrintInfo[field]));
@@ -1270,13 +1174,21 @@ var Print = {
           dataType: "json",
           data: formData,
           success(data) {
-            console.log(data);
+            if(data.success === 1){
+              self.modal.init({
+                content:'保存成功'
+              })
+            }else{
+              self.modal.init({
+                content:'保存失败'
+              })
+            }
           }
         });
         document.body.removeChild(iframe);
       })
       
-    };
+    }
   },
   //下载pdf功能
   downLoadPdf:function(printPart) {
@@ -1290,7 +1202,7 @@ var Print = {
     iframe.setAttribute("id", "print-iframe");
     document.body.appendChild(iframe);
     doc = iframe.contentWindow.document;
-    doc.write('<link rel="stylesheet" type="text/css" href="./css/print.css">');
+    doc.write('<link rel="stylesheet" type="text/css" href="'+printCssPath+'">');
     doc.write(printHtml);
     doc.close();
     iframe.contentWindow.focus();
@@ -1720,7 +1632,7 @@ var Print = {
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16';
         
         //判断当前区域是否有超出的链接模块
-        var linkParm = $(moduleEl).attr('data-linkparm') || 0;
+        var linkParm = +$(moduleEl).attr('data-linkparm') || 0;
         var cutId = $(moduleEl).attr('data-cutId');
         var answerInfo = {
           type: moduleInfo.type,
@@ -1752,7 +1664,7 @@ var Print = {
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16';
         //是否是上一题的补充区域
         //判断当前区域是否有超出的链接模块
-        var linkParm = $(moduleEl).attr('data-linkparm') || 0;
+        var linkParm = +$(moduleEl).attr('data-linkparm') || 0;
         var cutId = $(moduleEl).attr('data-cutId');
 
         var chooseAnswerInfo = {
@@ -1813,15 +1725,15 @@ var Print = {
     //   answerTop = 30;
     // }
     //考虑分栏的定位点
-    if (self.columns > 1 && !curPageIndex % 2) {
-      columnLeft = self.pageWidth;
+    if (self.columns > 1 && !(curPageIndex % 2)) {
+      columnLeft = self.pageWidth/self.columns;
     }
 
     if(curPageIndex > 1){
       positionY -= (curPageIndex - 1)*self.pageHeight;
     }
     return {
-      x:(positionX + columnLeft - 60)*self.dpiRadio,
+      x:(positionX + columnLeft - 59)*self.dpiRadio,
       //self.unitConversion.pxConversionMm(positionX + answerLeft + columnLeft).toFixed(3),
       y:(positionY - 20)*self.dpiRadio
       //self.unitConversion.pxConversionMm(positionY + answerTop).toFixed(3)
