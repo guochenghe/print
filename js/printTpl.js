@@ -3,6 +3,19 @@ var PRINT_TPL = {
     <span>满分：{fullScore}分</span>\
     <span>命卷人：{wpAuthor}</span>\
     <span>审核人：{wpAuthor}</span>',
+    htmlSkeleton:'<!DOCTYPE html>\
+    <html lang="en">\
+    <head>\
+        <meta charset="UTF-8">\
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">\
+        <title>Document</title>\
+        <link rel="stylesheet" href="{cssPath}">\
+    </head>\
+    <body>\
+      {pdfContent}\
+    </body>\
+    </html>',
     //选题题模块
     singleSelectTpl:'<div class="single-select answerModule" data-type="singleSelect">\
         <h3>选择题</h3>\

@@ -72,7 +72,7 @@ var hgc_modal = {
 var loginStatus = '/username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1';
 var domain = 'http://zsyas2.testing.xueping.com';
 //打印样式文件 这里的css 路径帮忙改下
-var printCssPath = '../css/print.css';
+var printCssPath = 'http://zsyas2.testing.xueping.com/css/online/print.css';
 var Print = {
   apis:{
     //获取答题卡信息
@@ -1137,6 +1137,13 @@ var Print = {
     iframe.contentWindow.focus();
     iframe.contentWindow.onload = function() {
       var pages = doc.getElementsByClassName("printIframeContent");
+      //生成的pdf所需要的html
+      var pdfHtml = self.tpls.htmlSkeleton.substitute({
+        cssPath:printCssPath,
+        pdfContent:printHtml
+      });
+      console.log(pdfHtml)
+
       var html2canvasPromise = [];
       //html2canvas 返回的是一个promise
       [].slice.call(pages).forEach(function(pageItem){
@@ -1150,12 +1157,12 @@ var Print = {
           document.body.appendChild(img)
           imgFiles.push(dataURLtoFile(dataUrl,'pic'+index+'.jpeg'));
         })
-        
+        self.savePrintInfo.pdfHtml = pdfHtml;
         self.savePrintInfo.position = position;
         self.savePrintInfo.examGroupId = self.examGroupId;
         var formData = new FormData();
         for(var field in self.savePrintInfo){
-          if(~'examGroupId|title'.indexOf(field)){
+          if(~'examGroupId|title|pdfHtml'.indexOf(field)){
             formData.append(field,self.savePrintInfo[field]);
           }else{
             formData.append(field,JSON.stringify(self.savePrintInfo[field]));
@@ -1230,13 +1237,8 @@ var Print = {
     //设置答题卡title
     $formatDtkTitle.html($originDtkTitle.children('textarea').val());
     $originShortAnswer.each(function(index, el) {
-      $(el)
-        .children(".module")
-        .each(function(idx, elm) {
-          var $formatModuleItem = $formatShortAnswer
-            .eq(index)
-            .children(".module")
-            .eq(idx);
+      $(el).children(".module").each(function(idx, elm) {
+          var $formatModuleItem = $formatShortAnswer.eq(index).children(".module").eq(idx);
           var $scortColumn = $(elm).children(".scortColumn");
           var editorIndex = $(elm).attr("data-editorIndex");
           if (!editorIndex) return;
@@ -1269,7 +1271,8 @@ var Print = {
       var printHtml = '';
       for(var k=0;k<2;k++){
         var pageItem = $formatPageContent.eq(j*2+k);
-        printHtml+= '<div class="pageContent" style="'+pageItem.attr('style')+'">'+(pageItem.length?pageItem.html():'')+'</div>';
+        var pageContentStyle = pageItem.attr('style')?pageItem.attr('style'):'';
+        printHtml+= '<div class="pageContent" style="'+pageContentStyle+'">'+(pageItem.length?pageItem.html():'')+'</div>';
       }
       var scanDotHtml = self.tpls['scanDotPaper'+(j+1)];
       printHtmlForPaperHtml+=self.tpls.printIframeContentTpl.substitute({
