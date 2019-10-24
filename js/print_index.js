@@ -153,7 +153,7 @@ var Print = {
       res = JSON.parse(res);
       if(res.success){
         self.renderPage(res)
-        if(res.position && false){
+        if(res.position){
           self.memoryLayout(JSON.parse(res.position));
         }
       }else{
