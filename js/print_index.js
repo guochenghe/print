@@ -75,7 +75,7 @@ var hgc_modal = {
 var loginStatus = '/username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1';
 var domain = 'http://zsyas2.testing.xueping.com';
 //打印样式文件 这里的css 路径帮忙改下
-var printCssPath = '../css/print_index.css';
+var printCssPath = '../css/print.css';
 var Print = {
   apis:{
     //获取答题卡信息
@@ -1201,22 +1201,23 @@ var Print = {
       var pages = doc.getElementsByClassName("printIframeContent");
       //生成的pdf所需要的html
       var pdfHtml = self.tpls.htmlSkeleton+printHtml+"</body></html>";
+      console.log(pdfHtml)
       /**
-       * 
+       * domain+'/print/htmlToPdf'+loginStatus
+       * 'http://192.168.1.105:108/index.php/print/htmlToPdf'
+       * widthm:'550mm',
+         heightm:'396mm'
        */
-      console.log(pdfHtml.replace(/\'/g,'"'))
-      $.post(domain+'/print/htmlToPdf'+loginStatus,{
+      var testApi = domain+'/print/htmlToPdf';
+      var localApi = 'http://192.168.1.105:108/index.php/print/htmlToPdf';
+      $.post(testApi+loginStatus,{
         pdfHtml:pdfHtml.replace(/\'/g,'"'),
         examGroupId:self.examGroupId,
-        pageSize:'A3',
-        orientation:'1',
         widthm:'420mm',
-        heightm:'270mm'
+        heightm:'297mm'
       },function(res){
         console.log(JSON.parse(res).message)
       })
-
-      $.post('/getPdf',function(res){})
 
       var html2canvasPromise = [];
       //html2canvas 返回的是一个promise

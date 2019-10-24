@@ -41,9 +41,17 @@
         }
         /* 打印需要的样式 开始 */
         @page {
-            size:"A3";
-            margin: 0.00mm ;
+            size:"auto';
+            margin: 0.00mm;
+            
         }
+        
+        @media print{
+            html,body{
+                zoom: 0.865;
+            }
+        }
+        
         .printIframeContent{
             background: #fff;
             display: -webkit-box;
@@ -366,7 +374,7 @@
         .fl{float: left;}
         .fr{float: right;}
         .clearfix:after{
-            content:"";
+            content:'';
             display: block;
             clear: both;
         }

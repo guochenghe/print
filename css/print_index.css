@@ -41,9 +41,16 @@ body{
 }
 /* 打印需要的样式 开始 */
 @page {
-    size:'A3';
-    margin: 0px ;
+    size:'auto';
+    margin: 0px;
 }
+
+@media print{
+    html,body{
+        zoom: 0.865;
+    }
+}
+
 .printIframeContent{
     background: #fff;
     display: -webkit-box;

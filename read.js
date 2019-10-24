@@ -8,6 +8,6 @@ let replaceContent = content.toString().replace(/([+-]?(0|([1-9]\d*))(\.\d+)?)px
 fs.writeFileSync('./css/print.css',replaceContent);
 
 let printTplContent = fs.readFileSync('./js/printTplItem.js');
-let newPrintTplContent = `var styleStr = \`${content.toString().replace('\'','"')};\` ${printTplContent.toString()}`;
+let newPrintTplContent = `var styleStr = \`${replaceContent.replace('\'','"')};\` ${printTplContent.toString()}`;
 
 fs.writeFileSync('./js/printTpl.js',newPrintTplContent)
