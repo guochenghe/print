@@ -66,22 +66,25 @@ var hgc_modal = {
  * 定位点的设置
  * top定位点都是基于当前page来定位的
  * left
- */
+*/
 /**
  * 打印功能主体
+ * /username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1
+ * http://zsyas2.testing.xueping.com
 */
-//http://zsyas2.testing.xueping.com
-//
-var loginStatus = '/username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1';
-var domain = 'http://zsyas2.testing.xueping.com';
+//http://zsyas2.testing.xueping.com/css/online/print.css
+var loginStatus = '';
+var domain = '';
 //打印样式文件 这里的css 路径帮忙改下
-var printCssPath = '../css/print.css';
+var printCssPath = 'http://zsyas2.testing.xueping.com/css/online/print.css';
 var Print = {
   apis:{
     //获取答题卡信息
     getTopicsDetailAPi:'/print/getPaperWithTopicsDetails',
     //保存答题卡信息
-    saveTopicsDetailsApi:'/print/saveCardOnline'
+    saveTopicsDetailsApi:'/print/saveCardOnline',
+    //保存为pdf
+    htmlToPdfApi:'/print/htmlToPdf'
   },
   init: function(config) {
     
@@ -144,6 +147,7 @@ var Print = {
   initPage: function() {
     var self = this;
     $("#hgc_print").height($(window).height());
+
     self.getTopicDetails()
   },
   getTopicDetails:function(){
@@ -163,7 +167,250 @@ var Print = {
       }
     })
   },
+  /*--------------------------------------------------------------------------------------------------------------------
+  初始页面布局功能开始
+  -----------------------------------------------------------------------------------------------------------------------*/
+  renderPage:function(renderJSON){
+    var self = this;
+    self.renderExamBaseInfo(renderJSON.object);
 
+    self.renderSubjectInfo(renderJSON.object.questions);
+
+    self.initDom();
+
+    self.bindEvent();
+
+    self.initEvent();
+  },
+  //渲染答题卡基本信息 准考证号、名称、考试时间等
+  renderExamBaseInfo:function(examInfo){
+    var self = this;
+    //答题卡题目类型
+    $('#dtkName textarea').val(examInfo.paperName)
+    var examInfoHtml = self.tpls.examInfoTpl.substitute(examInfo);
+    $('#examInfo').html(examInfoHtml);
+    //准考证号信息
+    self.renderExamNumberInfo(examInfo)
+  },
+  //准考证号信息
+  renderExamNumberInfo:function(examInfo){
+    var self = this;
+    //准考证号类型 1学校准考证 0系统准考证
+    var school_card_status = examInfo.school_card_status;
+    //准考证号长度 
+    var school_card_length = examInfo.school_card_length;
+
+    //公共边框 -- 右边框
+    var examNumberHtml = '';
+    for(var colIndex=0;colIndex<school_card_length;colIndex++){
+      var firstColBorder = '';
+      //第一列 左边框
+      //第一行 上边框 下边框
+      //最后一行 下边框
+      if(!colIndex){
+        firstColBorder = '<b class="left moduleBorder"></b>'
+      }
+
+      examNumberHtml+=self.tpls.examNumberItemTpl.substitute({
+        firstColBorder:firstColBorder
+      });
+    }
+
+    $('#hgc_examNumber .ticketNumber').html(examNumberHtml);
+
+
+  },
+  renderSubjectDataFormat:function(questions){
+    var self = this;
+    //题型
+    /**
+     * "questionTypeId": 1,
+        "fullScore": 5,
+        "optionCount": 4,
+        "questionNum": "1",
+        "answer": "D"
+     */
+    //类型 1 单选 5 填空 7 解答 17 选做
+    // 先做题型分类
+    var questFieldMap = {
+      1:'singleSelect',
+      5:'fillInBlank',
+      7:'shortAnswer',
+      17:'chooseAnswer'
+    }
+    var questionClassify = questions.reduce(function(questionMap,item){
+      var questionMapItem = questionMap[questFieldMap[item.questionTypeId]];
+      if(questionMapItem){
+        questionMapItem.push(item)
+      }else{
+        questionMap[questFieldMap[item.questionTypeId]] = [item]
+      }
+      return questionMap;
+    },{
+      singleSelect:[],
+      fillInBlank:[],
+      shortAnswer:[],
+      chooseAnswer:[]
+    })
+
+    return questionClassify;
+  },
+  //渲染答题卡题目题型信息
+  renderSubjectInfo:function(questions){
+    var self = this;
+    //格式化题型题号信息
+    var questionClassify = self.renderSubjectDataFormat(questions);
+    console.log(questionClassify)
+    //渲染右侧操作栏 题目列表信息
+    self.renderSubjectListInfo(questionClassify);
+
+    //保存题目定位点的时候 获取 题目数量 分数 等信息
+    self.getSaveSubjectInfo(questionClassify);
+    var dtkContentEl = $('.dtk-content');
+    for(var subjectType in questionClassify){
+      if(!questionClassify[subjectType].length)return;
+      self[subjectType+'Render'](questionClassify[subjectType],dtkContentEl);
+    }
+  },
+  renderSubjectListInfo:function(questionClassify){
+    var self = this;
+    var nameMap = {
+      singleSelect:'单选题',
+      fillInBlank:'填空题',
+      shortAnswer:'解答题',
+      chooseAnswer:'选做题'
+
+    }
+    var listItemTpl = '<li><span>{name}</span><span>{quantityStart}~{quantityEnd}</span></li>';
+    var listHtml = '';
+    for(var name in questionClassify){
+      if(!questionClassify[name][0])continue;
+      var quantityStart = +questionClassify[name][0].questionNum;
+      var quantityEnd = quantityStart+questionClassify[name].length-1;
+      listHtml+=listItemTpl.substitute({
+        name:nameMap[name],
+        quantityStart:quantityStart,
+        quantityEnd:quantityEnd
+      })
+    }
+
+    $('#subjectList').html(listHtml);
+  },
+  singleSelectRender:function(datas,appendEl){
+    var self = this;
+    var singleSelectTpl = self.tpls.singleSelectOptionTpl;
+    var singleSelectHtml = '';
+    var singleColHtml = ''
+    datas.forEach(function(singleItem,index){
+      var singleContent = '';
+      for(var i=0;i<singleItem.optionCount;i++){
+        var option = String.fromCharCode(65+i);
+        singleContent+='<span data-option="{option}">[{option}]</span>'.substitute({option:option});
+      }
+      singleColHtml+=singleSelectTpl.substitute({
+        _index:++index,
+        singleContent:singleContent,
+        questionNum:singleItem.questionNum,
+        answer:singleItem.answer
+      })
+
+      if(!(index%5)){
+        singleSelectHtml +='<ul class="single-option module clearfix" id="singleOptionModule">'+singleColHtml+'</ul>';
+        singleColHtml = '';
+      }
+    })
+
+    var SingleSelectModuleHtml  = self.tpls.singleSelectTpl.substitute({
+      singleSelectContent:singleSelectHtml
+    })
+    appendEl.append(SingleSelectModuleHtml)
+  },
+  fillInBlankRender:function(datas,appendEl){
+    var self = this;
+    var fillInBlankTpl = self.tpls.fillInBlankItemTpl;
+    var fillInBlankHtml = '';
+    datas.forEach(function(fillInBlankItem){
+      fillInBlankHtml+=fillInBlankTpl.substitute(fillInBlankItem);
+    })
+
+    var fillInBlankModuleHtml = self.tpls.fillInBlankTpl.substitute({
+      fillInBlankContent:fillInBlankHtml
+    })
+    appendEl.append(fillInBlankModuleHtml);
+  },
+  shortAnswerRender:function(datas,appendEl){
+    var self = this;
+    var shortAnswerTpl = self.tpls.shortAnswerItemTpl
+    var shortAnswerHtml = '';
+    datas.forEach(function(shortAnswerItem){
+      var scoreColumnHtml = '<i class="bottom moduleBorder"></i>'
+      for(var i=1;i<=16;i++){
+        var borderHtml = '<i class="right moduleBorder"></i>';
+        if(i>=16){
+          borderHtml='';
+        }
+        scoreColumnHtml+='<span>'+borderHtml+i+'</span>';
+      }
+      shortAnswerItem.scoreColumnHtml = scoreColumnHtml;
+      shortAnswerHtml+=shortAnswerTpl.substitute(shortAnswerItem)
+    })
+
+    var shortAnswerModuleHtml = self.tpls.shortAnswerTpl.substitute({
+      shortAnswerContent:shortAnswerHtml
+    });
+    appendEl.append(shortAnswerModuleHtml)
+    //初始化解答题富文本插件
+    datas.forEach(function(item){
+      self.createShortAnswer(item.questionNum);
+    })
+  },
+  chooseAnswerRender:function(datas,appendEl){
+    var self = this;
+    var chooseAnswerTpl = self.tpls.chooseAnswerItemTpl;
+    var startChooseNumber = 0;
+    var titleNumber = '';
+    var selOptionHtml = '';
+    datas.forEach(function(item,index){
+      if(!startChooseNumber)startChooseNumber = item.questionNum;
+      titleNumber+=item.questionNum+',';
+      selOptionHtml+='<span data-titleNumber="{titleNumber}" data-option="[{char}]">[{char}]</span>'.substitute({
+        char:String.fromCharCode(65+index),
+        titleNumber:item.questionNum
+      })
+    })
+    var scoreColumnHtml = '<i class="bottom moduleBorder"></i>'
+    for(var i=1;i<=16;i++){
+      var borderHtml = '<i class="right moduleBorder"></i>';
+      if(i>=16){
+        borderHtml='';
+      }
+      scoreColumnHtml+='<span>'+borderHtml+i+'</span>';
+    }
+
+    chooseAnswerHtml = chooseAnswerTpl.substitute({
+      questionNum:startChooseNumber,
+      //4,5,6,
+      titleNumber:titleNumber.substring(0,titleNumber.length-1),
+      selOptionHtml:selOptionHtml,
+      scoreColumnHtml:scoreColumnHtml
+    })
+
+    var chooseAnswerModuleHtml = self.tpls.chooseAnswerTpl.substitute({
+      chooseAnswerContent:chooseAnswerHtml
+    })
+    appendEl.append(chooseAnswerModuleHtml)
+
+    self.createShortAnswer(startChooseNumber);
+   
+  },
+   /*--------------------------------------------------------------------------------------------------------------------
+  初始页面布局功能结束
+  -----------------------------------------------------------------------------------------------------------------------*/
+
+
+ /*--------------------------------------------------------------------------------------------------------------------------------
+  记忆布局功能开始
+  ------------------------------------------------------------------------------------------------------------------------------------*/
   memoryLayout:function(res){
     var self = this;
     var formatData = self.memoryDataFormat(res);
@@ -277,207 +524,9 @@ var Print = {
         });
       }
   },
-  renderPage:function(renderJSON){
-    var self = this;
-    self.renderExamBaseInfo(renderJSON.object);
-
-    self.renderSubjectInfo(renderJSON.object.questions);
-
-    self.initDom();
-
-    self.bindEvent();
-
-    self.initEvent();
-  },
-  //渲染答题卡基本信息 准考证号、名称、考试时间等
-  renderExamBaseInfo:function(examInfo){
-    var self = this;
-    //答题卡题目类型
-    $('#dtkName textarea').val(examInfo.paperName)
-    var examInfoHtml = self.tpls.examInfoTpl.substitute(examInfo);
-    $('#examInfo').html(examInfoHtml);
-    //准考证号信息
-    self.renderExamNumberInfo(examInfo)
-  },
-  //准考证号信息
-  renderExamNumberInfo:function(examInfo){
-    var self = this;
-    //准考证号类型 1学校准考证 0系统准考证
-    var school_card_status = examInfo.school_card_status;
-    //准考证号长度 
-    var school_card_length = examInfo.school_card_length;
-
-    //公共边框 -- 右边框
-    var examNumberHtml = '';
-    for(var colIndex=0;colIndex<school_card_length;colIndex++){
-      var firstColBorder = '';
-      //第一列 左边框
-      //第一行 上边框 下边框
-      //最后一行 下边框
-      if(!colIndex){
-        firstColBorder = '<b class="left moduleBorder"></b>'
-      }
-
-      examNumberHtml+=self.tpls.examNumberItemTpl.substitute({
-        firstColBorder:firstColBorder
-      });
-    }
-
-    $('#hgc_examNumber .ticketNumber').html(examNumberHtml);
-
-
-  },
-  //渲染答题卡题目题型信息
-  renderSubjectInfo:function(questions){
-    var self = this;
-    //题型
-    /**
-     * "questionTypeId": 1,
-        "fullScore": 5,
-        "optionCount": 4,
-        "questionNum": "1",
-        "answer": "D"
-     */
-    //类型 1 单选 5 填空 7 解答 17 选做
-    // 先做题型分类
-    var questFieldMap = {
-      1:'singleSelect',
-      5:'fillInBlank',
-      7:'shortAnswer',
-      17:'chooseAnswer'
-    }
-    var questionClassify = questions.reduce(function(questionMap,item){
-      var questionMapItem = questionMap[questFieldMap[item.questionTypeId]];
-      if(questionMapItem){
-        questionMapItem.push(item)
-      }else{
-        questionMap[questFieldMap[item.questionTypeId]] = [item]
-      }
-      return questionMap;
-    },{
-      singleSelect:[],
-      fillInBlank:[],
-      shortAnswer:[],
-      chooseAnswer:[]
-    })
-
-    console.log(questionClassify)
-
-    //保存题目定位点的时候 获取 题目数量 分数 等信息
-    self.getSaveSubjectInfo(questionClassify);
-    var dtkContentEl = $('.dtk-content');
-    for(var subjectType in questionClassify){
-      if(!questionClassify[subjectType].length)return;
-      self[subjectType+'Render'](questionClassify[subjectType],dtkContentEl);
-    }
-  },
-  singleSelectRender:function(datas,appendEl){
-    var self = this;
-    var singleSelectTpl = self.tpls.singleSelectOptionTpl;
-    var singleSelectHtml = '';
-    var singleColHtml = ''
-    datas.forEach(function(singleItem,index){
-      var singleContent = '';
-      for(var i=0;i<singleItem.optionCount;i++){
-        var option = String.fromCharCode(65+i);
-        singleContent+='<span data-option="{option}">[{option}]</span>'.substitute({option:option});
-      }
-      singleColHtml+=singleSelectTpl.substitute({
-        _index:++index,
-        singleContent:singleContent,
-        questionNum:singleItem.questionNum,
-        answer:singleItem.answer
-      })
-
-      if(!(index%5)){
-        singleSelectHtml +='<ul class="single-option module clearfix" id="singleOptionModule">'+singleColHtml+'</ul>';
-        singleColHtml = '';
-      }
-    })
-
-    var SingleSelectModuleHtml  = self.tpls.singleSelectTpl.substitute({
-      singleSelectContent:singleSelectHtml
-    })
-    appendEl.append(SingleSelectModuleHtml)
-  },
-  fillInBlankRender:function(datas,appendEl){
-    var self = this;
-    var fillInBlankTpl = self.tpls.fillInBlankItemTpl;
-    var fillInBlankHtml = '';
-    datas.forEach(function(fillInBlankItem){
-      fillInBlankHtml+=fillInBlankTpl.substitute(fillInBlankItem);
-    })
-
-    var fillInBlankModuleHtml = self.tpls.fillInBlankTpl.substitute({
-      fillInBlankContent:fillInBlankHtml
-    })
-    appendEl.append(fillInBlankModuleHtml);
-  },
-  shortAnswerRender:function(datas,appendEl){
-    var self = this;
-    var shortAnswerTpl = self.tpls.shortAnswerItemTpl
-    var shortAnswerHtml = '';
-    datas.forEach(function(shortAnswerItem){
-      var scoreColumnHtml = '<i class="bottom moduleBorder"></i>'
-      for(var i=1;i<=16;i++){
-        var borderHtml = '<i class="right moduleBorder"></i>';
-        if(i>=16){
-          borderHtml='';
-        }
-        scoreColumnHtml+='<span>'+borderHtml+i+'</span>';
-      }
-      shortAnswerItem.scoreColumnHtml = scoreColumnHtml;
-      shortAnswerHtml+=shortAnswerTpl.substitute(shortAnswerItem)
-    })
-
-    var shortAnswerModuleHtml = self.tpls.shortAnswerTpl.substitute({
-      shortAnswerContent:shortAnswerHtml
-    });
-    appendEl.append(shortAnswerModuleHtml)
-    //初始化解答题富文本插件
-    datas.forEach(function(item){
-      self.createShortAnswer(item.questionNum);
-    })
-  },
-  chooseAnswerRender:function(datas,appendEl){
-    var self = this;
-    var chooseAnswerTpl = self.tpls.chooseAnswerItemTpl;
-    var startChooseNumber = 0;
-    var titleNumber = '';
-    var selOptionHtml = '';
-    datas.forEach(function(item,index){
-      if(!startChooseNumber)startChooseNumber = item.questionNum;
-      titleNumber+=item.questionNum+',';
-      selOptionHtml+='<span data-titleNumber="{titleNumber}" data-option="[{char}]">[{char}]</span>'.substitute({
-        char:String.fromCharCode(65+index),
-        titleNumber:item.questionNum
-      })
-    })
-    var scoreColumnHtml = '<i class="bottom moduleBorder"></i>'
-    for(var i=1;i<=16;i++){
-      var borderHtml = '<i class="right moduleBorder"></i>';
-      if(i>=16){
-        borderHtml='';
-      }
-      scoreColumnHtml+='<span>'+borderHtml+i+'</span>';
-    }
-
-    chooseAnswerHtml = chooseAnswerTpl.substitute({
-      questionNum:startChooseNumber,
-      //4,5,6,
-      titleNumber:titleNumber.substring(0,titleNumber.length-1),
-      selOptionHtml:selOptionHtml,
-      scoreColumnHtml:scoreColumnHtml
-    })
-
-    var chooseAnswerModuleHtml = self.tpls.chooseAnswerTpl.substitute({
-      chooseAnswerContent:chooseAnswerHtml
-    })
-    appendEl.append(chooseAnswerModuleHtml)
-
-    self.createShortAnswer(startChooseNumber);
-   
-  },
+  /*--------------------------------------------------------------------------------------------------------------------------------
+  记忆布局功能结束
+  ------------------------------------------------------------------------------------------------------------------------------------*/
   initDom: function() {
     var self = this;
     self.$layoutItem = $("#hgc_print .layoutItem");
@@ -575,7 +624,8 @@ var Print = {
     });
     //下载pdf
     $('#downLoadBtn').click(function(){
-      self.downLoadPdf('printcontent');
+      var $this = $(this);
+      self.downLoadPdf($this);
     })
     //答题卡布局
     self.$layoutItem.click(function() {
@@ -846,6 +896,7 @@ var Print = {
     var self = this;
     //找出超出的区域
     var overPart = self.getOverModule(curPageEl);
+    console.log(overPart)
     if (overPart) {
       self.addPrintArea(curPageEl, overPart);
     } else {
@@ -869,12 +920,12 @@ var Print = {
     var subjectHtml = "";
     //合并的简答题区域
     var overAnswerHtml = "";
-    //新建page
-    var newPage = "";
     //判断是否是当前鼠标操作答题区域的坐标
     var curOperation = part[0] === self.curDtkModelEl[0];
     //通过缩放确定每个页面需要移除的元素
     var removeElements = [];
+    //需要重置富文本编辑功能区域的id
+    var resetEditorIds = [];
 
     var nextPageEl = curPageEl.next();
     //首先判断是要删除下一个分页的补充模块如果下一个分页存在的话
@@ -898,7 +949,15 @@ var Print = {
         var hasTitle = modulePrev.length && modulePrev[0].tagName === 'H3';
         //1 新增新模块
         subjectHtml += self.addNewModule(part);
-        //2 移除老模块
+        //2 判断是否有需要重置的富文本
+        var editorEl = part.children('.editorContent');
+        if(editorEl.length){
+          resetEditorIds.push({
+            editorId:editorEl.attr('id'),
+            toolbarId:editorEl.prev().attr('id')
+          })
+        }
+        //3 移除老模块
         removeElements.push(part);
         hasTitle && removeElements.push(modulePrev);
       } else {
@@ -960,26 +1019,61 @@ var Print = {
     if (nextPageEl.length) {
       nextPageEl.children(".dtk-content").prepend(overAnswerHtml);
     } else {
-      //新建的分页
-      self.totalPage++;
-      self.currentPage++;
-      self.currentPaper = Math.ceil(self.totalPage/(self.columns*2));
-      self.currentPaperPage = self.totalPage%4?self.totalPage%4:0;
 
-      newPage = self.tpls.pageModuleTpl.substitute({
-        subjectModule: overAnswerHtml,
-        currentPage:self.currentPage,
-        totalPage:self.totalPage,
-        currentPaper:self.currentPaper,
-        currentPaperPage:self.currentPaperPage,
-      });
-      $("#printcontent").append(newPage);
+      self.addPage(overAnswerHtml);
+
       nextPageEl = $("#printcontent").children(".pageContent:last()");
     }
 
     curOperation && self.createShortAnswer(self.editorIndex);
+    //重置富文本
+    self.resetAddNewModuleEditor(resetEditorIds);
     //递归轮询判断
     self.changePrintArea(nextPageEl);
+  },
+  //新建分栏
+  /**
+   * 
+   * @param {上一栏超出的模块html} overAnswerHtml 
+   */
+  addPage:function(overAnswerHtml){
+    var self = this;
+    //新建的分页
+    self.totalPage++;
+    self.currentPage++;
+    self.currentPaper = Math.ceil(self.totalPage/self.columns);
+    self.currentPaperPage = self.totalPage%4?self.totalPage%4:0;
+    //新建page
+    var newPage = self.tpls.pageModuleTpl.substitute({
+      subjectModule: overAnswerHtml,
+      currentPage:self.currentPage,
+      totalPage:self.totalPage,
+      currentPaper:self.currentPaper,
+      currentPaperPage:self.currentPaperPage,
+    });
+    $("#printcontent").append(newPage);
+
+    $('.pageLabel').each(function(){
+      $(this).find('.totalPage').html(self.totalPage);
+    })
+  },
+  resetAddNewModuleEditor:function(resetEditorIds){
+    var self = this;
+    /**
+     * editorId
+     * toolbarId
+     */
+    resetEditorIds.forEach(function(resetEditorId){
+      var editorIndex = resetEditorId.editorId.match(/\d+/g)[0];
+      $('#'+resetEditorId.toolbarId).html('');
+      var editor = new self.EDITOR(
+        "#" + resetEditorId.toolbarId,
+        "#" + resetEditorId.editorId
+      )
+      editor.create();
+      $('#'+resetEditorId.editorId).html(self.editorArea['editor'+editorIndex].txt.html());
+      self.editorArea["editor" + editorIndex] = editor;
+    })
   },
   //新模块 part
   addNewModule:function(part){
@@ -1115,7 +1209,6 @@ var Print = {
   createShortAnswer: function(editorIndex) {
     var self = this;
     //this.createShortAnswer("#toolbar2", "#editorContent2", 2);
-    console.log(editorIndex)
     var editor = new self.EDITOR(
       "#toolbar" + editorIndex,
       "#editorContent" + editorIndex
@@ -1201,16 +1294,13 @@ var Print = {
       var pages = doc.getElementsByClassName("printIframeContent");
       //生成的pdf所需要的html
       var pdfHtml = self.tpls.htmlSkeleton+printHtml+"</body></html>";
-      console.log(pdfHtml)
       /**
        * domain+'/print/htmlToPdf'+loginStatus
        * 'http://192.168.1.105:108/index.php/print/htmlToPdf'
        * widthm:'550mm',
          heightm:'396mm'
        */
-      var testApi = domain+'/print/htmlToPdf';
-      var localApi = 'http://192.168.1.105:108/index.php/print/htmlToPdf';
-      $.post(testApi+loginStatus,{
+      $.post(domain+self.apis.htmlToPdfApi+loginStatus,{
         pdfHtml:pdfHtml.replace(/\'/g,'"'),
         examGroupId:self.examGroupId,
         widthm:'420mm',
@@ -1272,22 +1362,10 @@ var Print = {
     }
   },
   //下载pdf功能
-  downLoadPdf:function(printPart) {
+  downLoadPdf:function($this) {
     var self = this;
-    var printHtml = self.formatPrintHtml(printPart);
-    var doc = null;
-    iframe = document.createElement("iframe");
-    iframe.setAttribute("id", "print-iframe");
-    document.body.appendChild(iframe);
-    doc = iframe.contentWindow.document;
-    doc.write('<link rel="stylesheet" type="text/css" href="'+printCssPath+'">');
-    doc.write(printHtml);
-    doc.close();
-    iframe.contentWindow.focus();
-    iframe.contentWindow.onload = function(){
-      iframe.contentWindow.print()
-      $('#print-iframe').remove();
-    }
+    $this.attr('href','http://zsyas2.testing.xueping.com/assets/pdf/online_answer/576/26280519646141822-online_answer.pdf')
+    
   },
   /**
    * 处理需要打印的html

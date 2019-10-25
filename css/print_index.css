@@ -1,5 +1,4 @@
 
-*{margin: 0;padding: 0;border:0;list-style: none;}
 
 body{
     background: #ddd;
@@ -13,10 +12,7 @@ body{
 .formatContent{
     display: none;
 }
-.pageContent{
-    position: relative;
-    background: #fff;
-}
+
 #preview-iframe{
     position: fixed;
     width: 100%;
@@ -39,18 +35,54 @@ body{
     line-height: 30px;
     cursor: pointer;
 }
-/* 打印需要的样式 开始 */
-@page {
-    size:'auto';
-    margin: 0px;
-}
 
+/*printstyle:start*/
 @media print{
+    @page {
+        size:'auto';
+        margin: 0px;
+    }
     html,body{
         zoom: 0.865;
     }
 }
-
+*{margin: 0;padding: 0;border:0;list-style: none;}
+.fl{float: left;}
+.fr{float: right;}
+.clearfix:after{
+    content:'';
+    display: block;
+    clear: both;
+}
+.moduleBorder{
+    position: absolute;
+    background: #000;
+    
+}
+.moduleBorder.top{
+    width: 100%;
+    height: 1px;
+    left: 0;
+    top:0;
+}
+.moduleBorder.right{
+    width: 1px;
+    height: 100%;
+    right: 0;
+    top:0;
+}
+.moduleBorder.bottom{
+    width: 100%;
+    height: 1px;
+    left: 0;
+    bottom:0;
+}
+.moduleBorder.left{
+    width: 1px;
+    height: 100%;
+    left: 0;
+    top:0;
+}
 .printIframeContent{
     background: #fff;
     display: -webkit-box;
@@ -69,6 +101,10 @@ body{
 }
 .printIframeContent.column3 .pageContent{
     width: 33.33%;
+}
+.pageContent{
+    position: relative;
+    background: #fff;
 }
 .pageContent .pageLabel{
     position: absolute;
@@ -91,23 +127,6 @@ body{
     font-size: 12px;
     text-align: center;
     line-height: 22px;
-}
-.pageContent .pageLabel .size{
-    position: relative;
-    width: 0px;
-    height: 0px;
-    border-top: 11px solid #999;
-    border-bottom: 11px solid #999;
-    border-left: 42px solid #999;
-    border-right: 42px solid #999;
-}
-.pageContent .pageLabel .size .itemContent{
-    position: absolute;
-    width:84px;
-    height: 22px;
-    left: -42px;
-    top: -11px;
-    color: #fff;
 }
 .pageContent .bindingLine{
     position: absolute;
@@ -222,7 +241,6 @@ body{
     line-height: 50px;
     text-align: center;
 }
-
 .dtk-content .noticeInfo{
     position: relative;
 }
@@ -274,7 +292,6 @@ body{
     width: 15px;
     height:10px;
 }
-
 .dtk-content .examNumber{
     padding: 10px 0;
 }
@@ -315,7 +332,6 @@ body{
     height: 200px;
     border:1px dashed #333;
 }
-
 .dtk-content h3{
     font-size: 14px ;
     color: #333;
@@ -352,13 +368,13 @@ body{
     width: 100%;
 }
 .dtk-content .module .scortColumn.col-16 span{
-    width: 41px;
+    width: 6.25%;
 }
 .dtk-content .module .scortColumn.col-29 span{
-    width: 47px;
+    width: 7.14%;
 }
 .dtk-content .module .scortColumn.col-49 span{
-    width: 41px;
+    width: 6.25%;
 }
 .dtk-content .module .scortColumn span{
     float: left;
@@ -370,44 +386,7 @@ body{
 .dtk-content .module .scortColumn span:last-child{
     border-right:0;
 }
-.fl{float: left;}
-.fr{float: right;}
-.clearfix:after{
-    content:'';
-    display: block;
-    clear: both;
-}
-.moduleBorder{
-    position: absolute;
-    background: #000;
-    
-}
-.moduleBorder.top{
-    width: 100%;
-    height: 1px;
-    left: 0;
-    top:0;
-}
-.moduleBorder.right{
-    width: 1px;
-    height: 100%;
-    right: 0;
-    top:0;
-}
-.moduleBorder.bottom{
-    width: 100%;
-    height: 1px;
-    left: 0;
-    bottom:0;
-}
-.moduleBorder.left{
-    width: 1px;
-    height: 100%;
-    left: 0;
-    top:0;
-}
 .singleContent{
-    width: 600px;
     position: relative;
 }
 .singleContent .module{
@@ -418,7 +397,6 @@ body{
     width: 25%;
     max-height: 100px;
 }
-
 .single-option li em,
 .single-option li span{
     float:left;
@@ -430,43 +408,25 @@ body{
     margin-bottom: 5px;
     font-style: normal;
 }
-
 .short-answer textarea{
     width: 100%;
     resize: vertical;
     outline: none;
 }
-
-/* 解答题 */
-.short-answer .toolbar{
-    position: absolute;
-    width: 100%;
-    top: -30px ;
-    left: 0;
-    z-index: 100000;
-    border:1px  solid #999;
-    background: #fff;
-    display: none;
-}
-.short-answer .module:hover .toolbar{
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-}
 .subjectCol{
     width: 100%;
 }
-.subjectCol.col-2 .subjectItem{
+.subjectCol .subjectItem{
     float: left;
 }
 .subjectCol.col-1 .subjectItem{
     width: 100%;
 }
 .subjectCol.col-2 .subjectItem{
-    width: 315px;
+    width: calc(50% - 10px);
 }
 .subjectCol.col-3 .subjectItem{
-    width: 205px;
+    width: calc(33% - 10px);
 }
 .subjectCol .subjectItem{
     height: 40px ;
@@ -504,6 +464,75 @@ body{
 .subjectCol .subjectItem strong i:last-child{
     border:0;
 }
+.scan-dot{
+    position: absolute;
+    height: 20px;
+    top: 20px;
+    left: 60px;
+    width: calc(100% - 120px);
+}
+.scan-dot.bot{
+    top: auto;
+    bottom: 20px ;
+}
+.scan-dot span{
+    position: absolute;
+    width: 40px ;
+    height: 20px;
+    left:0;
+    top:0;
+    background: #000;
+}
+.scan-dot span.center1{
+    right: auto;
+    left: 600px;
+}
+.scan-dot span.center2{
+    left: auto;
+    right: 600px;
+}
+.scan-dot span.right{
+    left: auto;
+    right:0;
+}
+/*printstyle:end*/
+
+
+
+.pageContent .pageLabel .size{
+    position: relative;
+    width: 0px;
+    height: 0px;
+    border-top: 11px solid #999;
+    border-bottom: 11px solid #999;
+    border-left: 42px solid #999;
+    border-right: 42px solid #999;
+}
+.pageContent .pageLabel .size .itemContent{
+    position: absolute;
+    width:84px;
+    height: 22px;
+    left: -42px;
+    top: -11px;
+    color: #fff;
+}
+.short-answer .toolbar{
+    position: absolute;
+    width: 100%;
+    top: -30px ;
+    left: 0;
+    z-index: 100000;
+    border:1px  solid #999;
+    background: #fff;
+    display: none;
+}
+.short-answer .module:hover .toolbar{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+
 .short-answer .dragBtn{
     position: absolute;
     bottom: 0;
@@ -557,48 +586,6 @@ body{
     -webkit-transform-origin: center;
             transform-origin: center;
 }
-
-
-.fl{float: left;}
-.fr{float: right;}
-.clearfix:after{
-    content: "";
-    display: block;
-    clear: both;
-}
-.scan-dot{
-    position: absolute;
-    height: 20px;
-    top: 20px;
-    left: 60px;
-    width: calc(100% - 120px);
-}
-.scan-dot.bot{
-    top: auto;
-    bottom: 20px ;
-}
-.scan-dot span{
-    position: absolute;
-    width: 40px ;
-    height: 20px;
-    left:0;
-    top:0;
-    background: #000;
-}
-.scan-dot span.center1{
-    right: auto;
-    left: 600px;
-}
-.scan-dot span.center2{
-    left: auto;
-    right: 600px;
-}
-.scan-dot span.right{
-    left: auto;
-    right:0;
-}
-/* 打印需要的样式 结束 */
-
 
 /* 不要放到打印css里面 */
 .hgc_print{
