@@ -173,6 +173,14 @@ var PRINT_TPL = {
     '<div class="short-answer answerModule" data-type="{moduleType}">\
                             {editModule}\
                         </div>',
+  fillInBlankContentTpl:
+    '<div class="module"> <i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>\
+  <div class="subjectCol col-{columns} clearfix">{addFillInBlankHtml}</div>\
+</div>',
+  answerModulForFillInBlankTpl:
+    '<div class="completion-topic answerModule" data-type="{moduleType}">\
+                            {editModule}\
+                        </div>',
   moduleTitleTpl: '<h3>{title}</h3>',
   moduleTpl:
     '<div class="module" title-number="{titleNumber}" data-cutId="{moduleIndex}" data-editorIndex="{moduleIndex}"><i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>\

@@ -151,7 +151,7 @@ body{
     height: 100%;
     right: 0;
     top: 50%;
-    margin-top: -435px;
+    margin-top: -560px;
 }
 .pageContent .bindingLine .line{
     position: absolute;
@@ -187,6 +187,16 @@ body{
     margin-left: 20px;
     font-size: 14px;
     font-style: normal;
+    
+}
+.pageContent .bindingLine .examineeInfo .item em i{
+    display: block;
+    font-style: normal;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
 }
 .pageContent .bindingLine .examineeInfo .item span{
     display: block;
@@ -549,7 +559,7 @@ body{
 .short-answer .toolbar{
     position: absolute;
     width: 100%;
-    top: -30px ;
+    top: -25px ;
     left: 0;
     z-index: 100000;
     border:1px  solid #999;

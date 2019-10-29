@@ -70,7 +70,7 @@ var hgc_modal = {
  *
  *
  */
-var env = 'local'
+var env = 'online'
 var loginStatus = ''
 var domain = ''
 var printCssPath = '/css/online/print.css'
@@ -559,7 +559,7 @@ var Print = {
     var self = this
     var paperA3Option = $('.selOptions input[name="paper"]').eq(0)
     var paperHasBindingOption = $('.selOptions input[name="hasBinding"]').eq(1)
-    var examStyleOption = $('.selOptions input[name="studentCode"]').eq(1) //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
+    var examStyleOption = $('.selOptions input[name="studentCode"]').eq(0) //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
     paperA3Option.prop('checked', true).change()
     paperHasBindingOption.prop('checked', true).change()
     examStyleOption.prop('checked', true).change()
@@ -623,7 +623,10 @@ var Print = {
         // var curCanDragMaxDistance = (curPageEl.index()+1)*(self.pageHeight - 50);
         //判断当前模块是否到底部,如果当前缩放的模块，拉到当前模块底部，直接鼠标弹起
         if (
-          curDtkModelOffsetTop + curDtkModelEl.height() + self.modulePadding >=
+          curDtkModelOffsetTop +
+            curDtkModelEl.height() +
+            self.modulePadding -
+            2 >=
           curPageOffsetTop + self.pageHeight - self.pagePadding
         ) {
           document.onmouseup(e)
@@ -830,10 +833,15 @@ var Print = {
     self.hasBindingLine = $this.attr('data-value') === 'yes'
     var isUseClass = self.hasBindingLine ? 'addClass' : 'removeClass'
     var isHideBinding = self.hasBindingLine ? 'show' : 'hide'
+    var isHideExamineeInfo = !self.hasBindingLine ? 'show' : 'hide'
     $('#printcontent')
       [isUseClass]('hasBindingLine')
       .find('.bindingLine')
       [isHideBinding]()
+    $('#examineeInfoForLayout')[isHideExamineeInfo]()
+    var curPageEl = $('#printcontent .pageContent').eq(0)
+    //隐藏考生的姓名 班级信息也会影响布局
+    self.changePrintArea(curPageEl)
   },
   //选择考号版式
   selExamNumberStyle: function($this) {
@@ -1121,9 +1129,7 @@ var Print = {
         '#' + resetEditorId.editorId
       )
       editor.create()
-      $('#' + resetEditorId.editorId).html(
-        self.editorArea['editor' + editorIndex].txt.html()
-      )
+      editor.txt.html(self.editorArea['editor' + editorIndex].txt.html())
       self.editorArea['editor' + editorIndex] = editor
     })
   },
@@ -1154,7 +1160,9 @@ var Print = {
     var self = this
     var titleNumber = part.attr('title-number')
     //当前超出的模块height
-    var overHeight = self.getOverHeight(part) || ''
+    var overHeight = self.getOverHeight(part)
+
+    overHeight = overHeight < 10 ? 50 : overHeight
     //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
     ++self.editorIndex
     var linkparm = 1
@@ -1785,12 +1793,12 @@ var Print = {
   getExamNumberPosition: function() {
     var self = this
     //判断显示的是准考证号还是条形码
-    var isBarCode = $('.selOptions input[name="studentCode"]')
+    var isExamNumber = $('.selOptions input[name="studentCode"]')
       .eq(0)
       .prop('checked')
     var studentcodePosition = {}
     //准考证号
-    if (!isBarCode) {
+    if (isExamNumber) {
       var numberWidth = false
       var numberHeight = false
       studentcodePosition = {
@@ -2019,6 +2027,10 @@ var Print = {
     // if (moduleType === "answer" || moduleType === "chooseAnswer") {
     //   answerTop = 30;
     // }
+    //选做题
+    if (moduleType === 'selTopic') {
+      columnLeft = 10
+    }
     //考虑分栏的定位点
     if (self.columns > 1 && !(curPageIndex % 2)) {
       columnLeft = self.pageWidth / self.columns

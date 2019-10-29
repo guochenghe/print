@@ -112,7 +112,7 @@ body{
     height: 100%;
     right: 0;
     top: 50%;
-    margin-top: -115.09mm;
+    margin-top: -148.17mm;
 }
 .pageContent .bindingLine .line{
     position: absolute;
@@ -148,6 +148,16 @@ body{
     margin-left: 5.29mm;
     font-size: 3.70mm;
     font-style: normal;
+    
+}
+.pageContent .bindingLine .examineeInfo .item em i{
+    display: block;
+    font-style: normal;
+    transform: rotate(-90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
 }
 .pageContent .bindingLine .examineeInfo .item span{
     display: block;

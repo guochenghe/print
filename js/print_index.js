@@ -75,8 +75,9 @@ var loginStatus = ''
 var domain = ''
 var printCssPath = '/css/online/print.css'
 if (env === 'local') {
+  ///username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1
   loginStatus =
-    '/username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1'
+    '/username/danie/time/1572240626/sig/3a92b8e359d7a2fd8f9435232cf9b000/sessionid/session_2511d73f107b708049c4550af8ae7c1d'
   domain = 'http://zsyas2.testing.xueping.com'
   //打印样式文件 这里的css 路径帮忙改下
   printCssPath = '../css/print.css'
@@ -277,7 +278,7 @@ var Print = {
     self.getSaveSubjectInfo(questionClassify)
     var dtkContentEl = $('.dtk-content')
     for (var subjectType in questionClassify) {
-      if (!questionClassify[subjectType].length) return
+      if (!questionClassify[subjectType].length) continue
       self[subjectType + 'Render'](questionClassify[subjectType], dtkContentEl)
     }
   },
@@ -346,6 +347,7 @@ var Print = {
   },
   fillInBlankRender: function(datas, appendEl) {
     var self = this
+    self.fillInBlankDatas = datas;
     var fillInBlankTpl = self.tpls.fillInBlankItemTpl
     var fillInBlankHtml = ''
     datas.forEach(function(fillInBlankItem) {
@@ -623,7 +625,10 @@ var Print = {
         // var curCanDragMaxDistance = (curPageEl.index()+1)*(self.pageHeight - 50);
         //判断当前模块是否到底部,如果当前缩放的模块，拉到当前模块底部，直接鼠标弹起
         if (
-          curDtkModelOffsetTop + curDtkModelEl.height() + self.modulePadding >=
+          curDtkModelOffsetTop +
+            curDtkModelEl.height() +
+            self.modulePadding -
+            2 >=
           curPageOffsetTop + self.pageHeight - self.pagePadding
         ) {
           document.onmouseup(e)
@@ -712,8 +717,22 @@ var Print = {
    * @param {scoreStyle} 分值格式
    * @param {$this} 当前要修改的填空题区域里面的标示符
    */
+  fillInBlankReRender:function(){
+    var self = this;
+    var fillInBlankTpl = self.tpls.fillInBlankItemTpl
+    var fillInBlankHtml = ''
+    self.fillInBlankDatas.forEach(function(fillInBlankItem) {
+      fillInBlankHtml += fillInBlankTpl.substitute(fillInBlankItem)
+    })
+
+    if($('.completion-topic').length > 1){
+      $('.completion-topic').eq(1).remove();
+    }
+    $('#fillInBlank').html(fillInBlankHtml)
+  },
   fillInBlankStyleChange: function($this, column, scoreStyle) {
     var self = this
+    self.fillInBlankReRender();
     function rendScore(score) {
       return (
         '<i><b class="top moduleBorder"></b><b class="right moduleBorder"></b><b class="bottom moduleBorder"></b><b class="left moduleBorder"></b>' +
@@ -830,10 +849,15 @@ var Print = {
     self.hasBindingLine = $this.attr('data-value') === 'yes'
     var isUseClass = self.hasBindingLine ? 'addClass' : 'removeClass'
     var isHideBinding = self.hasBindingLine ? 'show' : 'hide'
+    var isHideExamineeInfo = !self.hasBindingLine ? 'show' : 'hide'
     $('#printcontent')
       [isUseClass]('hasBindingLine')
       .find('.bindingLine')
       [isHideBinding]()
+    $('#examineeInfoForLayout')[isHideExamineeInfo]()
+    var curPageEl = $('#printcontent .pageContent').eq(0)
+    //隐藏考生的姓名 班级信息也会影响布局
+    self.changePrintArea(curPageEl)
   },
   //选择考号版式
   selExamNumberStyle: function($this) {
@@ -937,7 +961,12 @@ var Print = {
     var overPart = self.getOverModule(curPageEl)
     console.log(overPart)
     if (overPart) {
-      self.addPrintArea(curPageEl, overPart)
+      //填空
+      if (overPart.answerModule.hasClass('completion-topic')) {
+        self.addPrintForFillInBlank(curPageEl, overPart)
+      } else {
+        self.addPrintArea(curPageEl, overPart)
+      }
     } else {
       self.reducePrintArea(curPageEl)
     }
@@ -952,6 +981,89 @@ var Print = {
     var moduleTop =
       $(el).outerHeight() + $(el).offset().top + $('#contentWrap').scrollTop()
     return moduleTop - overHeight
+  },
+  //填空题超出
+  addPrintForFillInBlank: function(curPageEl, overPart) {
+    var self = this
+    var curPageIndex = curPageEl.index()
+    var times = curPageIndex + 1
+    var part = overPart.subjectModule
+    var subjectHtml = ''
+    //合并的简答题区域
+    var overAnswerHtml = ''
+    //判断是否是当前鼠标操作答题区域的坐标
+    var curOperation = part[0] === self.curDtkModelEl[0]
+    //通过缩放确定每个页面需要移除的元素
+    var removeElements = []
+    //需要重置富文本编辑功能区域的id
+    var resetEditorIds = []
+
+    var nextPageEl = curPageEl.next()
+    //首先判断是要删除下一个分页的补充模块如果下一个分页存在的话
+    if (nextPageEl.length) {
+      var nextPageFirstModule = nextPageEl.find('.module').eq(0)
+      if (typeof nextPageFirstModule.attr('isSurplus') === 'string') {
+        nextPageFirstModule.children('.delBtn').trigger('click')
+      }
+    }
+
+    subjectHtml += self.addNewModuleForFillInBlank(part)
+
+    //超出模块
+    //判断超出简答题区域
+    var overAnswerModule = overPart.answerModule
+    while (overAnswerModule.length) {
+      var editModuleHtml = ''
+      var isCurOverAnswer = overAnswerModule === overPart.answerModule
+      //如果是当前超出模块，则直接用上面的多余的moduleHtml来填充
+      //否则，直接用answerModule的内容来填充
+      if (isCurOverAnswer) {
+        editModuleHtml = subjectHtml
+      } else {
+        editModuleHtml = overAnswerModule.html()
+        //2 判断是否有需要重置的富文本
+        var editorEls = overAnswerModule.find('.editorContent')
+        editorEls.length &&
+          editorEls.each(function() {
+            resetEditorIds.push({
+              editorId: $(this).attr('id'),
+              toolbarId: $(this)
+                .prev()
+                .attr('id')
+            })
+          })
+
+        removeElements.push(overAnswerModule)
+      }
+      overAnswerHtml += self.tpls[
+        isCurOverAnswer ? 'answerModulForFillInBlankTpl' : 'answerModuleTpl'
+      ].substitute({
+        editModule: editModuleHtml,
+        moduleType: overAnswerModule.attr('data-type')
+      })
+
+      overAnswerModule = overAnswerModule.next()
+    }
+
+    /**
+     * 【优化】
+     * 模块删除关系需要优化
+     */
+    removeElements.forEach(function(element) {
+      $(element).remove()
+    })
+    //是否存在下一个分页
+    if (nextPageEl.length) {
+      nextPageEl.children('.dtk-content').prepend(overAnswerHtml)
+    } else {
+      self.addPage(overAnswerHtml)
+
+      nextPageEl = $('#printcontent').children('.pageContent:last()')
+    }
+    //重置富文本
+    self.resetAddNewModuleEditor(resetEditorIds)
+    //递归轮询判断
+    self.changePrintArea(nextPageEl)
   },
   addPrintArea: function(curPageEl, overPart) {
     var self = this
@@ -1022,6 +1134,17 @@ var Print = {
         editModuleHtml = subjectHtml
       } else {
         editModuleHtml = overAnswerModule.html()
+        //2 判断是否有需要重置的富文本
+        var editorEls = overAnswerModule.find('.editorContent')
+        editorEls.length &&
+          editorEls.each(function() {
+            resetEditorIds.push({
+              editorId: $(this).attr('id'),
+              toolbarId: $(this)
+                .prev()
+                .attr('id')
+            })
+          })
 
         removeElements.push(overAnswerModule)
       }
@@ -1120,10 +1243,11 @@ var Print = {
         '#' + resetEditorId.toolbarId,
         '#' + resetEditorId.editorId
       )
+      // 关闭粘贴样式的过滤
+      editor.customConfig.pasteFilterStyle = false
+      editor.customConfig.uploadImgShowBase64 = true
       editor.create()
-      $('#' + resetEditorId.editorId).html(
-        self.editorArea['editor' + editorIndex].txt.html()
-      )
+      editor.txt.html(self.editorArea['editor' + editorIndex].txt.html())
       self.editorArea['editor' + editorIndex] = editor
     })
   },
@@ -1149,12 +1273,49 @@ var Print = {
       })
     )
   },
+  //针对填空题
+  addNewModuleForFillInBlank: function(part) {
+    var self = this
+    //一行几栏
+    var columns = part.children('.subjectCol').attr('data-column')
+      ? +part.children('.subjectCol').attr('data-column')
+      : 1
+    //当前超出的模块height
+    var overHeight = self.getOverHeight(part)
+    //需要复制几个填空题
+    var copyFillInBlankItems = Math.ceil(overHeight / 40) * columns
+    var addFillInBlankHtmls = []
+    var subjectItems = [].slice.call(part.find('.subjectItem')).reverse()
+    subjectItems.forEach(function(subjectItem, index) {
+      if (index + 1 > copyFillInBlankItems) return
+      subjectItem = $(subjectItem)
+      var titleNumber = subjectItem.attr('title-number')
+      var subjectItemContent = subjectItem.html()
+      addFillInBlankHtmls.push('<div class="subjectItem clearfix" title-number="' +
+        titleNumber +
+        '">' +
+        subjectItemContent +
+        '</div>')
+      subjectItem.remove()
+    })
+
+    return self.tpls.fillInBlankContentTpl.substitute({
+      addFillInBlankHtml: addFillInBlankHtmls.reverse().join(''),
+      columns: columns
+    })
+    /**
+     * 1 需要确定一行几栏，判断需要复制几个填空题
+     * 2 需要确定超出高度，至少高度为一个填空题高度 不足的自动补上
+     */
+  },
   //上一个模块的拓展模块
   expandModule: function(part) {
     var self = this
     var titleNumber = part.attr('title-number')
     //当前超出的模块height
-    var overHeight = self.getOverHeight(part) || ''
+    var overHeight = self.getOverHeight(part)
+
+    overHeight = overHeight < 10 ? 50 : overHeight
     //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
     ++self.editorIndex
     var linkparm = 1
@@ -1280,6 +1441,9 @@ var Print = {
       '#toolbar' + editorIndex,
       '#editorContent' + editorIndex
     )
+    // 关闭粘贴样式的过滤
+    editor.customConfig.pasteFilterStyle = false
+    editor.customConfig.uploadImgShowBase64 = true
     // 或者 var editor = new E( document.getElementById('editor') )
     editor.create()
     self.editorIndex = editorIndex
@@ -1335,7 +1499,7 @@ var Print = {
     var sheet_score = {}
     for (var subjectType in questionClassify) {
       questionClassify[subjectType].forEach(function(subjectItem) {
-        sheet_score[subjectItem.questionNum] = subjectItem.fullScore
+        sheet_score[subjectItem.questionNum] = '' + subjectItem.fullScore
       })
     }
 
@@ -1785,12 +1949,12 @@ var Print = {
   getExamNumberPosition: function() {
     var self = this
     //判断显示的是准考证号还是条形码
-    var isBarCode = $('.selOptions input[name="studentCode"]')
+    var isExamNumber = $('.selOptions input[name="studentCode"]')
       .eq(0)
       .prop('checked')
     var studentcodePosition = {}
     //准考证号
-    if (!isBarCode) {
+    if (isExamNumber) {
       var numberWidth = false
       var numberHeight = false
       studentcodePosition = {
@@ -2023,7 +2187,6 @@ var Print = {
     if (self.columns > 1 && !(curPageIndex % 2)) {
       columnLeft = self.pageWidth / self.columns
     }
-
     if (curPageIndex > 1) {
       positionY -= (curPageIndex - 1) * self.pageHeight
     }
