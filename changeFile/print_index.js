@@ -559,7 +559,7 @@ var Print = {
     var self = this
     var paperA3Option = $('.selOptions input[name="paper"]').eq(0)
     var paperHasBindingOption = $('.selOptions input[name="hasBinding"]').eq(1)
-    var examStyleOption = $('.selOptions input[name="studentCode"]').eq(0) //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
+    var examStyleOption = $('.selOptions input[name="studentCode"]').eq(1) //当前默认是 A3 两栏 有装订线 有条形码 有准考证号
     paperA3Option.prop('checked', true).change()
     paperHasBindingOption.prop('checked', true).change()
     examStyleOption.prop('checked', true).change()
