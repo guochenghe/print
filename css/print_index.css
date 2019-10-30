@@ -365,6 +365,9 @@ body{
     color: #333;
     line-height: 30px ;
 }
+.dtk-content .completion-topic .module{
+    padding: 0 10px 10px;
+}
 .dtk-content .module{
     position: relative;
     padding:10px;
@@ -444,9 +447,7 @@ body{
 .subjectCol{
     width: 100%;
 }
-.subjectCol .subjectItem{
-    float: left;
-}
+
 .subjectCol.col-1 .subjectItem{
     width: 100%;
 }
@@ -457,9 +458,11 @@ body{
     width: calc(33% - 10px);
 }
 .subjectCol .subjectItem{
-    height: 40px ;
-    line-height: 40px;
+    float: left;
+    height: 30px ;
+    line-height: 30px;
     padding-right: 10px;
+    padding-top: 10px;
     overflow: hidden;
 }
 .subjectCol .subjectItem span{

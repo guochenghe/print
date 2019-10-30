@@ -960,7 +960,13 @@ var Print = {
     //找出超出的区域
     var overPart = self.getOverModule(curPageEl)
     console.log(overPart)
+    
+    
     if (overPart) {
+      //如果是当页第一模块超出，则强制当前手指操作的模块就是当前的模块
+      if(overPart.subjectModule[0] === overPart.curPage.find('.module').eq(0)[0]){
+        self.curDtkModelEl = overPart.subjectModule;
+      }
       //填空
       if (overPart.answerModule.hasClass('completion-topic')) {
         self.addPrintForFillInBlank(curPageEl, overPart)
@@ -1470,7 +1476,7 @@ var Print = {
   //保存题目坐标信息
   //保存的时候传点坐标和原图
   /**
-   * 
+   *
     timu:{"KeGuanTi":5,"TianKongTi":10,"ZhuGuanTi":1,"XuanZuoTi":0}
     sheet_answer:{"1":"A","2":"A","3":"A","4":"A","5":"A"}
     sheet_score:{"1":"2","2":"2","3":"2","4":"2","5":"2","6":"2","7":"3","8":"4","9":"5","10":"6","11":"6","12":"7","13":"8","14":"9","15":"10","16":"20"}
@@ -1556,6 +1562,7 @@ var Print = {
         var imgFiles = []
         res.forEach(function(canvas, index) {
           var img = Canvas2Image.convertToJPEG(canvas)
+          document.body.appendChild(img);
           var dataUrl = img.src
           imgFiles.push(dataURLtoFile(dataUrl, 'pic' + index + '.jpeg'))
         })
@@ -1845,6 +1852,7 @@ var Print = {
     if (type === 'answer') {
       width += self.modulePaddingSide
     }
+    
     return width * self.dpiRadio
   },
   getElementHeight: function(el, type) {
@@ -1852,6 +1860,9 @@ var Print = {
     var height = $(el).height()
     if (type === 'answer') {
       height += self.modulePadding
+    }
+    if(type === 'fillInBlank'){
+      height+=10;
     }
     return height * self.dpiRadio
   },
@@ -2053,8 +2064,8 @@ var Print = {
           cut: {}
         }
         var optionPosition = self.getItemPosition(optionItems)
-        var width = self.getElementWidth(optionItems) //self.unitConversion.pxConversionMm($(option).width());
-        var height = self.getElementHeight(optionItems) //self.unitConversion.pxConversionMm($(option).height());
+        var width = self.getElementWidth(optionItems,'fillInBlank') //self.unitConversion.pxConversionMm($(option).width());
+        var height = self.getElementHeight(optionItems,'fillInBlank') //self.unitConversion.pxConversionMm($(option).height());
         var optName = $(optionItems).attr('data-option')
         optionInfo.cut = {
           x: optionPosition.x,
@@ -2075,10 +2086,8 @@ var Print = {
       .find('.module')
       .each(function(m, moduleEl) {
         var modulePositon = self.getItemPosition(moduleEl, 'answer')
-        //self.unitConversion.pxConversionMm($(moduleEl).width() + 20);
-        var width = self.getElementWidth(moduleEl, 'answer')
-        //self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
-        var height = self.getElementHeight(moduleEl, 'answer')
+        var width = self.getElementWidth(moduleEl,'answer')
+        var height = self.getElementHeight(moduleEl,'answer')
         var titleNumber = $(moduleEl).attr('title-number')
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16'
 
@@ -2111,8 +2120,8 @@ var Print = {
       .find('.module')
       .each(function(n, moduleEl) {
         var modulePositon = self.getItemPosition(moduleEl, 'chooseAnswer')
-        var width = self.getElementWidth(moduleEl, 'answer') // self.unitConversion.pxConversionMm($(moduleEl).width() + 20);
-        var height = self.getElementHeight(moduleEl, 'answer') //self.unitConversion.pxConversionMm($(moduleEl).height() + 20);
+        var width = self.getElementWidth(moduleEl,'answer')
+        var height = self.getElementHeight(moduleEl,'answer')
         var titleNumber = $(moduleEl).attr('title-number')
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16'
         //是否是上一题的补充区域
@@ -2146,8 +2155,8 @@ var Print = {
           .each(function(l, selItem) {
             var optName = $(selItem).attr('data-titleNumber')
             var selItemPosition = self.getItemPosition(selItem, 'selTopic')
-            var width = self.getElementWidth(selItem) //self.unitConversion.pxConversionMm($(selItem).width());
-            var height = self.getElementHeight(selItem) //self.unitConversion.pxConversionMm($(selItem).height());
+            var width = self.getElementWidth(selItem)
+            var height = self.getElementHeight(selItem)
             chooseAnswerInfo.selectqts[0].opt.push({
               optName: optName,
               width: width,
@@ -2192,9 +2201,7 @@ var Print = {
     }
     return {
       x: (positionX + columnLeft - 59) * self.dpiRadio,
-      //self.unitConversion.pxConversionMm(positionX + answerLeft + columnLeft).toFixed(3),
       y: (positionY - 20) * self.dpiRadio
-      //self.unitConversion.pxConversionMm(positionY + answerTop).toFixed(3)
     }
   }
 }

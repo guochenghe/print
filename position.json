@@ -43,7 +43,7 @@
                 {
                     "x": 1,
                     "y": 322,
-                    "width": 120,
+                    "width": 160,
                     "height": 200,
                     "type": 3
                 },
@@ -51,15 +51,8 @@
                     "x": 11,
                     "y": 572,
                     "width": 115,
-                    "height": 63,
+                    "height": 29,
                     "type": 2
-                },
-                {
-                    "x": 21,
-                    "y": 99.99187992125962,
-                    "width": 68,
-                    "height": 15,
-                    "type": 4
                 }
             ],
             "studentcode": {
@@ -508,6 +501,154 @@
                                 "optName": 9
                             }
                         ]
+                    },
+                    {
+                        "group": [
+                            {
+                                "x": 123.5,
+                                "y": 327,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 0
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 347,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 1
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 367,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 2
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 387,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 3
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 407,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 4
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 427,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 5
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 447,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 6
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 467,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 7
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 487,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 8
+                            },
+                            {
+                                "x": 123.5,
+                                "y": 507,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 9
+                            }
+                        ]
+                    },
+                    {
+                        "group": [
+                            {
+                                "x": 143.5,
+                                "y": 327,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 0
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 347,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 1
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 367,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 2
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 387,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 3
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 407,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 4
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 427,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 5
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 447,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 6
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 467,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 7
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 487,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 8
+                            },
+                            {
+                                "x": 143.5,
+                                "y": 507,
+                                "width": 15,
+                                "height": 10,
+                                "optName": 9
+                            }
+                        ]
                     }
                 ]
             },
@@ -518,7 +659,7 @@
             "questions": [
                 {
                     "type": 0,
-                    "answer": "C",
+                    "answer": "B",
                     "score": {
                         "full": 5
                     },
@@ -556,7 +697,7 @@
                 },
                 {
                     "type": 0,
-                    "answer": "B",
+                    "answer": "C",
                     "score": {
                         "full": 5
                     },
@@ -593,178 +734,59 @@
                     ]
                 },
                 {
-                    "type": 0,
-                    "answer": "A",
+                    "type": 3,
                     "score": {
                         "full": 5
                     },
+                    "column": "1",
+                    "scoreStyle": "",
                     "id": "3",
-                    "opt": [
-                        {
-                            "x": 36,
-                            "y": 606,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "A"
-                        },
-                        {
-                            "x": 61,
-                            "y": 606,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "B"
-                        },
-                        {
-                            "x": 86,
-                            "y": 606,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "C"
-                        },
-                        {
-                            "x": 111,
-                            "y": 606,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "D"
-                        }
-                    ]
+                    "cut": {
+                        "x": 11,
+                        "y": 646,
+                        "width": 654,
+                        "height": 40
+                    }
                 },
                 {
-                    "type": 0,
-                    "answer": "B",
+                    "type": 3,
                     "score": {
                         "full": 5
                     },
+                    "column": "1",
+                    "scoreStyle": "",
                     "id": "4",
-                    "opt": [
-                        {
-                            "x": 36,
-                            "y": 623,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "A"
-                        },
-                        {
-                            "x": 61,
-                            "y": 623,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "B"
-                        },
-                        {
-                            "x": 86,
-                            "y": 623,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "C"
-                        },
-                        {
-                            "x": 111,
-                            "y": 623,
-                            "width": 15,
-                            "height": 12,
-                            "optName": "D"
-                        }
-                    ]
-                },
-                {
-                    "type": 3,
-                    "score": {
-                        "full": 5
-                    },
-                    "column": "1",
-                    "scoreStyle": "",
-                    "id": "5",
                     "cut": {
                         "x": 11,
-                        "y": 690,
-                        "width": 654,
-                        "height": 40
-                    }
-                },
-                {
-                    "type": 3,
-                    "score": {
-                        "full": 5
-                    },
-                    "column": "1",
-                    "scoreStyle": "",
-                    "id": "6",
-                    "cut": {
-                        "x": 11,
-                        "y": 730,
-                        "width": 654,
-                        "height": 40
-                    }
-                },
-                {
-                    "type": 3,
-                    "score": {
-                        "full": 5
-                    },
-                    "column": "1",
-                    "scoreStyle": "",
-                    "id": "7",
-                    "cut": {
-                        "x": 11,
-                        "y": 770,
-                        "width": 654,
-                        "height": 40
-                    }
-                },
-                {
-                    "type": 3,
-                    "score": {
-                        "full": 5
-                    },
-                    "column": "1",
-                    "scoreStyle": "",
-                    "id": "8",
-                    "cut": {
-                        "x": 11,
-                        "y": 810,
+                        "y": 686,
                         "width": 654,
                         "height": 40
                     }
                 },
                 {
                     "type": 1,
-                    "id": "9",
+                    "id": "5",
                     "scoreLimit": "16",
                     "cut": {
                         "x": 1,
-                        "y": 890,
+                        "y": 766,
                         "width": 674,
-                        "height": 143,
-                        "cutid": "12",
+                        "height": 267,
+                        "cutid": "7",
                         "linkparm": 1
                     }
                 },
                 {
                     "type": 1,
-                    "id": "9",
+                    "id": "5",
                     "scoreLimit": "16",
                     "cut": {
                         "x": 794.7007874015749,
                         "y": 29.995939960629812,
                         "width": 674,
-                        "height": 697,
-                        "cutid": "12",
+                        "height": 1003,
+                        "cutid": "7",
                         "linkparm": 2
-                    }
-                },
-                {
-                    "type": 1,
-                    "id": "10",
-                    "scoreLimit": "16",
-                    "cut": {
-                        "x": 794.7007874015749,
-                        "y": 695.4646899606298,
-                        "width": 674,
-                        "height": 318,
-                        "cutid": "10",
-                        "linkparm": 0
                     }
                 }
             ]
@@ -810,7 +832,7 @@
                 {
                     "x": 1,
                     "y": 322,
-                    "width": 120,
+                    "width": 160,
                     "height": 200,
                     "type": 3
                 },
@@ -818,15 +840,8 @@
                     "x": 11,
                     "y": 572,
                     "width": 115,
-                    "height": 63,
+                    "height": 29,
                     "type": 2
-                },
-                {
-                    "x": 21,
-                    "y": 99.99187992125962,
-                    "width": 68,
-                    "height": 15,
-                    "type": 4
                 }
             ],
             "imge": {
@@ -835,39 +850,30 @@
             },
             "questions": [
                 {
-                    "type": 2,
-                    "id": "11,12",
+                    "type": 1,
+                    "id": "5",
                     "scoreLimit": "16",
-                    "select": 1,
-                    "total": 2,
-                    "selectqts": [
-                        {
-                            "cut": {
-                                "x": 1,
-                                "y": 59.991879921259624,
-                                "width": 674,
-                                "height": 119,
-                                "cutid": "11",
-                                "linkparm": 0
-                            },
-                            "opt": [
-                                {
-                                    "optName": "11",
-                                    "width": 14,
-                                    "height": 14,
-                                    "x": 31,
-                                    "y": 99.99187992125962
-                                },
-                                {
-                                    "optName": "12",
-                                    "width": 14,
-                                    "height": 14,
-                                    "x": 64.984375,
-                                    "y": 99.99187992125962
-                                }
-                            ]
-                        }
-                    ]
+                    "cut": {
+                        "x": 1,
+                        "y": 29.991879921259624,
+                        "width": 674,
+                        "height": 102,
+                        "cutid": "7",
+                        "linkparm": 3
+                    }
+                },
+                {
+                    "type": 1,
+                    "id": "6",
+                    "scoreLimit": "16",
+                    "cut": {
+                        "x": 1,
+                        "y": 99.99187992125962,
+                        "width": 674,
+                        "height": 300,
+                        "cutid": "6",
+                        "linkparm": 0
+                    }
                 }
             ]
         }

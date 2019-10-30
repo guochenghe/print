@@ -326,6 +326,9 @@ body{
     color: #333;
     line-height: 7.94mm ;
 }
+.dtk-content .completion-topic .module{
+    padding: 0 2.65mm 2.65mm;
+}
 .dtk-content .module{
     position: relative;
     padding:2.65mm;
@@ -405,9 +408,7 @@ body{
 .subjectCol{
     width: 100%;
 }
-.subjectCol .subjectItem{
-    float: left;
-}
+
 .subjectCol.col-1 .subjectItem{
     width: 100%;
 }
@@ -418,9 +419,11 @@ body{
     width: calc(33% - 2.65mm);
 }
 .subjectCol .subjectItem{
-    height: 10.58mm ;
-    line-height: 10.58mm;
+    float: left;
+    height: 7.94mm ;
+    line-height: 7.94mm;
     padding-right: 2.65mm;
+    padding-top: 2.65mm;
     overflow: hidden;
 }
 .subjectCol .subjectItem span{
