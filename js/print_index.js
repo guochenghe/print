@@ -70,7 +70,7 @@ var hgc_modal = {
  *
  *
  */
-var env = 'local'
+var env = 'online'
 var loginStatus = ''
 var domain = ''
 var printCssPath = '/css/online/print.css'
@@ -347,7 +347,7 @@ var Print = {
   },
   fillInBlankRender: function(datas, appendEl) {
     var self = this
-    self.fillInBlankDatas = datas;
+    self.fillInBlankDatas = datas
     var fillInBlankTpl = self.tpls.fillInBlankItemTpl
     var fillInBlankHtml = ''
     datas.forEach(function(fillInBlankItem) {
@@ -717,22 +717,24 @@ var Print = {
    * @param {scoreStyle} 分值格式
    * @param {$this} 当前要修改的填空题区域里面的标示符
    */
-  fillInBlankReRender:function(){
-    var self = this;
+  fillInBlankReRender: function() {
+    var self = this
     var fillInBlankTpl = self.tpls.fillInBlankItemTpl
     var fillInBlankHtml = ''
     self.fillInBlankDatas.forEach(function(fillInBlankItem) {
       fillInBlankHtml += fillInBlankTpl.substitute(fillInBlankItem)
     })
 
-    if($('.completion-topic').length > 1){
-      $('.completion-topic').eq(1).remove();
+    if ($('.completion-topic').length > 1) {
+      $('.completion-topic')
+        .eq(1)
+        .remove()
     }
     $('#fillInBlank').html(fillInBlankHtml)
   },
   fillInBlankStyleChange: function($this, column, scoreStyle) {
     var self = this
-    self.fillInBlankReRender();
+    self.fillInBlankReRender()
     function rendScore(score) {
       return (
         '<i><b class="top moduleBorder"></b><b class="right moduleBorder"></b><b class="bottom moduleBorder"></b><b class="left moduleBorder"></b>' +
@@ -960,12 +962,13 @@ var Print = {
     //找出超出的区域
     var overPart = self.getOverModule(curPageEl)
     console.log(overPart)
-    
-    
+
     if (overPart) {
       //如果是当页第一模块超出，则强制当前手指操作的模块就是当前的模块
-      if(overPart.subjectModule[0] === overPart.curPage.find('.module').eq(0)[0]){
-        self.curDtkModelEl = overPart.subjectModule;
+      if (
+        overPart.subjectModule[0] === overPart.curPage.find('.module').eq(0)[0]
+      ) {
+        self.curDtkModelEl = overPart.subjectModule
       }
       //填空
       if (overPart.answerModule.hasClass('completion-topic')) {
@@ -1297,11 +1300,13 @@ var Print = {
       subjectItem = $(subjectItem)
       var titleNumber = subjectItem.attr('title-number')
       var subjectItemContent = subjectItem.html()
-      addFillInBlankHtmls.push('<div class="subjectItem clearfix" title-number="' +
-        titleNumber +
-        '">' +
-        subjectItemContent +
-        '</div>')
+      addFillInBlankHtmls.push(
+        '<div class="subjectItem clearfix" title-number="' +
+          titleNumber +
+          '">' +
+          subjectItemContent +
+          '</div>'
+      )
       subjectItem.remove()
     })
 
@@ -1562,7 +1567,6 @@ var Print = {
         var imgFiles = []
         res.forEach(function(canvas, index) {
           var img = Canvas2Image.convertToJPEG(canvas)
-          document.body.appendChild(img);
           var dataUrl = img.src
           imgFiles.push(dataURLtoFile(dataUrl, 'pic' + index + '.jpeg'))
         })
@@ -1779,80 +1783,13 @@ var Print = {
     }
     return location
   },
-  getPicReferencePointInfo: function() {
-    var self = this
-    var location = []
-    //准考证号
-    var examNumberEl = $('#hgc_examNumber .ticketNumber')
-    var examFirstNumberEl = examNumberEl
-      .children('.numberCol')
-      .eq(0)
-      .children('span')
-      .eq(1)
-    var examFirstSpaceEl = examNumberEl
-      .children('.numberCol')
-      .eq(0)
-      .children('span')
-      .eq(0)
-    var examPoint = self.getItemPosition(examFirstNumberEl)
-    var examNumber = {
-      x: examPoint.x,
-      y: examPoint.y,
-      width: self.getElementWidth(examNumberEl),
-      height:
-        self.getElementHeight(examNumberEl) -
-        self.getElementHeight(examFirstSpaceEl),
-      type: 3
-    }
-
-    location.push(examNumber)
-
-    //客观题
-    var firstSingleSelectEl = $('.single-option li')
-      .eq(0)
-      .children('em')
-    var lastSingleSelectEl = $('.single-option li:last()').children(
-      'span:last()'
-    )
-    var singleSelectLastPoint = self.getItemPosition(lastSingleSelectEl)
-    var singleSelectFirstPoint = self.getItemPosition(firstSingleSelectEl)
-    var singleSelect = {
-      x: singleSelectFirstPoint.x,
-      y: singleSelectFirstPoint.y,
-      width:
-        singleSelectLastPoint.x -
-        singleSelectFirstPoint.x +
-        self.getElementWidth(lastSingleSelectEl),
-      height:
-        singleSelectLastPoint.y -
-        singleSelectFirstPoint.y +
-        self.getElementHeight(lastSingleSelectEl),
-      type: 2
-    }
-    location.push(singleSelect)
-
-    //选做题
-    if ($('.selTopic').length) {
-      var selTopicPoint = self.getItemPosition($('.selTopic'))
-      var chooseAnswer = {
-        x: selTopicPoint.x,
-        y: selTopicPoint.y,
-        width: self.getElementWidth($('.selTopic')),
-        height: self.getElementHeight($('.selTopic')),
-        type: 4
-      }
-      location.push(chooseAnswer)
-    }
-
-    return location
-  },
   getElementWidth: function(el, type) {
     var self = this
     var width = $(el).width()
     if (type === 'answer') {
       width += self.modulePaddingSide
     }
-    
+
     return width * self.dpiRadio
   },
   getElementHeight: function(el, type) {
@@ -1861,8 +1798,8 @@ var Print = {
     if (type === 'answer') {
       height += self.modulePadding
     }
-    if(type === 'fillInBlank'){
-      height+=10;
+    if (type === 'fillInBlank') {
+      height += 10
     }
     return height * self.dpiRadio
   },
@@ -1893,7 +1830,6 @@ var Print = {
     self.getPositionOriginPoint()
     //首先获取每个纸张一页的扫描点信息
     //self.getScanPointInfo();
-
     $('#printcontent .pageContent').each(function(pageIndex, pageItem) {
       var $pageItem = $(pageItem)
       //判断纸张的第一面还是第二面 or 正面还是反面
@@ -1901,8 +1837,6 @@ var Print = {
       //如果当前分页所在纸张的面之前已经定义过基础信息直接略过定义
       if (!paperPosition[paperNo]) {
         var location = self.getScanPointInfo(paperNo)
-        var spacialSubjectLocation = self.getPicReferencePointInfo()
-        location = location.concat(spacialSubjectLocation)
         if (paperNo === 1) {
           var studentcode = self.getExamNumberPosition()
         }
@@ -2064,8 +1998,8 @@ var Print = {
           cut: {}
         }
         var optionPosition = self.getItemPosition(optionItems)
-        var width = self.getElementWidth(optionItems,'fillInBlank') //self.unitConversion.pxConversionMm($(option).width());
-        var height = self.getElementHeight(optionItems,'fillInBlank') //self.unitConversion.pxConversionMm($(option).height());
+        var width = self.getElementWidth(optionItems, 'fillInBlank') //self.unitConversion.pxConversionMm($(option).width());
+        var height = self.getElementHeight(optionItems, 'fillInBlank') //self.unitConversion.pxConversionMm($(option).height());
         var optName = $(optionItems).attr('data-option')
         optionInfo.cut = {
           x: optionPosition.x,
@@ -2086,8 +2020,8 @@ var Print = {
       .find('.module')
       .each(function(m, moduleEl) {
         var modulePositon = self.getItemPosition(moduleEl, 'answer')
-        var width = self.getElementWidth(moduleEl,'answer')
-        var height = self.getElementHeight(moduleEl,'answer')
+        var width = self.getElementWidth(moduleEl, 'answer')
+        var height = self.getElementHeight(moduleEl, 'answer')
         var titleNumber = $(moduleEl).attr('title-number')
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16'
 
@@ -2120,8 +2054,8 @@ var Print = {
       .find('.module')
       .each(function(n, moduleEl) {
         var modulePositon = self.getItemPosition(moduleEl, 'chooseAnswer')
-        var width = self.getElementWidth(moduleEl,'answer')
-        var height = self.getElementHeight(moduleEl,'answer')
+        var width = self.getElementWidth(moduleEl, 'answer')
+        var height = self.getElementHeight(moduleEl, 'answer')
         var titleNumber = $(moduleEl).attr('title-number')
         var scoreLimit = $(moduleEl).attr('scorelimit') || '16'
         //是否是上一题的补充区域
