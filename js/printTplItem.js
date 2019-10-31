@@ -163,7 +163,7 @@ var PRINT_TPL = {
                       <div class="number item">第{currentPage}页 共<b class="totalPage">{totalPage}</b>页</div>\
                       <div class="size item">\
                         <div class="itemContent">\
-                          第{currentPaper}纸张页面<b class="currentPaperPage">{currentPaperPage}</b>\
+                          第{currentPaper}纸张<b class="currentPaperPage">{currentPaperPage}</b>\
                       </div>\
                       </div>\
                   </div>\

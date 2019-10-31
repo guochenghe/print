@@ -73,14 +73,15 @@ var hgc_modal = {
 var env = 'online'
 var loginStatus = ''
 var domain = ''
-var printCssPath = '/css/online/print.css'
+var version = new Date().getTime();
+var printCssPath = '/css/online/print.css?t='+version;
 if (env === 'local') {
   ///username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1
   loginStatus =
     '/username/danie/time/1572240626/sig/3a92b8e359d7a2fd8f9435232cf9b000/sessionid/session_2511d73f107b708049c4550af8ae7c1d'
-  domain = 'http://zsyas2.testing.xueping.com'
+  domain = 'http://zsyas2.dev.xueping.com'
   //打印样式文件 这里的css 路径帮忙改下
-  printCssPath = '../css/print.css'
+  printCssPath = '../css/print.css?t='+version;
 }
 
 var Print = {
@@ -96,7 +97,7 @@ var Print = {
     this.modal = hgc_modal
     this.config = config.A4
     //分栏
-    this.columns = 1
+    this.columns = 2
     //页面页码计算
     //当前分页
     this.currentPage = 1
@@ -164,7 +165,8 @@ var Print = {
       function(res) {
         res = JSON.parse(res)
         if (res.success) {
-          self.renderPage(res)
+          self.renderPage(res);
+          self.alreadySave = res.position?true:false;
           if (res.position) {
             self.memoryLayout(JSON.parse(res.position))
           }
@@ -270,7 +272,7 @@ var Print = {
     var self = this
     //格式化题型题号信息
     var questionClassify = self.renderSubjectDataFormat(questions)
-    console.log(questionClassify)
+    ////console.log(questionClassify)
     //渲染右侧操作栏 题目列表信息
     self.renderSubjectListInfo(questionClassify)
 
@@ -373,6 +375,7 @@ var Print = {
         scoreColumnHtml += '<span>' + borderHtml + i + '</span>'
       }
       shortAnswerItem.scoreColumnHtml = scoreColumnHtml
+      shortAnswerItem.editorContentHeight = shortAnswerItem.editorContentHeight?shortAnswerItem.editorContentHeight:54;
       shortAnswerHtml += shortAnswerTpl.substitute(shortAnswerItem)
     })
 
@@ -415,7 +418,8 @@ var Print = {
       //4,5,6,
       titleNumber: titleNumber.substring(0, titleNumber.length - 1),
       selOptionHtml: selOptionHtml,
-      scoreColumnHtml: scoreColumnHtml
+      scoreColumnHtml: scoreColumnHtml,
+      editorContentHeight:54
     })
 
     var chooseAnswerModuleHtml = self.tpls.chooseAnswerTpl.substitute({
@@ -439,7 +443,7 @@ var Print = {
     var shortAnswerData = formatData.shortAnswerData
     self.memoryFillInBlank(fillInBlankData)
     self.memoryShortAnswer(shortAnswerData)
-    console.log('memory data', res)
+    //console.log('memory data', res)
   },
   //把每一题的数据整合到一起
   memoryDataFormat: function(res) {
@@ -520,7 +524,7 @@ var Print = {
       var moduleHeight = questionItem.cut
         ? questionItem.cut.height
         : questionItem.selectqts[0].cut.height
-      console.log(moduleHeight)
+      //console.log(moduleHeight)
       var scoreLimitKey = questionItem.scoreLimit
       $('#printcontent .pageContent').each(function(pageIndex, pageItem) {
         var $pageItem = $(pageItem)
@@ -649,6 +653,12 @@ var Print = {
     })
     //保存
     $('#saveBtn').click(function() {
+      if(self.totalPage > 4){
+        self.modal.init({
+          content:'答题卡最多支持4页'
+        })
+        return;
+      }
       self.savePrintPosition('printcontent')
     })
     //下载pdf
@@ -961,7 +971,7 @@ var Print = {
     var self = this
     //找出超出的区域
     var overPart = self.getOverModule(curPageEl)
-    console.log(overPart)
+    //console.log(overPart)
 
     if (overPart) {
       //如果是当页第一模块超出，则强制当前手指操作的模块就是当前的模块
@@ -1221,15 +1231,18 @@ var Print = {
     //新建的分页
     self.totalPage++
     self.currentPage++
-    self.currentPaper = Math.ceil(self.totalPage / self.columns)
-    self.currentPaperPage = self.totalPage % 4 ? self.totalPage % 4 : 0
+    self.currentPaper = Math.ceil(self.totalPage / (self.columns*2))
+    //第一张纸 正面1 正面2  第一张至反面1 反面2
+    var paperDirection = (self.totalPage%(self.columns*2)?self.totalPage%(self.columns*2):self.columns*2)<=self.columns?'正面':'反面';
+    var pageForPaperDirection = (self.totalPage % self.columns ? self.totalPage % self.columns : 2);
+    var currentPaperPage = paperDirection+pageForPaperDirection;
     //新建page
     var newPage = self.tpls.pageModuleTpl.substitute({
       subjectModule: overAnswerHtml,
       currentPage: self.currentPage,
       totalPage: self.totalPage,
       currentPaper: self.currentPaper,
-      currentPaperPage: self.currentPaperPage
+      currentPaperPage: currentPaperPage
     })
     $('#printcontent').append(newPage)
 
@@ -1252,6 +1265,7 @@ var Print = {
         '#' + resetEditorId.toolbarId,
         '#' + resetEditorId.editorId
       )
+      
       // 关闭粘贴样式的过滤
       editor.customConfig.pasteFilterStyle = false
       editor.customConfig.uploadImgShowBase64 = true
@@ -1326,7 +1340,7 @@ var Print = {
     //当前超出的模块height
     var overHeight = self.getOverHeight(part)
 
-    overHeight = overHeight < 10 ? 50 : overHeight
+    overHeight = overHeight < 10 ? 54 : overHeight
     //如果该模块超出区域 这需要通过linkparam 去 排列超出的顺序
     ++self.editorIndex
     var linkparm = 1
@@ -1423,6 +1437,7 @@ var Print = {
               if (!firstAnswer.children('.module').length) firstAnswer.remove()
               if (!nextPage.find('.short-answer').length) {
                 nextPage.remove()
+                self.currentPage--
                 //新建的分页
                 self.totalPage--
                 $('.pageLabel').each(function() {
@@ -1554,7 +1569,8 @@ var Print = {
           heightm: '297mm'
         },
         function(res) {
-          console.log(JSON.parse(res).message)
+          
+          ////console.log(JSON.parse(res).message)
         }
       )
 
@@ -1595,6 +1611,7 @@ var Print = {
           data: formData,
           success: function(data) {
             if (data.success === 1) {
+              self.alreadySave = true;
               self.modal.init({
                 content: '保存成功'
               })
@@ -1608,10 +1625,17 @@ var Print = {
         document.body.removeChild(iframe)
       })
     }
+
   },
   //下载pdf功能
   downLoadPdf: function($this) {
     var self = this
+    if(!self.alreadySave){
+      self.modal.init({
+        content: '请先保存答题卡'
+      })
+      return;
+    };
     window.location.href =
       domain +
       '/print/downPdf' +
@@ -1679,7 +1703,8 @@ var Print = {
     var scriptSrc = ''
 
     //用几张纸
-    var paperLength = Math.ceil($formatPageContent.length / self.columns)
+    var paperLength = Math.ceil($formatPageContent.length/self.columns);
+    paperLength = paperLength<2?paperLength+1:paperLength;
     var printHtmlForPaperHtml = ''
     for (var j = 0; j < paperLength; j++) {
       var printHtml = ''
@@ -1687,7 +1712,7 @@ var Print = {
         var pageItem = $formatPageContent.eq(j * 2 + k)
         var pageContentStyle = pageItem.attr('style')
           ? pageItem.attr('style')
-          : ''
+          : 'height:297mm;'
         printHtml +=
           '<div class="pageContent" style="' +
           pageContentStyle +
@@ -1887,7 +1912,7 @@ var Print = {
       printPositionInfo.pages.push(paperPosition[paperKey])
     }
 
-    console.log(JSON.stringify(printPositionInfo, null, 4))
+    ////console.log(JSON.stringify(printPositionInfo, null, 4))
     return printPositionInfo
   },
   //准考证和条形码区域
@@ -2091,6 +2116,7 @@ var Print = {
             var selItemPosition = self.getItemPosition(selItem, 'selTopic')
             var width = self.getElementWidth(selItem)
             var height = self.getElementHeight(selItem)
+            ////console.log(width,height)
             chooseAnswerInfo.selectqts[0].opt.push({
               optName: optName,
               width: width,
@@ -2134,7 +2160,7 @@ var Print = {
       positionY -= (curPageIndex - 1) * self.pageHeight
     }
     return {
-      x: (positionX + columnLeft - 59) * self.dpiRadio,
+      x: (positionX + columnLeft - 60) * self.dpiRadio,
       y: (positionY - 20) * self.dpiRadio
     }
   }

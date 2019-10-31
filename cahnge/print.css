@@ -2,7 +2,7 @@
 @media print{
     @page {
         size:'auto';
-        margin: 0.00mm;
+        margin: 0.01mm;
     }
     html,body{
         zoom: 0.865;
@@ -32,24 +32,24 @@ body{
 }
 .moduleBorder.top{
     width: 100%;
-    height: 0.26mm;
+    height: 0.27mm;
     left: 0;
     top:0;
 }
 .moduleBorder.right{
-    width: 0.26mm;
+    width: 0.27mm;
     height: 100%;
     right: 0;
     top:0;
 }
 .moduleBorder.bottom{
     width: 100%;
-    height: 0.26mm;
+    height: 0.27mm;
     left: 0;
     bottom:0;
 }
 .moduleBorder.left{
-    width: 0.26mm;
+    width: 0.27mm;
     height: 100%;
     left: 0;
     top:0;
@@ -86,45 +86,45 @@ body{
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    bottom: 3.97mm;
+    bottom: 3.98mm;
     left: 50%;
     -webkit-transform: translateX(-50%);
             transform: translateX(-50%);
     color: #999;
 }
 .pageContent .pageLabel .item{
-    width: 22.49mm;
-    height: 5.82mm;
-    font-size: 3.17mm;
+    width: 22.50mm;
+    height: 5.83mm;
+    font-size: 3.18mm;
     text-align: center;
-    line-height: 5.82mm;
+    line-height: 5.83mm;
 }
 .pageContent .bindingLine{
     position: absolute;
     top:0;
     left: 0;
     height: 100%;
-    width: 13.23mm;
+    width: 13.24mm;
 }
 .pageContent .bindingLine img{
     position: absolute;
-    width: 0.53mm;
+    width: 0.54mm;
     height: 100%;
     right: 0;
     top: 50%;
-    margin-top: -148.17mm;
+    margin-top: -148.16mm;
 }
 .pageContent .bindingLine .line{
     position: absolute;
     right:0;
-    width: 3.17mm;
+    width: 3.18mm;
     height: 100%;
 }
 .pageContent .bindingLine .line span{
     display: block;
-    height: 89.96mm;
-    line-height: 89.96mm;
-    font-size: 3.17mm;
+    height: 89.97mm;
+    line-height: 89.97mm;
+    font-size: 3.18mm;
     color: #999;
     -webkit-transform: rotate(-90deg);
     /* Firefox */
@@ -132,21 +132,21 @@ body{
 }
 .pageContent .bindingLine .examineeInfo{
     position: absolute;
-    width: 13.23mm;
+    width: 13.24mm;
     top:50%;
-    margin-top: -97.90mm;
+    margin-top: -97.89mm;
     left:0;
 }
 .pageContent .bindingLine .examineeInfo .item{
-    height: 71.44mm;
-    padding:26.46mm 0 ;
+    height: 71.45mm;
+    padding:26.47mm 0 ;
     font-style: normal;
 }
 .pageContent .bindingLine .examineeInfo .item em{
     display: block;
-    width: 3.70mm;
-    margin-left: 5.29mm;
-    font-size: 3.70mm;
+    width: 3.71mm;
+    margin-left: 5.30mm;
+    font-size: 3.71mm;
     font-style: normal;
     
 }
@@ -162,12 +162,12 @@ body{
 .pageContent .bindingLine .examineeInfo .item span{
     display: block;
     position: relative;
-    width:5.29mm;
-    height: 52.92mm;
-    margin-left: 5.29mm;
+    width:5.30mm;
+    height: 52.93mm;
+    margin-left: 5.30mm;
 }
 .dtk-content{
-    padding: 13.23mm  15.88mm ;
+    padding: 13.24mm  15.88mm ;
 }
 .dtk-content .dtkName{
     display: -webkit-box;
@@ -180,8 +180,7 @@ body{
         -ms-flex-pack: center;
             justify-content: center;
     height:15.88mm;
-    font-size: 4.23mm;
-    margin-bottom: 2.65mm;
+    margin-bottom: 2.66mm;
 
 }
 .dtk-content .dtkName textarea{
@@ -191,108 +190,108 @@ body{
     text-align: center;
     resize: none;
     outline: none;
-    font-size: 4.23mm;
-    border:0.26mm solid #333
+    font-size: 4.24mm;
+    border:0.27mm solid #333
 }
 .dtk-content .examineeInfo{
-    padding: 2.65mm;
+    padding: 2.66mm;
 }
 .dtk-content .examineeInfo .item{
     float:left;
-    width: 76.73mm;
-    padding: 0 3.97mm;
+    width: 76.74mm;
+    padding: 0 3.98mm;
     font-style: normal;
 }
 .dtk-content .examineeInfo .item em{
     float:left;
-    width: 10.58mm;
-    height: 5.82mm;
-    line-height: 5.82mm;
+    width: 10.59mm;
+    height: 5.83mm;
+    line-height: 5.83mm;
     color: #333;
-    font-size: 4.23mm;
+    font-size: 4.24mm;
     display: block;
     font-style: normal;
 }
 .dtk-content .examineeInfo .item span{
     position: relative;
     float: left;
-    width: 63.50mm;
-    height: 5.29mm;
+    width: 66.16mm;
+    height: 5.30mm;
 }
 .dtk-content .examInfo{
-    height: 13.23mm;
+    height: 13.24mm;
 }
 .dtk-content .examInfo span{
     display:block;
     float: left;
-    width: 43.66mm;
-    font-size: 4.23mm;
+    width: 43.67mm;
+    font-size: 4.24mm;
     color: #333;
-    line-height: 13.23mm;
+    line-height: 13.24mm;
     text-align: center;
 }
 .dtk-content .noticeInfo{
     position: relative;
 }
 .dtk-content .noticeInfo .item{
-    height: 26.46mm;
+    height: 26.47mm;
 }
 .dtk-content .noticeInfo .title{
     position: relative;
-    width: 9.52mm;
+    width: 9.53mm;
 }
 .dtk-content .noticeInfo .title strong{
     display: block;
-    width: 9.26mm;
-    line-height: 5.29mm;
+    width: 9.27mm;
+    line-height: 5.30mm;
     text-align: right;
-    font-size: 3.17mm;
+    font-size: 3.18mm;
 }
 .dtk-content .noticeInfo .noticeDetail{
-    width: 88.64mm;
+    width: 88.65mm;
 }
 .dtk-content .noticeInfo .noticeDetail textarea{
     display: block;
-    width: 88.64mm;
-    height: 26.46mm;
+    width: 88.65mm;
+    height: 26.47mm;
     outline: none;
     resize: none;
     text-align: left;
-    font-size:3.17mm;
+    font-size:3.18mm;
 }
 .dtk-content .noticeInfo .ewm{
     position: relative;
-    width:37.04mm;
+    width:37.05mm;
     text-align: center;
-    line-height: 26.46mm;
+    line-height: 26.47mm;
 }
 .dtk-content .noticeInfo .ewm img{
-    margin-top: 4.76mm;
-    width: 17.20mm;
-    height: 17.20mm;
+    margin-top: 4.77mm;
+    width: 17.21mm;
+    height: 17.21mm;
 }
 .dtk-content .noticeInfo .warning{
-    width:39.69mm;
-    font-size:3.17mm;
-    line-height: 6.61mm;
+    width:39.70mm;
+    font-size:3.18mm;
+    line-height: 6.62mm;
 }
 .dtk-content .noticeInfo .warning .mark span{
     position: relative;
     display: inline-block;
-    width: 3.97mm;
-    height:2.65mm;
+    width: 3.98mm;
+    height:2.66mm;
 }
 .dtk-content .examNumber{
-    padding: 2.65mm 0;
+    padding: 2.66mm 0;
 }
 .dtk-content .examNumber .ticketNumber{
     float: left;
-    height: 58.21mm;
+    height: 58.22mm;
 }
 .dtk-content .examNumber .numberCol{
     position: relative;
-    width: 5.29mm;
-    font-size: 3.17mm;
+    width: 5.30mm;
+    font-size: 3.18mm;
     text-align: center;
 }
 .dtk-content .examNumber .numberCol:last-child{
@@ -301,55 +300,55 @@ body{
 .dtk-content .examNumber .numberCol span{
     position: relative;
     display:block;
-    width: 5.29mm;
-    height: 5.29mm;
+    width: 5.30mm;
+    height: 5.30mm;
 }
 .dtk-content .examNumber .numberCol span i{
     display: block;
     position: relative;
     margin: 0 auto;
-    top: 1.32mm;
-    width: 3.97mm;
-    height: 2.65mm;
+    top: 1.33mm;
+    width: 3.98mm;
+    height: 2.66mm;
     font-style: normal;
-    line-height: 2.65mm;
+    line-height: 2.66mm;
     text-align: center;
-    font-size:3.17mm;
+    font-size:3.18mm;
 }
 .dtk-content .examNumber .barCode{
     float: left;
-    width: 35.72mm;
-    height: 52.92mm;
-    border:0.26mm dashed #333;
+    width: 35.73mm;
+    height: 52.93mm;
+    border:0.27mm dashed #333;
 }
 .dtk-content h3{
-    font-size: 3.70mm ;
+    font-size: 3.71mm ;
     color: #333;
-    line-height: 7.94mm ;
+    line-height: 7.95mm ;
 }
 .dtk-content .completion-topic .module{
-    padding: 0 2.65mm 2.65mm;
+    padding: 0 2.66mm 2.66mm;
 }
 .dtk-content .module{
     position: relative;
-    padding:2.65mm;
-    font-size: 3.17mm ;
+    padding:2.66mm;
+    font-size: 3.18mm ;
 }
 .dtk-content .short-answer .module{
-    padding: 10.58mm 2.65mm 2.65mm;
+    padding: 10.59mm 2.66mm 2.66mm;
 }
 .dtk-content .short-answer .module.pdt10{
-    padding-top: 2.65mm;
+    padding-top: 2.66mm;
 }
 .dtk-content .short-answer .module .selTopic{
-    height: 3.97mm;
+    height: 3.98mm;
     display: inline-block;
 }
 .dtk-content .short-answer .module .selTopic span{
-    width: 10.58mm;
-    height: 3.97mm;
-    padding: 0 2.65mm;
-    line-height: 3.97mm;
+    width: 10.59mm;
+    height: 3.98mm;
+    padding: 0 2.66mm;
+    line-height: 3.98mm;
     text-align: center;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
@@ -372,9 +371,9 @@ body{
 .dtk-content .module .scortColumn span{
     float: left;
     position: relative;
-    height: 7.94mm;
+    height: 7.95mm;
     text-align: center;
-    line-height: 7.94mm;
+    line-height: 7.95mm;
 }
 .dtk-content .module .scortColumn span:last-child{
     border-right:0;
@@ -388,17 +387,17 @@ body{
 .single-option{
     float:left;
     width: 25%;
-    max-height: 26.46mm;
+    max-height: 26.47mm;
 }
 .single-option li em,
 .single-option li span{
     float:left;
-    width: 3.97mm ;
-    height: 3.17mm ;
+    width: 3.98mm ;
+    height: 3.18mm ;
     text-align: center;
-    line-height: 3.17mm ;
-    margin-right: 2.65mm ;
-    margin-bottom: 1.32mm;
+    line-height: 3.18mm ;
+    margin-right: 2.66mm ;
+    margin-bottom: 1.33mm;
     font-style: normal;
 }
 .short-answer textarea{
@@ -414,87 +413,87 @@ body{
     width: 100%;
 }
 .subjectCol.col-2 .subjectItem{
-    width: calc(50% - 2.65mm);
+    width: calc(50% - 2.66mm);
 }
 .subjectCol.col-3 .subjectItem{
-    width: calc(33% - 2.65mm);
+    width: calc(33% - 2.66mm);
 }
 .subjectCol .subjectItem{
     float: left;
-    height: 7.94mm ;
-    line-height: 7.94mm;
-    padding-right: 2.65mm;
-    padding-top: 2.65mm;
+    height: 7.95mm ;
+    line-height: 7.95mm;
+    padding-right: 2.66mm;
+    padding-top: 2.66mm;
     overflow: hidden;
 }
 .subjectCol .subjectItem span{
     float: left;
-    width: 6.61mm;
-    height: 6.61mm;
+    width: 6.62mm;
+    height: 6.62mm;
     text-align: center;
-    line-height: 6.61mm;
+    line-height: 6.62mm;
 }
 .subjectCol .subjectItem em{
     position: relative;
     float: left;
-    height: 7.94mm;
-    width: calc(100% - 17.20mm);
+    height: 7.95mm;
+    width: calc(100% - 17.21mm);
 }
 .subjectCol .subjectItem em.cell-1{
-    width: calc(100% - 17.20mm);
+    width: calc(100% - 17.21mm);
 }
 .subjectCol .subjectItem em.cell-2{
-    width: calc(100% - 25.14mm);
+    width: calc(100% - 25.15mm);
 }
 .subjectCol .subjectItem em.cell-3{
-    width: calc(100% - 33.07mm);
+    width: calc(100% - 33.08mm);
 }
 .subjectCol .subjectItem em.cell-4{
-    width: calc(100% - 41.01mm);
+    width: calc(100% - 41.02mm);
 }
 .subjectCol .subjectItem strong{
     float: left;
     position: relative;
-    height: 7.94mm;
+    height: 7.95mm;
 }
 .subjectCol .subjectItem strong i{
     position: relative;
     float: left;
-    width: 7.94mm;
-    height: 7.94mm;
+    width: 7.95mm;
+    height: 7.95mm;
     font-style: normal;
     text-align: center;
-    line-height: 7.94mm;
+    line-height: 7.95mm;
 }
 .subjectCol .subjectItem strong i:last-child{
     border:0;
 }
 .scan-dot{
     position: absolute;
-    height: 5.29mm;
-    top: 5.29mm;
+    height: 5.30mm;
+    top: 5.30mm;
     left: 15.88mm;
-    width: calc(100% - 31.75mm);
+    width: calc(100% - 31.76mm);
 }
 .scan-dot.bot{
     top: auto;
-    bottom: 5.29mm ;
+    bottom: 5.30mm ;
 }
 .scan-dot span{
     position: absolute;
-    width: 10.58mm ;
-    height: 5.29mm;
+    width: 10.59mm ;
+    height: 5.30mm;
     left:0;
     top:0;
     background: #000;
 }
 .scan-dot span.center1{
     right: auto;
-    left: 158.75mm;
+    left: 158.76mm;
 }
 .scan-dot span.center2{
     left: auto;
-    right: 158.75mm;
+    right: 158.76mm;
 }
 .scan-dot span.right{
     left: auto;

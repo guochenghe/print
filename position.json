@@ -39,20 +39,6 @@
                     "width": 40,
                     "height": 20,
                     "type": 1
-                },
-                {
-                    "x": 1,
-                    "y": 322,
-                    "width": 160,
-                    "height": 200,
-                    "type": 3
-                },
-                {
-                    "x": 11,
-                    "y": 572,
-                    "width": 115,
-                    "height": 29,
-                    "type": 2
                 }
             ],
             "studentcode": {
@@ -61,70 +47,70 @@
                     {
                         "group": [
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 3.5,
+                                "x": 2.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -135,70 +121,70 @@
                     {
                         "group": [
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 23.5,
+                                "x": 22.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -209,70 +195,70 @@
                     {
                         "group": [
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 43.5,
+                                "x": 42.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -283,70 +269,70 @@
                     {
                         "group": [
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 63.5,
+                                "x": 62.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -357,70 +343,70 @@
                     {
                         "group": [
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 83.5,
+                                "x": 82.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -431,70 +417,70 @@
                     {
                         "group": [
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 103.5,
+                                "x": 102.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -505,70 +491,70 @@
                     {
                         "group": [
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 123.5,
+                                "x": 122.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -579,70 +565,70 @@
                     {
                         "group": [
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 327,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 0
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 347,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 1
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 367,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 2
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 387,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 3
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 407,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 4
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 427,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 5
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 447,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 6
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 467,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 7
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 487,
                                 "width": 15,
                                 "height": 10,
                                 "optName": 8
                             },
                             {
-                                "x": 143.5,
+                                "x": 142.5,
                                 "y": 507,
                                 "width": 15,
                                 "height": 10,
@@ -659,35 +645,35 @@
             "questions": [
                 {
                     "type": 0,
-                    "answer": "B",
+                    "answer": "A",
                     "score": {
                         "full": 5
                     },
                     "id": "1",
                     "opt": [
                         {
-                            "x": 36,
+                            "x": 35,
                             "y": 572,
                             "width": 15,
                             "height": 12,
                             "optName": "A"
                         },
                         {
-                            "x": 61,
+                            "x": 60,
                             "y": 572,
                             "width": 15,
                             "height": 12,
                             "optName": "B"
                         },
                         {
-                            "x": 86,
+                            "x": 85,
                             "y": 572,
                             "width": 15,
                             "height": 12,
                             "optName": "C"
                         },
                         {
-                            "x": 111,
+                            "x": 110,
                             "y": 572,
                             "width": 15,
                             "height": 12,
@@ -697,35 +683,35 @@
                 },
                 {
                     "type": 0,
-                    "answer": "C",
+                    "answer": "A",
                     "score": {
                         "full": 5
                     },
                     "id": "2",
                     "opt": [
                         {
-                            "x": 36,
+                            "x": 35,
                             "y": 589,
                             "width": 15,
                             "height": 12,
                             "optName": "A"
                         },
                         {
-                            "x": 61,
+                            "x": 60,
                             "y": 589,
                             "width": 15,
                             "height": 12,
                             "optName": "B"
                         },
                         {
-                            "x": 86,
+                            "x": 85,
                             "y": 589,
                             "width": 15,
                             "height": 12,
                             "optName": "C"
                         },
                         {
-                            "x": 111,
+                            "x": 110,
                             "y": 589,
                             "width": 15,
                             "height": 12,
@@ -742,7 +728,7 @@
                     "scoreStyle": "",
                     "id": "3",
                     "cut": {
-                        "x": 11,
+                        "x": 10,
                         "y": 646,
                         "width": 654,
                         "height": 40
@@ -757,36 +743,229 @@
                     "scoreStyle": "",
                     "id": "4",
                     "cut": {
-                        "x": 11,
+                        "x": 10,
                         "y": 686,
                         "width": 654,
                         "height": 40
                     }
                 },
                 {
-                    "type": 1,
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
                     "id": "5",
-                    "scoreLimit": "16",
                     "cut": {
-                        "x": 1,
+                        "x": 10,
+                        "y": 726,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "6",
+                    "cut": {
+                        "x": 10,
                         "y": 766,
-                        "width": 674,
-                        "height": 267,
-                        "cutid": "7",
-                        "linkparm": 1
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "7",
+                    "cut": {
+                        "x": 10,
+                        "y": 806,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "8",
+                    "cut": {
+                        "x": 10,
+                        "y": 846,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "9",
+                    "cut": {
+                        "x": 10,
+                        "y": 886,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "10",
+                    "cut": {
+                        "x": 10,
+                        "y": 926,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": "1",
+                    "scoreStyle": "",
+                    "id": "11",
+                    "cut": {
+                        "x": 10,
+                        "y": 966,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": 1,
+                    "scoreStyle": "",
+                    "id": "12",
+                    "cut": {
+                        "x": 803.7007874015749,
+                        "y": 29.995939960629812,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": 1,
+                    "scoreStyle": "",
+                    "id": "13",
+                    "cut": {
+                        "x": 803.7007874015749,
+                        "y": 69.99593996062981,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": 1,
+                    "scoreStyle": "",
+                    "id": "14",
+                    "cut": {
+                        "x": 803.7007874015749,
+                        "y": 109.99593996062981,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": 1,
+                    "scoreStyle": "",
+                    "id": "15",
+                    "cut": {
+                        "x": 803.7007874015749,
+                        "y": 149.9959399606298,
+                        "width": 654,
+                        "height": 40
+                    }
+                },
+                {
+                    "type": 3,
+                    "score": {
+                        "full": 5
+                    },
+                    "column": 1,
+                    "scoreStyle": "",
+                    "id": "16",
+                    "cut": {
+                        "x": 803.7007874015749,
+                        "y": 189.9959399606298,
+                        "width": 654,
+                        "height": 40
                     }
                 },
                 {
                     "type": 1,
-                    "id": "5",
+                    "id": "17",
                     "scoreLimit": "16",
                     "cut": {
-                        "x": 794.7007874015749,
-                        "y": 29.995939960629812,
+                        "x": 793.7007874015749,
+                        "y": 269.9959399606298,
                         "width": 674,
-                        "height": 1003,
-                        "cutid": "7",
-                        "linkparm": 2
+                        "height": 81,
+                        "cutid": "17",
+                        "linkparm": 0
+                    }
+                },
+                {
+                    "type": 1,
+                    "id": "18",
+                    "scoreLimit": "16",
+                    "cut": {
+                        "x": 793.7007874015749,
+                        "y": 348.9959399606298,
+                        "width": 674,
+                        "height": 517,
+                        "cutid": "18",
+                        "linkparm": 0
+                    }
+                },
+                {
+                    "type": 1,
+                    "id": "19",
+                    "scoreLimit": "16",
+                    "cut": {
+                        "x": 793.7007874015749,
+                        "y": 863.9959399606298,
+                        "width": 674,
+                        "height": 169,
+                        "cutid": "23",
+                        "linkparm": 1
                     }
                 }
             ]
@@ -828,20 +1007,6 @@
                     "width": 40,
                     "height": 20,
                     "type": 1
-                },
-                {
-                    "x": 1,
-                    "y": 322,
-                    "width": 160,
-                    "height": 200,
-                    "type": 3
-                },
-                {
-                    "x": 11,
-                    "y": 572,
-                    "width": 115,
-                    "height": 29,
-                    "type": 2
                 }
             ],
             "imge": {
@@ -851,27 +1016,53 @@
             "questions": [
                 {
                     "type": 1,
-                    "id": "5",
+                    "id": "19",
                     "scoreLimit": "16",
                     "cut": {
-                        "x": 1,
+                        "x": 0,
                         "y": 29.991879921259624,
                         "width": 674,
-                        "height": 102,
-                        "cutid": "7",
-                        "linkparm": 3
+                        "height": 266,
+                        "cutid": "23",
+                        "linkparm": 2
                     }
                 },
                 {
                     "type": 1,
-                    "id": "6",
+                    "id": "20",
                     "scoreLimit": "16",
                     "cut": {
-                        "x": 1,
-                        "y": 99.99187992125962,
+                        "x": 0,
+                        "y": 264.4606299212596,
                         "width": 674,
-                        "height": 300,
-                        "cutid": "6",
+                        "height": 104,
+                        "cutid": "20",
+                        "linkparm": 0
+                    }
+                },
+                {
+                    "type": 1,
+                    "id": "21",
+                    "scoreLimit": "16",
+                    "cut": {
+                        "x": 0,
+                        "y": 366.4606299212596,
+                        "width": 674,
+                        "height": 106,
+                        "cutid": "21",
+                        "linkparm": 0
+                    }
+                },
+                {
+                    "type": 1,
+                    "id": "22",
+                    "scoreLimit": "16",
+                    "cut": {
+                        "x": 0,
+                        "y": 470.4606299212596,
+                        "width": 674,
+                        "height": 106,
+                        "cutid": "22",
                         "linkparm": 0
                     }
                 }
