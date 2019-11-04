@@ -95,7 +95,7 @@ var Print = {
   },
   init: function(config) {
     this.modal = hgc_modal
-    this.config = config.A4
+    this.config = config.A3
     //分栏
     this.columns = 2
     //页面页码计算
@@ -129,10 +129,10 @@ var Print = {
 
     //全局groupId
     this.examGroupId = exam_group_id
-    //初始化页面渲染
-    this.initPage()
     //初始化打印面积
     this.initPrintContentArea()
+    //初始化页面渲染
+    this.initPage()
   },
   tpls: PRINT_TPL,
   // 初始化打印区域宽高 mm 转 px
