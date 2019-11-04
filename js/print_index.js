@@ -129,10 +129,10 @@ var Print = {
 
     //全局groupId
     this.examGroupId = exam_group_id
-    //初始化页面渲染
-    this.initPage()
     //初始化打印面积
     this.initPrintContentArea()
+    //初始化页面渲染
+    this.initPage()
   },
   tpls: PRINT_TPL,
   // 初始化打印区域宽高 mm 转 px
