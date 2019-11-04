@@ -67,21 +67,21 @@ var hgc_modal = {
  */
 /**
  * 打印功能主体
- *
+ *http://zsyas2.testing.xueping.com/index.php/classes/index/username/danie/time/1572240626/sig/3a92b8e359d7a2fd8f9435232cf9b000/sessionid/session_2511d73f107b708049c4550af8ae7c1d
  *
  */
-var env = 'online'
+var env = 'local'
 var loginStatus = ''
 var domain = ''
-var version = new Date().getTime();
-var printCssPath = '/css/online/print.css?t='+version;
+var version = new Date().getTime()
+var printCssPath = '/css/online/print.css?t=' + version
 if (env === 'local') {
   ///username/xll/time/1570759444/sig/1e5e7d0a297cfd97d6998d3a297af9b3/sessionid/session_b5699c775f3d770ab28b4bba1e58e5b1
   loginStatus =
     '/username/danie/time/1572240626/sig/3a92b8e359d7a2fd8f9435232cf9b000/sessionid/session_2511d73f107b708049c4550af8ae7c1d'
   domain = 'http://zsyas2.dev.xueping.com'
   //打印样式文件 这里的css 路径帮忙改下
-  printCssPath = '../css/print.css?t='+version;
+  printCssPath = '../css/print.css?t=' + version
 }
 
 var Print = {
@@ -95,7 +95,7 @@ var Print = {
   },
   init: function(config) {
     this.modal = hgc_modal
-    this.config = config.A4
+    this.config = config.A3
     //分栏
     this.columns = 2
     //页面页码计算
@@ -165,8 +165,8 @@ var Print = {
       function(res) {
         res = JSON.parse(res)
         if (res.success) {
-          self.renderPage(res);
-          self.alreadySave = res.position?true:false;
+          self.renderPage(res)
+          self.alreadySave = res.position ? true : false
           if (res.position) {
             self.memoryLayout(JSON.parse(res.position))
           }
@@ -239,10 +239,11 @@ var Print = {
         "questionNum": "1",
         "answer": "D"
      */
-    //类型 1 单选 5 填空 7 解答 17 选做
+    //类型 1 单选 2 多选 5 填空 7 解答 17 选做
     // 先做题型分类
     var questFieldMap = {
       1: 'singleSelect',
+      2: 'moreSelect',
       5: 'fillInBlank',
       7: 'shortAnswer',
       17: 'chooseAnswer'
@@ -261,7 +262,8 @@ var Print = {
         singleSelect: [],
         fillInBlank: [],
         shortAnswer: [],
-        chooseAnswer: []
+        chooseAnswer: [],
+        moreSelect: []
       }
     )
 
@@ -280,7 +282,11 @@ var Print = {
     self.getSaveSubjectInfo(questionClassify)
     var dtkContentEl = $('.dtk-content')
     for (var subjectType in questionClassify) {
-      if (!questionClassify[subjectType].length) continue
+      if (
+        !questionClassify[subjectType].length ||
+        !self[subjectType + 'Render']
+      )
+        continue
       self[subjectType + 'Render'](questionClassify[subjectType], dtkContentEl)
     }
   },
@@ -330,17 +336,48 @@ var Print = {
 
       if (!(index % 5)) {
         singleSelectHtml +=
-          '<ul class="single-option module clearfix" id="singleOptionModule">' +
-          singleColHtml +
-          '</ul>'
+          '<ul class="single-option module clearfix">' + singleColHtml + '</ul>'
         singleColHtml = ''
       }
     })
 
     singleSelectHtml +=
-      '<ul class="single-option module clearfix" id="singleOptionModule">' +
-      singleColHtml +
-      '</ul>'
+      '<ul class="single-option module clearfix">' + singleColHtml + '</ul>'
+
+    var SingleSelectModuleHtml = self.tpls.singleSelectTpl.substitute({
+      singleSelectContent: singleSelectHtml
+    })
+    appendEl.append(SingleSelectModuleHtml)
+  },
+  moreSelectRender: function(datas, appendEl) {
+    var self = this
+    var singleSelectTpl = self.tpls.moreSelectOptionTpl
+    var singleSelectHtml = ''
+    var singleColHtml = ''
+    datas.forEach(function(singleItem, index) {
+      var singleContent = ''
+      for (var i = 0; i < singleItem.optionCount; i++) {
+        var option = String.fromCharCode(65 + i)
+        singleContent += '<span data-option="{option}">[{option}]</span>'.substitute(
+          { option: option }
+        )
+      }
+      singleColHtml += singleSelectTpl.substitute({
+        _index: ++index,
+        singleContent: singleContent,
+        questionNum: singleItem.questionNum,
+        answer: singleItem.answer
+      })
+
+      if (!(index % 5)) {
+        singleSelectHtml +=
+          '<ul class="single-option module clearfix">' + singleColHtml + '</ul>'
+        singleColHtml = ''
+      }
+    })
+
+    singleSelectHtml +=
+      '<ul class="single-option module clearfix">' + singleColHtml + '</ul>'
 
     var SingleSelectModuleHtml = self.tpls.singleSelectTpl.substitute({
       singleSelectContent: singleSelectHtml
@@ -375,7 +412,9 @@ var Print = {
         scoreColumnHtml += '<span>' + borderHtml + i + '</span>'
       }
       shortAnswerItem.scoreColumnHtml = scoreColumnHtml
-      shortAnswerItem.editorContentHeight = shortAnswerItem.editorContentHeight?shortAnswerItem.editorContentHeight:54;
+      shortAnswerItem.editorContentHeight = shortAnswerItem.editorContentHeight
+        ? shortAnswerItem.editorContentHeight
+        : 54
       shortAnswerHtml += shortAnswerTpl.substitute(shortAnswerItem)
     })
 
@@ -419,7 +458,7 @@ var Print = {
       titleNumber: titleNumber.substring(0, titleNumber.length - 1),
       selOptionHtml: selOptionHtml,
       scoreColumnHtml: scoreColumnHtml,
-      editorContentHeight:54
+      editorContentHeight: 54
     })
 
     var chooseAnswerModuleHtml = self.tpls.chooseAnswerTpl.substitute({
@@ -653,11 +692,11 @@ var Print = {
     })
     //保存
     $('#saveBtn').click(function() {
-      if(self.totalPage > 4){
+      if (self.totalPage > 4) {
         self.modal.init({
-          content:'答题卡最多支持4页'
+          content: '答题卡最多支持4页'
         })
-        return;
+        return
       }
       self.savePrintPosition('printcontent')
     })
@@ -969,9 +1008,9 @@ var Print = {
    */
   changePrintArea: function(curPageEl) {
     var self = this
+
     //找出超出的区域
     var overPart = self.getOverModule(curPageEl)
-    //console.log(overPart)
 
     if (overPart) {
       //如果是当页第一模块超出，则强制当前手指操作的模块就是当前的模块
@@ -1231,11 +1270,17 @@ var Print = {
     //新建的分页
     self.totalPage++
     self.currentPage++
-    self.currentPaper = Math.ceil(self.totalPage / (self.columns*2))
+    self.currentPaper = Math.ceil(self.totalPage / (self.columns * 2))
     //第一张纸 正面1 正面2  第一张至反面1 反面2
-    var paperDirection = (self.totalPage%(self.columns*2)?self.totalPage%(self.columns*2):self.columns*2)<=self.columns?'正面':'反面';
-    var pageForPaperDirection = (self.totalPage % self.columns ? self.totalPage % self.columns : 2);
-    var currentPaperPage = paperDirection+pageForPaperDirection;
+    var paperDirection =
+      (self.totalPage % (self.columns * 2)
+        ? self.totalPage % (self.columns * 2)
+        : self.columns * 2) <= self.columns
+        ? '正面'
+        : '反面'
+    var pageForPaperDirection =
+      self.totalPage % self.columns ? self.totalPage % self.columns : 2
+    var currentPaperPage = paperDirection + pageForPaperDirection
     //新建page
     var newPage = self.tpls.pageModuleTpl.substitute({
       subjectModule: overAnswerHtml,
@@ -1265,7 +1310,7 @@ var Print = {
         '#' + resetEditorId.toolbarId,
         '#' + resetEditorId.editorId
       )
-      
+
       // 关闭粘贴样式的过滤
       editor.customConfig.pasteFilterStyle = false
       editor.customConfig.uploadImgShowBase64 = true
@@ -1569,7 +1614,6 @@ var Print = {
           heightm: '297mm'
         },
         function(res) {
-          
           ////console.log(JSON.parse(res).message)
         }
       )
@@ -1611,7 +1655,7 @@ var Print = {
           data: formData,
           success: function(data) {
             if (data.success === 1) {
-              self.alreadySave = true;
+              self.alreadySave = true
               self.modal.init({
                 content: '保存成功'
               })
@@ -1625,17 +1669,16 @@ var Print = {
         document.body.removeChild(iframe)
       })
     }
-
   },
   //下载pdf功能
   downLoadPdf: function($this) {
     var self = this
-    if(!self.alreadySave){
+    if (!self.alreadySave) {
       self.modal.init({
         content: '请先保存答题卡'
       })
-      return;
-    };
+      return
+    }
     window.location.href =
       domain +
       '/print/downPdf' +
@@ -1703,8 +1746,8 @@ var Print = {
     var scriptSrc = ''
 
     //用几张纸
-    var paperLength = Math.ceil($formatPageContent.length/self.columns);
-    paperLength = paperLength<2?paperLength+1:paperLength;
+    var paperLength = Math.ceil($formatPageContent.length / self.columns)
+    paperLength = paperLength < 2 ? paperLength + 1 : paperLength
     var printHtmlForPaperHtml = ''
     for (var j = 0; j < paperLength; j++) {
       var printHtml = ''

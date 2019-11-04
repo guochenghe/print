@@ -82,7 +82,12 @@ var PRINT_TPL = {
   //选题题模块
   singleSelectTpl:
     '<div class="single-select answerModule clearfix" data-type="singleSelect">\
-        <h3>选择题</h3>\
+        <h3>单选题</h3>\
+        <div class="singleContent clearfix"><i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>{singleSelectContent}</div>\
+    </div>',
+  moreSelectTpl:
+    '<div class="single-select answerModule clearfix" data-type="singleSelect">\
+        <h3>多选题</h3>\
         <div class="singleContent clearfix"><i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>{singleSelectContent}</div>\
     </div>',
   singleSelectOptionTpl:
@@ -163,7 +168,7 @@ var PRINT_TPL = {
                       <div class="number item">第{currentPage}页 共<b class="totalPage">{totalPage}</b>页</div>\
                       <div class="size item">\
                         <div class="itemContent">\
-                          第{currentPaper}纸张<b class="currentPaperPage">{currentPaperPage}</b>\
+                          第{currentPaper}张纸<b class="currentPaperPage">{currentPaperPage}</b>\
                       </div>\
                       </div>\
                   </div>\
