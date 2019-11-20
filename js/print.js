@@ -917,15 +917,6 @@ var Print = {
     $ticketNumber[isBarCode ? 'show' : 'hide']()
     $barCode[!isBarCode ? 'show' : 'hide']()
   },
-  //
-  refrushPageLabel: function() {
-    var self = this
-    $('.pageLabel').each(function() {
-      $(this)
-        .find('.totalPage')
-        .html(self.totalPage)
-    })
-  },
   //删除一个分页超出的部分
   delPageOverPart: function($delBtn) {
     var self = this
@@ -939,9 +930,6 @@ var Print = {
       !answerModel.siblings('.short-answer').length
     ) {
       delPage.remove()
-      self.totalPage--
-      self.currentPage--
-      self.refrushPageLabel()
     }
     prevPageLastEditor.height(
       prevPageLastEditor.height() - self.modulePaddingBottom
@@ -1494,7 +1482,11 @@ var Print = {
                 self.currentPage--
                 //新建的分页
                 self.totalPage--
-                self.refrushPageLabel()
+                $('.pageLabel').each(function() {
+                  $(this)
+                    .find('.totalPage')
+                    .html(self.totalPage)
+                })
               }
             } else {
               isContiune = false

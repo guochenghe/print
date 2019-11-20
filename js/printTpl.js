@@ -91,13 +91,13 @@ var styleStr = `/*printstyle:start*/@media print{@page {size:"auto';margin: 0.00
         <div class="singleContent clearfix"><i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>{singleSelectContent}</div>\
     </div>',
   moreSelectTpl:
-    '<div class="single-select answerModule clearfix" data-type="singleSelect">\
+    '<div class="single-select answerModule clearfix" data-type="moreSelect">\
         <h3>多选题</h3>\
         <div class="singleContent clearfix"><i class="top moduleBorder"></i><i class="right moduleBorder"></i><i class="bottom moduleBorder"></i><i class="left moduleBorder"></i>{singleSelectContent}</div>\
     </div>',
   singleSelectOptionTpl:
     '<li class="clearfix" title-number="{questionNum}" data-answer="{answer}">\
-        <em>{_index}</em>\
+        <em>{questionNum}</em>\
         {singleContent}\
     </li>',
   //填空题模块
